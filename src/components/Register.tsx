@@ -1,6 +1,7 @@
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface RegisterProps {
   setCurrentUser: any;
@@ -74,6 +75,12 @@ const Register: React.FC<RegisterProps> = ({ setCurrentUser }) => {
               </button>
             </div>
           </form>
+          <div className="text-primary-content flex flex-col items-center">
+            Already have an account?
+            <Link to="/login" className="btn btn-accent btn-sm m-2">
+              Login here!
+            </Link>
+          </div>
         </div>
       </div>
     </div>

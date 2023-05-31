@@ -1,4 +1,5 @@
 import { BsSun, BsMoon } from "react-icons/bs";
+import HeaderLogo from "./HeaderLogo";
 
 interface HeaderProps {
   currentUser: any;
@@ -12,14 +13,12 @@ const Header: React.FC<HeaderProps> = ({ currentUser, theme, changeTheme }) => {
       <div className="navbar-start"></div>
       <div className="navbar-center gap-5">
         <button
-          className="btn btn-outline btn-sm rounded-btn"
+          className="btn btn-ghost btn-sm rounded-btn"
           onClick={changeTheme}
         >
           {theme === "garden" ? <BsSun /> : <BsMoon />}
         </button>
-        <h1 className="text-3xl font-bold">
-          Rhyme<span className="text-secondary-content">Page</span>
-        </h1>
+        <HeaderLogo />
         <div className={currentUser ? "avatar" : "avatar placeholder"}>
           <div className="rounded-full w-10 h-10 m-1 bg-neutral-focus">
             <span className="text-3xl">?</span>
