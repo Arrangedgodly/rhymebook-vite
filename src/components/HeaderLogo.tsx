@@ -6,7 +6,7 @@ const HeaderLogo = () => {
   return (
     <button className="btn btn-ghost text-3xl font-bold logo" onClick={() => {navigate('/')}}>
       R
-      <span className="text-secondary-contentgi">
+      <span className="text-secondary-content">
         P
       </span>
     </button>
