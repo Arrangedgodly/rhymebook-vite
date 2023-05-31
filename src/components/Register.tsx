@@ -1,18 +1,18 @@
 import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 
-interface LoginProps {
+interface RegisterProps {
   setCurrentUser: any;
 }
 
-const Login: React.FC<LoginProps> = ({ setCurrentUser }) => {
+const Register: React.FC<RegisterProps> = ({ setCurrentUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         setCurrentUser(user);
@@ -27,7 +27,7 @@ const Login: React.FC<LoginProps> = ({ setCurrentUser }) => {
     <div className="flex flex-col flex-grow items-center justify-center">
       <div className="card card-bordered items-center text-center shadow-lg compact w-96 bg-primary-focus text-secondary-content">
         <h1 className="card-title text-2xl mt-4 mb-2 text-primary-content">
-          Login
+          Register
         </h1>
         <div className="card-body w-full">
           <form className="w-4/5 m-auto mb-4">
@@ -69,8 +69,8 @@ const Login: React.FC<LoginProps> = ({ setCurrentUser }) => {
               </label>
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-secondary" onClick={handleLogin}>
-                Login
+              <button className="btn btn-secondary" onClick={handleRegister}>
+                Register
               </button>
             </div>
           </form>
@@ -80,4 +80,4 @@ const Login: React.FC<LoginProps> = ({ setCurrentUser }) => {
   );
 };
 
-export default Login;
+export default Register;

@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({ currentUser, theme, changeTheme }) => {
         <h1 className="text-3xl font-bold">
           Rhyme<span className="text-secondary-content">Page</span>
         </h1>
-        <div className={currentUser ? "avatar placeholder" : "avatar"}>
+        <div className={currentUser ? "avatar" : "avatar placeholder"}>
           <div className="rounded-full w-10 h-10 m-1 bg-neutral-focus">
             <span className="text-3xl">?</span>
           </div>
