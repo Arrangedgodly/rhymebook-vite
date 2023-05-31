@@ -1,39 +1,14 @@
-# Vite Starter Kit
-## Features
-- [x] Vite
-- [x] React
-- [x] TypeScript
-- [x] ESLint
-- [x] Prettier
-- [x] Tailwind CSS
-- [x] daisyUI
-- [x] React Router
-- [x] Firebase
+# RhymePage
+## Description
+This is a simple web application that allows users to utilize an API to suggest rhymes as they write lyrics. The application uses the [Datamuse API](https://www.datamuse.com/api/) to retrieve rhymes.
 
-## Getting Started
-### Prerequisites
-- [Node.js](https://nodejs.org/en/) (>= 14.0.0)
-
-### Installation
-
-```bash
-git clone
-cd vite-starter-kit
-npm install
-```
-
-### Usage
-#### Development
-```bash
-npm run dev
-```
-
-#### Production
-```bash
-npm run build
-```
-
-#### Lint
-```bash
-npm run lint
-```
+## Technologies Used
+* Vite
+* Firebase
+* React
+* TypeScript
+* Tailwind CSS
+* React Router
+* DaisyUI
+* Axios
+* React Icons

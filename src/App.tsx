@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
+import Login from "./components/Login";
 import Footer from "./components/Footer";
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
     <div className="flex flex-col items-center h-screen" data-theme={theme}>
       <Header currentUser={currentUser} theme={theme} changeTheme={changeTheme} />
       {isLoading && <Loading value={70} />}
+      <Routes>
+        <Route path="/" element={<Login />} />
+      </Routes>
       <Footer />
     </div>
   )
