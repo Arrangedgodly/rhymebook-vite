@@ -1,16 +1,19 @@
 import { auth, provider } from "../firebase";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
 
 interface LoginProps {
   setCurrentUser: any;
+  loggedIn: boolean;
 }
 
-const Login: React.FC<LoginProps> = ({ setCurrentUser }) => {
+const Login: React.FC<LoginProps> = ({ setCurrentUser, loggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -37,6 +40,12 @@ const Login: React.FC<LoginProps> = ({ setCurrentUser }) => {
       }
       );
   };
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate("/");
+    }
+  }, [loggedIn]);
 
   return (
     <div className="flex flex-col flex-grow items-center justify-center w-full">
