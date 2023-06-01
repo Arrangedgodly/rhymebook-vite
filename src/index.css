@@ -18,6 +18,7 @@
   opacity: 1;
 }
 
+/*
 .header-button:hover .button-text-main {
   transition-delay: 0s;
 }
@@ -25,4 +26,4 @@
 .header-button:hover .button-text-secondary {
   transition-delay: 0.2s;
 }
-
+*/

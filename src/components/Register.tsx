@@ -1,7 +1,8 @@
-import { auth } from "../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, provider } from "../firebase";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
 
 interface RegisterProps {
   setCurrentUser: any;
@@ -22,6 +23,19 @@ const Register: React.FC<RegisterProps> = ({ setCurrentUser }) => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleGoogleRegister = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        setCurrentUser(user);
+        localStorage.setItem("currentUser", JSON.stringify(user));
+      }
+      ).catch((error) => {
+        console.log(error);
+      }
+      );
   };
 
   return (
@@ -75,6 +89,16 @@ const Register: React.FC<RegisterProps> = ({ setCurrentUser }) => {
               </button>
             </div>
           </form>
+          <div className="divider">Or</div>
+          <div className="form-control w-4/5 m-auto mb-4">
+            <button
+              className="btn btn-outline text-primary-content flex flex-col items-center p-2"
+              onClick={handleGoogleRegister}
+            >
+              <FcGoogle size='2rem' />
+              Login with Google
+            </button>
+          </div>
           <div className="text-primary-content flex flex-col items-center">
             Already have an account?
             <Link to="/login" className="btn btn-accent btn-sm m-2">
