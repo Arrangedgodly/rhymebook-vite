@@ -8,6 +8,12 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ currentUser, theme, changeTheme }) => {
+  const displayName = currentUser?.displayName;
+  const getInitials = (name) => {
+    const initials = name.match(/\b\w/g) || [];
+    return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+  };
+
   return (
     <div className="navbar bg-primary text-primary-content p-4 fixed top-0 left-0 z-50">
       <div className="navbar-start"></div>
@@ -19,9 +25,9 @@ const Header: React.FC<HeaderProps> = ({ currentUser, theme, changeTheme }) => {
           {theme === "garden" ? <BsSun /> : <BsMoon />}
         </button>
         <HeaderLogo />
-        <div className={currentUser ? "avatar" : "avatar placeholder"}>
+        <div className={displayName ? "avatar" : "avatar placeholder"}>
           <div className="rounded-full w-10 h-10 m-1 bg-neutral-focus">
-            <span className="text-3xl">?</span>
+            <span className="text-3xl">{displayName ? `${getInitials(displayName)}` : '?'}</span>
           </div>
         </div>
       </div>
