@@ -2,3 +2,27 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+.header-button {
+  display: inline-flex;
+}
+
+.button-text {
+  overflow: hidden;
+  transition: ease-in 0.3s;
+  letter-spacing: -1em;
+  opacity: 0;
+}
+
+.header-button:hover .button-text {
+  letter-spacing: 0;
+  opacity: 1;
+}
+
+.header-button:hover .button-text-main {
+  transition-delay: 0s;
+}
+
+.header-button:hover .button-text-secondary {
+  transition-delay: 0.2s;
+}
+
