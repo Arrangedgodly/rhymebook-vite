@@ -15,9 +15,9 @@ const Landing = () => {
   useEffect(() => {
     new TxtAnime(".rhymes", {
       effect: "txt-an-4",
-      delayStart: 4,
+      delayStart: 3.75,
       delay: 0.5,
-      duration: 1.5,
+      duration: 1.6,
       repeat: true,
       text: [
         "exciting lighting fighting biting whiting sighting inciting handwriting underwriting citing",
@@ -30,9 +30,9 @@ const Landing = () => {
   useEffect(() => {
     new TxtAnime(".soundalikes", {
       effect: "txt-an-4",
-      delayStart: 4,
+      delayStart: 3.75,
       delay: 0.5,
-      duration: 1.5,
+      duration: 1.6,
       repeat: true,
       text: [
         "science lightning trying titan abiding striking elighten timing lining whining",
@@ -45,9 +45,9 @@ const Landing = () => {
   useEffect(() => {
     new TxtAnime(".synonyms", {
       effect: "txt-an-4",
-      delayStart: 4,
+      delayStart: 3.75,
       delay: 0.5,
-      duration: 1.5,
+      duration: 1.6,
       repeat: true,
       text: [
         "composition authorship penning",
@@ -60,9 +60,9 @@ const Landing = () => {
   useEffect(() => {
     new TxtAnime(".related", {
       effect: "txt-an-4",
-      delayStart: 4,
+      delayStart: 3.75,
       delay: 0.5,
-      duration: 1.5,
+      duration: 1.6,
       repeat: true,
       text: [
         "verbal math directing exam poetry screenplay script essays editing sat",
@@ -75,9 +75,9 @@ const Landing = () => {
   useEffect(() => {
     new TxtAnime(".adjectives", {
       effect: "txt-an-4",
-      delayStart: 4,
+      delayStart: 3.75,
       delay: 0.5,
-      duration: 1.5,
+      duration: 1.6,
       repeat: true,
       text: [
         "table desk campaign paper room master process case campaigns pad skills",
@@ -90,9 +90,9 @@ const Landing = () => {
   useEffect(() => {
     new TxtAnime(".nouns", {
       effect: "txt-an-4",
-      delayStart: 4,
+      delayStart: 3.75,
       delay: 0.5,
-      duration: 1.5,
+      duration: 1.6,
       repeat: true,
       text: [
         "creative own good historical much automatic academic fine hand american",
@@ -104,38 +104,41 @@ const Landing = () => {
 
   return (
     <div className="flex flex-col bg-neutral text-neutral-content w-screen flex-grow items-center justify-center">
-      <h1 className="text-5xl text-center m-4">Welcome to RhymePage!</h1>
+      <h1 className="text-5xl text-center m-4">
+        Welcome to <span className='text-primary-content font-bold'>Rhyme</span>
+        <span className='text-secondary-content font-bold'>Page</span>
+      </h1>
       <h2 className="text-3xl text-center m-2">
         An API powered lyric writing application that writes your rhymes with
-        you.
+        you!
       </h2>
       <div className="card bg-secondary text-secondary-content m-4">
-        <p className="text-2xl text-center text-secondary-content m-2 typing"></p>
+        <p className="text-3xl text-center text-secondary-content m-2 alt-font typing"></p>
       </div>
-      <div className="flex flex-row items-center m-4">
+      <div className="grid md:grid-cols-6 grid-cols-3 my-20 content-center m-5 gap-5">
         <div className="flex flex-col items-center m-4 gap-4">
-          <h3 className="text-lg">Rhymes</h3>
-          <p className="text-sm text-center text-accent rhymes"></p>
+          <h3 className="text-md">Rhymes</h3>
+          <p className="text-sm text-center text-accent self-center pr-20 alt-font rhymes"></p>
         </div>
-        <div className="flex flex-col items-center justify-center m-4 gap-4">
-          <h3 className="text-lg">Sound-Alikes</h3>
-          <p className="text-sm text-center text-accent soundalikes"></p>
+        <div className="flex flex-col items-center m-4 gap-4">
+          <h3 className="text-md">Sound-Alikes</h3>
+          <p className="text-sm text-center text-accent self-center pr-20 alt-font soundalikes"></p>
         </div>
-        <div className="flex flex-col items-center justify-center m-4 gap-4">
-          <h3 className="text-lg">Synonyms</h3>
-          <p className="text-sm text-center text-accent synonyms"></p>
+        <div className="flex flex-col items-center m-4 gap-4">
+          <h3 className="text-md">Synonyms</h3>
+          <p className="text-sm text-center text-accent self-center pr-20 alt-font synonyms"></p>
         </div>
-        <div className="flex flex-col items-center justify-center m-4 gap-4">
-          <h3 className="text-lg">Related Words</h3>
-          <p className="text-sm text-center text-accent related"></p>
+        <div className="flex flex-col items-center m-4 gap-4">
+          <h3 className="text-md">Related Words</h3>
+          <p className="text-sm text-center text-accent self-center pr-20 alt-font related"></p>
         </div>
-        <div className="flex flex-col items-center justify-center m-4 gap-4">
-          <h3 className="text-lg">Adjectives</h3>
-          <p className="text-sm text-center text-accent adjectives"></p>
+        <div className="flex flex-col items-center m-4 gap-4">
+          <h3 className="text-md">Adjectives</h3>
+          <p className="text-sm text-center text-accent self-center pr-20 alt-font adjectives"></p>
         </div>
-        <div className="flex flex-col items-center justify-center m-4 gap-4">
-          <h3 className="text-lg">Nouns</h3>
-          <p className="text-sm text-center text-accent nouns"></p>
+        <div className="flex flex-col items-center m-4 gap-4">
+          <h3 className="text-md">Nouns</h3>
+          <p className="text-sm text-center text-accent self-center pr-20 alt-font nouns"></p>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { auth } from "./firebase";
 import { signOut } from "firebase/auth";
 import Header from "./components/Header";
@@ -16,7 +16,6 @@ function App() {
     JSON.parse(localStorage.getItem("currentUser")) || null
   );
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "garden");
-  const navigate = useNavigate();
 
   const changeTheme = () => {
     if (theme === "garden") {
@@ -51,7 +50,7 @@ function App() {
   }, [currentUser]);
 
   return (
-    <div className="flex flex-col items-center h-screen" data-theme={theme}>
+    <div className="flex flex-col items-center h-screen main-font" data-theme={theme}>
       <Header
         currentUser={currentUser}
         theme={theme}
