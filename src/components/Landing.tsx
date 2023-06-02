@@ -113,32 +113,32 @@ const Landing = () => {
         you!
       </h2>
       <div className="card bg-secondary text-secondary-content m-4">
-        <p className="text-3xl text-center text-secondary-content m-2 alt-font typing"></p>
+        <p className="text-3xl text-center text-secondary-content m-2 alt-font typing p-5"></p>
       </div>
       <div className="grid md:grid-cols-6 grid-cols-3 my-20 content-center m-5 gap-5">
         <div className="flex flex-col items-center m-4 gap-4">
-          <h3 className="text-md">Rhymes</h3>
-          <p className="text-sm text-center text-accent self-center pr-20 alt-font rhymes"></p>
+          <h3 className="text-lg">Rhymes</h3>
+          <p className="text-md text-center text-accent self-center pr-20 alt-font rhymes"></p>
         </div>
         <div className="flex flex-col items-center m-4 gap-4">
-          <h3 className="text-md">Sound-Alikes</h3>
-          <p className="text-sm text-center text-accent self-center pr-20 alt-font soundalikes"></p>
+          <h3 className="text-lg">Sound-Alikes</h3>
+          <p className="text-md text-center text-accent self-center pr-20 alt-font soundalikes"></p>
         </div>
         <div className="flex flex-col items-center m-4 gap-4">
-          <h3 className="text-md">Synonyms</h3>
-          <p className="text-sm text-center text-accent self-center pr-20 alt-font synonyms"></p>
+          <h3 className="text-lg">Synonyms</h3>
+          <p className="text-md text-center text-accent self-center pr-20 alt-font synonyms"></p>
         </div>
         <div className="flex flex-col items-center m-4 gap-4">
-          <h3 className="text-md">Related Words</h3>
-          <p className="text-sm text-center text-accent self-center pr-20 alt-font related"></p>
+          <h3 className="text-lg">Related Words</h3>
+          <p className="text-md text-center text-accent self-center pr-20 alt-font related"></p>
         </div>
         <div className="flex flex-col items-center m-4 gap-4">
-          <h3 className="text-md">Adjectives</h3>
-          <p className="text-sm text-center text-accent self-center pr-20 alt-font adjectives"></p>
+          <h3 className="text-lg">Adjectives</h3>
+          <p className="text-md text-center text-accent self-center pr-20 alt-font adjectives"></p>
         </div>
         <div className="flex flex-col items-center m-4 gap-4">
-          <h3 className="text-md">Nouns</h3>
-          <p className="text-sm text-center text-accent self-center pr-20 alt-font nouns"></p>
+          <h3 className="text-lg">Nouns</h3>
+          <p className="text-md text-center text-accent self-center pr-20 alt-font nouns"></p>
         </div>
       </div>
     </div>
