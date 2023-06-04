@@ -50,7 +50,7 @@ function App() {
   }, [currentUser]);
 
   return (
-    <div className="flex flex-col items-center h-screen main-font" data-theme={theme}>
+    <div className="flex flex-col items-center h-screen main-font bg-neutral text-neutral-content" data-theme={theme}>
       <Header
         currentUser={currentUser}
         theme={theme}

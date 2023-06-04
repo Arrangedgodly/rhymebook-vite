@@ -13,30 +13,38 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ setCurrentUser, loggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         setCurrentUser(user);
         localStorage.setItem("currentUser", JSON.stringify(user));
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   };
 
   const handleGoogleLogin = () => {
+    setGoogleLoading(true);
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
         setCurrentUser(user);
         localStorage.setItem("currentUser", JSON.stringify(user));
+        setGoogleLoading(false);
       }
       ).catch((error) => {
         console.log(error);
+        setGoogleLoading(false);
       }
       );
   };
@@ -94,7 +102,8 @@ const Login: React.FC<LoginProps> = ({ setCurrentUser, loggedIn }) => {
             </div>
             <div className="form-control mt-6">
               <button className="btn btn-secondary" onClick={handleLogin}>
-                Login
+                {loading && (<span className="loading loading-spinner loading-md" />)}
+                {loading ? (<span className='text-md'>Loading...</span>) : (<span className='text-md'>Login</span>)}
               </button>
             </div>
           </form>
@@ -104,8 +113,8 @@ const Login: React.FC<LoginProps> = ({ setCurrentUser, loggedIn }) => {
               className="btn btn-outline text-primary-content flex flex-col items-center p-2"
               onClick={handleGoogleLogin}
             >
-              <FcGoogle size='2rem' />
-              Login with Google
+              {googleLoading ? (<span className="loading loading-spinner loading-md" />) : (<FcGoogle size='2rem' />)}
+              {googleLoading ? (<span className='text-md'>Loading...</span>) : (<span className='text-md'>Login with Google</span>)}
             </button>
           </div>
           <div className="text-primary-content flex flex-col items-center">

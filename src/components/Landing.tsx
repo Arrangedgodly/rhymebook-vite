@@ -103,10 +103,10 @@ const Landing = () => {
   }, []);
 
   return (
-    <div className="flex flex-col bg-neutral text-neutral-content w-screen flex-grow items-center justify-center">
+    <div className="flex flex-col w-screen flex-grow items-center justify-center">
       <h1 className="text-5xl text-center m-4">
-        Welcome to <span className='text-primary-content font-bold'>Rhyme</span>
-        <span className='text-secondary-content font-bold'>Page</span>
+        Welcome to <span className="text-primary-content font-bold">Rhyme</span>
+        <span className="text-secondary-content font-bold">Page</span>
       </h1>
       <h2 className="text-3xl text-center m-2">
         An API powered lyric writing application that writes your rhymes with
@@ -141,6 +141,18 @@ const Landing = () => {
           <p className="text-md text-center text-accent self-center pr-20 alt-font nouns"></p>
         </div>
       </div>
+      <div className="h-1/5 w-full"></div>
+      <p className="text-center text-2xl text-neutral-content">
+        Want to get started?{" "}
+        <a href="/register" className="text-primary-content">
+          Register
+        </a>{" "}
+        or{" "}
+        <a href="/login" className="text-primary">
+          Login
+        </a>{" "}
+        now!
+      </p>
     </div>
   );
 };
