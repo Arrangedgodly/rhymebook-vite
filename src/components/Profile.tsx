@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {MdOutlineStickyNote2} from 'react-icons/md';
+import {RiUserFollowLine} from 'react-icons/ri';
 
 interface ProfileProps {
   currentUser: any;
@@ -28,7 +30,22 @@ const Profile: React.FC<ProfileProps> = ({ currentUser }) => {
             <p className="text-lg text-center text-neutral-content m-2">
               {currentUser.email}
             </p>
-
+            <div className='stats shadow'>
+              <div className='stat place-items-center'>
+                <div className='stat-figure text-secondary'>
+                  <MdOutlineStickyNote2 className='w-6 h-6' />
+                </div>
+                <div className='stat-title'>Total Notes</div>
+                <div className='stat-value'>0</div>
+              </div>
+              <div className='stat place-items-center'>
+                <div className='stat-figure text-accent'>
+                  <RiUserFollowLine className='w-6 h-6' />
+                </div>
+                <div className='stat-title'>Followers</div>
+                <div className='stat-value'>0</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
