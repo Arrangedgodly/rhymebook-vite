@@ -1,6 +1,6 @@
 import { auth, provider } from "../firebase";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { useState, useEffect } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ const Register: React.FC<RegisterProps> = ({ setCurrentUser, loggedIn }) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
