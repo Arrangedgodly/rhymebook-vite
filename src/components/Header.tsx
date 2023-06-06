@@ -1,5 +1,6 @@
 import { BsSun, BsMoon } from "react-icons/bs";
 import HeaderLogo from "./HeaderLogo";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   currentUser: any;
@@ -19,6 +20,7 @@ const Header: React.FC<HeaderProps> = ({
     const initials = name.match(/\b\w/g) || [];
     return ((initials.shift() || "") + (initials.pop() || "")).toUpperCase();
   };
+  const navigate = useNavigate();
 
   return (
     <div className="navbar bg-primary text-primary-content p-4 fixed top-0 left-0 z-50">
@@ -28,16 +30,16 @@ const Header: React.FC<HeaderProps> = ({
           className="btn btn-ghost btn-sm rounded-btn"
           onClick={changeTheme}
         >
-          {theme === "garden" ? <BsSun /> : <BsMoon />}
+          {theme === "winter" ? <BsSun /> : <BsMoon />}
         </button>
         <HeaderLogo />
         <div className="dropdown dropdown-hover">
           <div
             tabIndex={0}
-            className={displayName ? "avatar" : "avatar placeholder"}
+            className='avatar placeholder'
           >
             <div className="rounded-full w-10 h-10 m-1 bg-neutral-focus">
-              <span className="text-3xl">
+              <span className="text-lg">
                 {displayName ? `${getInitials(displayName)}` : "?"}
               </span>
             </div>
@@ -46,19 +48,25 @@ const Header: React.FC<HeaderProps> = ({
             tabIndex={0}
             className="p-2 shadow menu dropdown-content bg-neutral text-neutral-content items-center rounded-box w-52"
           >
-            <li>
-              <a href="/profile">Profile</a>
-            </li>
-            <li>
-              <a href="/settings">Settings</a>
-            </li>
-            <li>
-              {currentUser ? (
-                <a onClick={handleLogout}>Logout</a>
-              ) : (
-                <a href="/login">Login</a>
-              )}
-            </li>
+            {currentUser ? (
+              <>
+                <li>
+                  <a onClick={() => navigate('/profile')}>Profile</a>
+                </li>
+                <li>
+                  <a onClick={() => navigate('/settings')}>Settings</a>
+                </li>
+                <li>
+                  <a onClick={handleLogout}>
+                    Logout
+                  </a>
+                </li>
+              </>
+            ) : (
+              <li>
+                <a onClick={() => navigate('/login')}>Login</a>
+              </li>
+            )}
           </ul>
         </div>
       </div>

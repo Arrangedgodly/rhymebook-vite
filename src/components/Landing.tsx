@@ -1,7 +1,14 @@
 import { TxtAnime } from "txtanime.js";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Landing = () => {
+interface LandingProps {
+  loggedIn: boolean;
+}
+
+const Landing: React.FC<LandingProps> = ({ loggedIn }) => {
+  const navigate = useNavigate();
+  
   useEffect(() => {
     new TxtAnime(".typing", {
       effect: "txt-an-7",
@@ -142,23 +149,34 @@ const Landing = () => {
         </div>
       </div>
       <div className="h-1/5 w-full"></div>
-      <p className="text-center text-2xl text-neutral-content">
-        Want to get started?{" "}
-        <a href="/register" className="text-primary-content">
-          Register
-        </a>{" "}
-        or{" "}
-        <a href="/login" className="text-primary">
-          Login
-        </a>{" "}
-        now!
-      </p>
-      <p className="text-center text-lg text-neutral-content">
-        Don't want to sign up quite yet?{" "}
-        <a href="/demo" className="text-accent-content">
-          Try the demo!
-        </a>
-      </p>
+        {loggedIn ? (
+          <p className="text-center text-2xl text-neutral-content">
+            Ready to get started?{" "}
+            <a onClick={() => navigate('/dashboard')} className="text-primary-content">
+              Go to your dashboard!
+            </a>
+          </p>
+        ) : (
+          <>
+          <p className="text-center text-2xl text-neutral-content">
+            Want to get started?{" "}
+            <a onClick={() => navigate('/register')} className="text-primary-content">
+              Register
+            </a>{" "}
+            or{" "}
+            <a onClick={() => navigate('/login')} className="text-primary">
+              Login
+            </a>{" "}
+            now!
+          </p>
+          <p className="text-center text-lg text-neutral-content">
+            Don't want to sign up quite yet?{" "}
+            <a onClick={() => navigate('/demo')} className="text-accent-content">
+              Try the demo!
+            </a>
+          </p>
+          </>
+        )}
     </div>
   );
 };

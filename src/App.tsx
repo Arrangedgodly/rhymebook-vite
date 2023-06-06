@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { auth } from "./firebase";
 import { signOut } from "firebase/auth";
 import Header from "./components/Header";
@@ -7,24 +7,28 @@ import Loading from "./components/Loading";
 import Landing from "./components/Landing";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Settings from "./components/Settings";
+import Dashboard from "./components/Dashboard";
+import Profile from "./components/Profile";
 import Footer from "./components/Footer";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<string | null>(() => {
     const savedUser = localStorage.getItem("currentUser");
     return savedUser ? JSON.parse(savedUser) : null;
   });
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "garden");
+  const [theme, setTheme] = useState<string>(localStorage.getItem("theme") || "winter");
+  const navigate = useNavigate();
 
   const changeTheme = () => {
-    if (theme === "garden") {
+    if (theme === "winter") {
       localStorage.setItem("theme", "forest");
       setTheme("forest");
     } else {
-      localStorage.setItem("theme", "garden");
-      setTheme("garden");
+      localStorage.setItem("theme", "winter");
+      setTheme("winter");
     }
   };
 
@@ -34,6 +38,7 @@ function App() {
       .then(() => {
         setCurrentUser(null);
         localStorage.removeItem("currentUser");
+        navigate("/");
         setIsLoading(false);
       })
       .catch((error) => {
@@ -62,7 +67,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<Landing />}
+          element={<Landing loggedIn={loggedIn} />}
         />
         <Route
           path="/login"
@@ -75,6 +80,18 @@ function App() {
           element={
             <Register setCurrentUser={setCurrentUser} loggedIn={loggedIn} />
           }
+        />
+        <Route
+          path="/settings"
+          element={<Settings currentUser={currentUser} />}
+        />
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
+        />
+        <Route
+          path="/profile"
+          element={<Profile currentUser={currentUser} />}
         />
       </Routes>
       <Footer />
