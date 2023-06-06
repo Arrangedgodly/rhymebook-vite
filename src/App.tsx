@@ -12,9 +12,10 @@ import Footer from "./components/Footer";
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem("currentUser")) || null
-  );
+  const [currentUser, setCurrentUser] = useState<string | null>(() => {
+    const savedUser = localStorage.getItem("currentUser");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "garden");
 
   const changeTheme = () => {

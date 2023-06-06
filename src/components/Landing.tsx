@@ -153,6 +153,12 @@ const Landing = () => {
         </a>{" "}
         now!
       </p>
+      <p className="text-center text-lg text-neutral-content">
+        Don't want to sign up quite yet?{" "}
+        <a href="/demo" className="text-accent-content">
+          Try the demo!
+        </a>
+      </p>
     </div>
   );
 };
