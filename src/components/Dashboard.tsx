@@ -1,4 +1,15 @@
 import { useState, useEffect, KeyboardEvent } from "react";
+import {
+  getRhyme,
+  getSoundAlike,
+  getRelatedAdjectives,
+  getRelatedNouns,
+  getRelatedWords,
+  getSynonyms,
+  getAntonyms,
+  getFrequentFollowers
+} from "../utils/api";
+import Suggested from "./Suggested";
 
 interface DashboardProps {
   currentUser: any;
@@ -9,6 +20,14 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   const [lyrics, setLyrics] = useState<string>("");
   const [themes, setThemes] = useState<string>("");
   const [lastWord, setLastWord] = useState<string>("");
+  const [rhymes, setRhymes] = useState<string[]>([]);
+  const [soundAlikes, setSoundAlikes] = useState<string[]>([]);
+  const [nouns, setNouns] = useState<string[]>([]);
+  const [adjectives, setAdjectives] = useState<string[]>([]);
+  const [synonyms, setSynonyms] = useState<string[]>([]);
+  const [antonyms, setAntonyms] = useState<string[]>([]);
+  const [frequentFollowers, setFrequentFollowers] = useState<string[]>([]);
+  const [relatedWords, setRelatedWords] = useState<string[]>([]);
 
   const getLastWord = (str: string) => {
     const words = str.split(" ");
@@ -16,20 +35,99 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === ' ' || e.key === 'Enter') {
+    if (e.key === " " || e.key === "Enter") {
       setLastWord(getLastWord(lyrics));
     }
   };
 
+  const getRhymes = async () => {
+    const res = await getRhyme(lastWord, 'topic', themes, 50);
+    let values = [];
+    for (let i = 0; i < res.length; i++) {
+      values.push(res[i].word);
+    }
+    setRhymes(values);
+  };
+
+  const getSoundAlikes = async () => {
+    const res = await getSoundAlike(lastWord, 'topic', themes, 50);
+    let values = [];
+    for (let i = 0; i < res.length; i++) {
+      values.push(res[i].word);
+    }
+    setSoundAlikes(values);
+  };
+
+  const getNouns = async () => {
+    const res = await getRelatedNouns(lastWord, 'topic', themes, 50);
+    let values = [];
+    for (let i = 0; i < res.length; i++) {
+      values.push(res[i].word);
+    }
+    setNouns(values);
+  };
+
+  const getAdjs = async () => {
+    const res = await getRelatedAdjectives(lastWord, 'topic', themes, 50);
+    let values = [];
+    for (let i = 0; i < res.length; i++) {
+      values.push(res[i].word);
+    }
+    setAdjectives(values);
+  };
+
+  const getSyns = async () => {
+    const res = await getSynonyms(lastWord, 'topic', themes, 50);
+    let values = [];
+    for (let i = 0; i < res.length; i++) {
+      values.push(res[i].word);
+    }
+    setSynonyms(values);
+  };
+
+  const getAnts = async () => {
+    const res = await getAntonyms(lastWord, 'topic', themes, 50);
+    let values = [];
+    for (let i = 0; i < res.length; i++) {
+      values.push(res[i].word);
+    }
+    setAntonyms(values);
+  };
+
+  const getFreqFollowers = async () => {
+    const res = await getFrequentFollowers(lastWord, 'topic', themes, 50);
+    let values = [];
+    for (let i = 0; i < res.length; i++) {
+      values.push(res[i].word);
+    }
+    setFrequentFollowers(values);
+  };
+
+  const getRelWords = async () => {
+    const res = await getRelatedWords(lastWord, 'topic', themes, 50);
+    let values = [];
+    for (let i = 0; i < res.length; i++) {
+      values.push(res[i].word);
+    }
+    setRelatedWords(values);
+  };
+
   useEffect(() => {
-    console.log(lastWord);
+    getRhymes();
+    getSoundAlikes();
+    getNouns();
+    getAdjs();
+    getSyns();
+    getAnts();
+    getFreqFollowers();
+    getRelWords();
   }, [lastWord]);
 
   return (
     <div className="flex flex-col flex-grow items-center justify-center w-screen">
       <div className="flex flex-row space-around w-full">
-        <div className="flex flex-col items-center w-1/2 m-2">
-          <div className="form-control w-3/4">
+        <div className="flex flex-col items-center w-3/5 m-5">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text text-xl text-primary-content">
                 Title
@@ -43,7 +141,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
-          <div className="form-control w-3/4">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text text-xl text-primary-content">
                 Lyrics
@@ -57,7 +155,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
               onKeyDown={handleKeyDown}
             />
           </div>
-          <div className="form-control w-3/4">
+          <div className="form-control w-full">
             <label className="label">
               <span className="label-text text-xl text-primary-content">
                 Themes
@@ -78,11 +176,29 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
             </label>
           </div>
         </div>
+        <Suggested
+          rhymes={rhymes}
+          soundAlikes={soundAlikes}
+          nouns={nouns}
+          adjectives={adjectives}
+          synonyms={synonyms}
+          antonyms={antonyms}
+          frequentFollowers={frequentFollowers}
+          relatedWords={relatedWords}
+        />
       </div>
       <ul className="menu bg-base-200 menu-horizontal m-2 text-primary">
         <div
-          className={currentUser ? "tooltip tooltip-primary tooltip-bottom" : "tooltip tooltip-error tooltip-bottom"}
-          data-tip={currentUser ? "Notes automatically save every minute" : "You must be logged in to save notes!"}
+          className={
+            currentUser
+              ? "tooltip tooltip-primary tooltip-bottom"
+              : "tooltip tooltip-error tooltip-bottom"
+          }
+          data-tip={
+            currentUser
+              ? "Once you save a note to your collection, it will automatically save every time you type!"
+              : "You must be logged in to save notes!"
+          }
         >
           <li className={currentUser ? "" : "disabled"}>
             <a>Save</a>
