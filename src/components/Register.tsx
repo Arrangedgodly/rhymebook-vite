@@ -10,33 +10,41 @@ interface RegisterProps {
   loggedIn: boolean;
 }
 
-const Register: React.FC<RegisterProps> = ({ setCurrentUser, loggedIn }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Register = ({ setCurrentUser, loggedIn }: RegisterProps) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [googleLoading, setGoogleLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleRegister = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         setCurrentUser(user);
         localStorage.setItem("currentUser", JSON.stringify(user));
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   };
 
   const handleGoogleRegister = () => {
+    setGoogleLoading(true);
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
         setCurrentUser(user);
         localStorage.setItem("currentUser", JSON.stringify(user));
+        setGoogleLoading(false);
       }
       ).catch((error) => {
         console.log(error);
+        setGoogleLoading(false);
       }
       );
   };
@@ -95,7 +103,8 @@ const Register: React.FC<RegisterProps> = ({ setCurrentUser, loggedIn }) => {
             </div>
             <div className="form-control mt-6">
               <button className="btn btn-secondary" onClick={handleRegister}>
-                Register
+                {loading && (<span className="loading loading-spinner loading-md" />)}
+                {loading ? (<span className='text-md'>Loading...</span>) : (<span className='text-md'>Register</span>)}
               </button>
             </div>
           </form>
@@ -105,8 +114,8 @@ const Register: React.FC<RegisterProps> = ({ setCurrentUser, loggedIn }) => {
               className="btn btn-outline text-primary-content flex flex-col items-center p-2"
               onClick={handleGoogleRegister}
             >
-              <FcGoogle size='2rem' />
-              Login with Google
+              {googleLoading ? (<span className="loading loading-spinner loading-md" />) : (<FcGoogle size='2rem' />)}
+              {googleLoading ? (<span className='text-md'>Loading...</span>) : (<span className='text-md'>Login with Google</span>)}
             </button>
           </div>
           <div className="text-primary-content flex flex-col items-center">

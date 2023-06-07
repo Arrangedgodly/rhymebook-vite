@@ -87,7 +87,7 @@ function App() {
         />
         <Route
           path="/dashboard"
-          element={<Dashboard />}
+          element={<Dashboard currentUser={currentUser}/>}
         />
         <Route
           path="/profile"

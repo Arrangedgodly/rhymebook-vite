@@ -9,13 +9,14 @@ interface HeaderProps {
   handleLogout: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({
+const Header = ({
   currentUser,
   theme,
   changeTheme,
   handleLogout,
-}) => {
+}: HeaderProps) => {
   const displayName = currentUser?.displayName;
+  const photoURL = currentUser?.photoURL;
   const getInitials = (name: string) => {
     const initials = name.match(/\b\w/g) || [];
     return ((initials.shift() || "") + (initials.pop() || "")).toUpperCase();
@@ -39,9 +40,19 @@ const Header: React.FC<HeaderProps> = ({
             className='avatar placeholder'
           >
             <div className="rounded-full w-10 h-10 m-1 bg-neutral-focus">
-              <span className="text-lg">
-                {displayName ? `${getInitials(displayName)}` : "?"}
-              </span>
+              {photoURL ? (
+                <img
+                  src={photoURL}
+                  alt="avatar"
+                  className="rounded-full w-10 h-10 m-1"
+                />
+              ) : displayName ? (
+                <span className="text-2xl font-bold">
+                  {getInitials(displayName)}
+                </span>
+              ) : (
+                <span className="text-2xl font-bold">?</span>
+              )}
             </div>
           </div>
           <ul

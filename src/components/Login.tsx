@@ -10,11 +10,11 @@ interface LoginProps {
   loggedIn: boolean;
 }
 
-const Login: React.FC<LoginProps> = ({ setCurrentUser, loggedIn }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [googleLoading, setGoogleLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
+const Login = ({ setCurrentUser, loggedIn }: LoginProps) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [googleLoading, setGoogleLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleLogin = (e: MouseEvent<HTMLButtonElement>) => {

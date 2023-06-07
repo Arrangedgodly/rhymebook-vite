@@ -6,7 +6,7 @@ interface LandingProps {
   loggedIn: boolean;
 }
 
-const Landing: React.FC<LandingProps> = ({ loggedIn }) => {
+const Landing = ({ loggedIn }: LandingProps) => {
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -152,7 +152,7 @@ const Landing: React.FC<LandingProps> = ({ loggedIn }) => {
         {loggedIn ? (
           <p className="text-center text-2xl text-neutral-content">
             Ready to get started?{" "}
-            <a onClick={() => navigate('/dashboard')} className="text-primary-content">
+            <a onClick={() => navigate('/dashboard')} className="text-primary-content hover:cursor-pointer">
               Go to your dashboard!
             </a>
           </p>
@@ -160,18 +160,18 @@ const Landing: React.FC<LandingProps> = ({ loggedIn }) => {
           <>
           <p className="text-center text-2xl text-neutral-content">
             Want to get started?{" "}
-            <a onClick={() => navigate('/register')} className="text-primary-content">
+            <a onClick={() => navigate('/register')} className="text-primary-content hover:cursor-pointer">
               Register
             </a>{" "}
             or{" "}
-            <a onClick={() => navigate('/login')} className="text-primary">
+            <a onClick={() => navigate('/login')} className="text-primary hover:cursor-pointer">
               Login
             </a>{" "}
             now!
           </p>
           <p className="text-center text-lg text-neutral-content">
             Don't want to sign up quite yet?{" "}
-            <a onClick={() => navigate('/demo')} className="text-accent-content">
+            <a onClick={() => navigate('/dashboard')} className="text-accent-content hover:cursor-pointer">
               Try the demo!
             </a>
           </p>
