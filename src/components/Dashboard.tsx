@@ -126,7 +126,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   return (
     <div className="flex flex-col flex-grow items-center justify-center w-screen">
       <div className="flex flex-row space-around w-full">
-        <div className="flex flex-col items-center w-3/5 m-5">
+        <div className="flex flex-col items-center w-1/2 m-5">
           <div className="form-control w-full">
             <label className="label">
               <span className="label-text text-xl text-primary-content">
