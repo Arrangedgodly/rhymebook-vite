@@ -8,7 +8,7 @@ import {
   getSynonyms,
   getAntonyms,
   getFrequentFollowers
-} from "../utils/api";
+} from "../utils/rhymeApi";
 import Suggested from "./Suggested";
 
 interface DashboardProps {
