@@ -110,8 +110,8 @@ const Landing = ({ loggedIn }: LandingProps) => {
   }, []);
 
   return (
-    <div className="flex flex-col w-screen flex-grow items-center justify-center">
-      <h1 className="text-5xl text-center m-4">
+    <div className="flex flex-col w-screen flex-grow items-center">
+      <h1 className="text-5xl text-center m-4 mt-10">
         Welcome to <span className="text-primary-content font-bold">Rhyme</span>
         <span className="text-secondary-content font-bold">Page</span>
       </h1>

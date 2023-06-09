@@ -7,11 +7,11 @@ interface SuggestedSectionProps {
 const SuggestedSection = ({ title, words, handleRightClick }: SuggestedSectionProps) => {
   return (
     <>
-      <h3 className="text-sm mt-2 mb-1">{title}</h3>
-      <div className="flex flex-row flex-wrap justify-around overflow-y-scroll">
+      <h3 className="text-md mt-2 mb-1">{title}</h3>
+      <div className="flex flex-row flex-wrap justify-around w-4/5">
         {words.map((word) => (
           <span
-            className="badge badge-primary badge-sm m-1 hover:badge-secondary hover:cursor-context-menu"
+            className="badge badge-accent badge-lg m-1 hover:badge-secondary hover:cursor-context-menu"
             key={`${title}-${word}`}
             onContextMenu={(e) => handleRightClick(e, word)}
           >

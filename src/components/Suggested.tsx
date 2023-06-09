@@ -26,14 +26,16 @@ const Suggested = ({
   const [partsOfSpeech, setPartsOfSpeech] = useState<string[]>([]);
   const [definitions, setDefinitions] = useState<string[]>([]);
 
-  const handleDefinitions = async (word: string) => {
+  const handleDictionary = async (word: string) => {
     getDefinition(word).then((res) => {
       let def = [];
       let pos = [];
-      const resData = res[0];
+      const resData = res[0].meanings;
       for (let i = 0; i < resData.length; i++) {
-        def.push(resData[i].definition);
         pos.push(resData[i].partOfSpeech);
+        for (let j = 0; j < resData[i].definitions.length; j++) {
+          def.push(resData[i].definitions[j].definition);
+        }
       }
       setDefinitions(def);
       setPartsOfSpeech(pos);
@@ -42,11 +44,11 @@ const Suggested = ({
 
   const handleRightClick = (e: MouseEvent, word: string) => {
     e.preventDefault();
-    handleDefinitions(word);
+    handleDictionary(word);
   }
 
   return (
-    <div className="flex flex-col justify-around items-center w-1/2 h-[70vh] my-auto m-5 bg-accent text-accent-content rounded-2xl">
+    <div className="flex flex-col justify-start items-center w-1/4 my-auto m-5 max-h-[70vh] overflow-y-auto">
       {rhymes.length > 0 && (
         <SuggestedSection
           title="Rhymes"

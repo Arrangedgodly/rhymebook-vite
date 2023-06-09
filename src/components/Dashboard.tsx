@@ -124,10 +124,10 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   }, [lastWord]);
 
   return (
-    <div className="flex flex-col flex-grow items-center justify-center w-screen">
+    <div className="flex flex-col flex-grow items-center w-screen">
       <div className="flex flex-row space-around w-full">
-        <div className="flex flex-col items-center w-1/2 m-5">
-          <div className="form-control w-full">
+        <div className="flex flex-col items-center w-3/4 m-5">
+          <div className="form-control w-1/2">
             <label className="label">
               <span className="label-text text-xl text-primary-content">
                 Title
@@ -141,7 +141,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
-          <div className="form-control w-full">
+          <div className="form-control w-2/3">
             <label className="label">
               <span className="label-text text-xl text-primary-content">
                 Lyrics
@@ -155,7 +155,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
               onKeyDown={handleKeyDown}
             />
           </div>
-          <div className="form-control w-full">
+          <div className="form-control w-1/2">
             <label className="label">
               <span className="label-text text-xl text-primary-content">
                 Themes

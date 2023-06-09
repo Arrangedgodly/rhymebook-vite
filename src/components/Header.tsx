@@ -24,7 +24,7 @@ const Header = ({
   const navigate = useNavigate();
 
   return (
-    <div className="navbar bg-primary text-primary-content p-4 fixed top-0 left-0 z-50">
+    <div className="navbar bg-primary text-primary-content p-4">
       <div className="navbar-start"></div>
       <div className="navbar-center gap-5">
         <button
