@@ -1,5 +1,6 @@
 import { getDefinition } from "../utils/dictionaryApi";
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent } from "react";
+import SuggestedSection from "./SuggestedSection";
 
 interface SuggestedProps {
   rhymes: string[];
@@ -29,104 +30,78 @@ const Suggested = ({
     getDefinition(word).then((res) => {
       let def = [];
       let pos = [];
-      for (let i = 0; i < res.length; i++) {
-        def.push(res[i].definition);
-        pos.push(res[i].partOfSpeech);
+      const resData = res[0];
+      for (let i = 0; i < resData.length; i++) {
+        def.push(resData[i].definition);
+        pos.push(resData[i].partOfSpeech);
       }
       setDefinitions(def);
       setPartsOfSpeech(pos);
     })
   }
 
-  const handleRightClick = (e) => {
+  const handleRightClick = (e: MouseEvent, word: string) => {
     e.preventDefault();
-    const word = e.target.innerText;
     handleDefinitions(word);
   }
 
   return (
     <div className="flex flex-col justify-around items-center w-1/2 h-[70vh] my-auto m-5 bg-accent text-accent-content rounded-2xl">
       {rhymes.length > 0 && (
-        <>
-          <h3 className="text-sm mt-2 mb-1">Rhymes</h3>
-          <div className="flex flex-row flex-wrap justify-around overflow-y-scroll">
-            {rhymes.map((rhyme) => (
-              <span className="badge badge-outline badge-sm m-1">{rhyme}</span>
-            ))}
-          </div>
-        </>
+        <SuggestedSection
+          title="Rhymes"
+          words={rhymes}
+          handleRightClick={handleRightClick}
+        />
       )}
       {soundAlikes.length > 0 && (
-        <>
-          <h3 className="text-sm mt-2 mb-1">Sound-Alikes</h3>
-          <div className="flex flex-row flex-wrap justify-around overflow-y-scroll">
-            {soundAlikes.map((soundAlike) => (
-              <span className="badge badge-outline badge-sm m-1">{soundAlike}</span>
-            ))}
-          </div>
-        </>
+        <SuggestedSection
+          title="Sound Alikes"
+          words={soundAlikes}
+          handleRightClick={handleRightClick}
+        />
       )}
       {nouns.length > 0 && (
-        <>
-          <h3 className="text-sm mt-2 mb-1">Nouns</h3>
-          <div className="flex flex-row flex-wrap justify-around overflow-y-scroll">
-            {nouns.map((noun) => (
-              <span className="badge badge-outline badge-sm m-1">{noun}</span>
-            ))}
-          </div>
-        </>
+        <SuggestedSection
+          title="Nouns"
+          words={nouns}
+          handleRightClick={handleRightClick}
+        />
       )}
       {adjectives.length > 0 && (
-        <>
-          <h3 className="text-sm mt-2 mb-1">Adjectives</h3>
-          <div className="flex flex-row flex-wrap justify-around overflow-y-scroll">
-            {adjectives.map((adjective) => (
-              <span className="badge badge-outline badge-sm m-1">{adjective}</span>
-            ))}
-          </div>
-        </>
+        <SuggestedSection
+          title="Adjectives"
+          words={adjectives}
+          handleRightClick={handleRightClick}
+        />
       )}
       {synonyms.length > 0 && (
-        <>
-          <h3 className="text-sm mt-2 mb-1">Synonyms</h3>
-          <div className="flex flex-row flex-wrap justify-around overflow-y-scroll">
-            {synonyms.map((synonym) => (
-              <span className="badge badge-outline badge-sm m-1">{synonym}</span>
-            ))}
-          </div>
-        </>
+        <SuggestedSection
+          title="Synonyms"
+          words={synonyms}
+          handleRightClick={handleRightClick}
+        />
       )}
       {antonyms.length > 0 && (
-        <>
-          <h3 className="text-sm mt-2 mb-1">Antonyms</h3>
-          <div className="flex flex-row flex-wrap justify-around overflow-y-scroll">
-            {antonyms.map((antonym) => (
-              <span className="badge badge-outline badge-sm m-1">{antonym}</span>
-            ))}
-          </div>
-        </>
+        <SuggestedSection
+          title="Antonyms"
+          words={antonyms}
+          handleRightClick={handleRightClick}
+        />
       )}
       {frequentFollowers.length > 0 && (
-        <>
-          <h3 className="text-sm mt-2 mb-1">Frequent Followers</h3>
-          <div className="flex flex-row flex-wrap justify-around overflow-y-scroll">
-            {frequentFollowers.map((frequentFollower) => (
-              <span className="badge badge-outline badge-sm m-1">
-                {frequentFollower}
-              </span>
-            ))}
-          </div>
-        </>
+        <SuggestedSection
+          title="Frequent Followers"
+          words={frequentFollowers}
+          handleRightClick={handleRightClick}
+        />
       )}
       {relatedWords.length > 0 && (
-        <>
-          <h3 className="text-sm mt-2 mb-1">Related Words</h3>
-          <div className="flex flex-row flex-wrap justify-around overflow-y-scroll">
-            {relatedWords.map((relatedWord) => (
-              <span className="badge badge-outline badge-sm m-1">{relatedWord}</span>
-            ))}
-          </div>
-        </>
+        <SuggestedSection
+          title="Related Words"
+          words={relatedWords}
+          handleRightClick={handleRightClick}
+        />
       )}
     </div>
   );
