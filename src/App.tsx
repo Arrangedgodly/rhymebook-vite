@@ -9,6 +9,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Settings from "./components/Settings";
 import Dashboard from "./components/Dashboard";
+import Notes from "./components/Notes";
 import Profile from "./components/Profile";
 import Footer from "./components/Footer";
 import Missing from "./components/Missing";
@@ -89,6 +90,10 @@ function App() {
         <Route
           path="/dashboard"
           element={<Dashboard currentUser={currentUser}/>}
+        />
+        <Route
+          path="/notes"
+          element={<Notes currentUser={currentUser} />}
         />
         <Route
           path="/profile"

@@ -24,7 +24,7 @@ const Header = ({
   const navigate = useNavigate();
 
   return (
-    <div className="navbar bg-primary text-primary-content p-4">
+    <div className="navbar bg-primary text-primary-content p-6 lg:px-8">
       <div className="navbar-start"></div>
       <div className="navbar-center gap-5">
         <button
@@ -63,6 +63,9 @@ const Header = ({
               <>
                 <li>
                   <a onClick={() => navigate('/profile')}>Profile</a>
+                </li>
+                <li>
+                  <a onClick={() => navigate('/notes')}>Notes</a>
                 </li>
                 <li>
                   <a onClick={() => navigate('/settings')}>Settings</a>

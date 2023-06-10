@@ -18,7 +18,7 @@ const Profile: React.FC<ProfileProps> = ({ currentUser }) => {
 
   return (
     <div className="flex flex-col flex-grow items-center justify-center">
-      <div className="card items-center bordered bg-primary shadow-lg w-96">
+      <div className="card items-center bordered bg-primary shadow-lg w-96 mb-20">
         <h1 className="card-title text-2xl m-2">{currentUser.displayName}</h1>
         <div className="card-body items-center">
           <div className="avatar placeholder">

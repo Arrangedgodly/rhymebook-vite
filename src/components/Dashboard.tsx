@@ -29,6 +29,21 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   const [frequentFollowers, setFrequentFollowers] = useState<string[]>([]);
   const [relatedWords, setRelatedWords] = useState<string[]>([]);
 
+  const handleReset = () => {
+    setTitle("");
+    setLyrics("");
+    setThemes("");
+    setLastWord("");
+    setRhymes([]);
+    setSoundAlikes([]);
+    setNouns([]);
+    setAdjectives([]);
+    setSynonyms([]);
+    setAntonyms([]);
+    setFrequentFollowers([]);
+    setRelatedWords([]);
+  }
+
   const getLastWord = (str: string) => {
     const words = str.split(" ");
     return words[words.length - 1];
@@ -38,6 +53,11 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
     if (e.key === " " || e.key === "Enter") {
       setLastWord(getLastWord(lyrics));
     }
+  };
+
+  const handleLeftClick = (word: string) => {
+    setLyrics(lyrics + word + " ");
+    setLastWord(word);
   };
 
   const getRhymes = async () => {
@@ -126,7 +146,9 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   return (
     <div className="flex flex-col flex-grow items-center w-screen">
       <div className="flex flex-row space-around w-full">
-        <div className="flex flex-col items-center w-3/4 m-5">
+        <div className="flex flex-col items-center w-1/5 m-5">
+        </div>
+        <div className="flex flex-col items-center w-3/5 m-5">
           <div className="form-control w-1/2">
             <label className="label">
               <span className="label-text text-xl text-primary-content">
@@ -185,6 +207,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
           antonyms={antonyms}
           frequentFollowers={frequentFollowers}
           relatedWords={relatedWords}
+          handleLeftClick={handleLeftClick}
         />
       </div>
       <ul className="menu bg-base-200 menu-horizontal m-2 text-primary">
@@ -205,7 +228,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
           </li>
         </div>
         <li>
-          <a>Reset</a>
+          <a onClick={handleReset}>Reset</a>
         </li>
       </ul>
     </div>

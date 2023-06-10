@@ -11,6 +11,7 @@ interface SuggestedProps {
   antonyms: string[];
   frequentFollowers: string[];
   relatedWords: string[];
+  handleLeftClick: (word: string) => void;
 }
 
 const Suggested = ({
@@ -22,6 +23,7 @@ const Suggested = ({
   antonyms,
   frequentFollowers,
   relatedWords,
+  handleLeftClick,
 }: SuggestedProps) => {
   const [partsOfSpeech, setPartsOfSpeech] = useState<string[]>([]);
   const [definitions, setDefinitions] = useState<string[]>([]);
@@ -48,12 +50,13 @@ const Suggested = ({
   }
 
   return (
-    <div className="flex flex-col justify-start items-center w-1/4 my-auto m-5 max-h-[70vh] overflow-y-auto">
+    <div className="flex flex-col justify-start items-center w-1/5 my-auto m-5 max-h-[70vh] overflow-y-auto">
       {rhymes.length > 0 && (
         <SuggestedSection
           title="Rhymes"
           words={rhymes}
           handleRightClick={handleRightClick}
+          handleLeftClick={handleLeftClick}
         />
       )}
       {soundAlikes.length > 0 && (
@@ -61,6 +64,7 @@ const Suggested = ({
           title="Sound Alikes"
           words={soundAlikes}
           handleRightClick={handleRightClick}
+          handleLeftClick={handleLeftClick}
         />
       )}
       {nouns.length > 0 && (
@@ -68,6 +72,7 @@ const Suggested = ({
           title="Nouns"
           words={nouns}
           handleRightClick={handleRightClick}
+          handleLeftClick={handleLeftClick}
         />
       )}
       {adjectives.length > 0 && (
@@ -75,6 +80,7 @@ const Suggested = ({
           title="Adjectives"
           words={adjectives}
           handleRightClick={handleRightClick}
+          handleLeftClick={handleLeftClick}
         />
       )}
       {synonyms.length > 0 && (
@@ -82,6 +88,7 @@ const Suggested = ({
           title="Synonyms"
           words={synonyms}
           handleRightClick={handleRightClick}
+          handleLeftClick={handleLeftClick}
         />
       )}
       {antonyms.length > 0 && (
@@ -89,6 +96,7 @@ const Suggested = ({
           title="Antonyms"
           words={antonyms}
           handleRightClick={handleRightClick}
+          handleLeftClick={handleLeftClick}
         />
       )}
       {frequentFollowers.length > 0 && (
@@ -96,6 +104,7 @@ const Suggested = ({
           title="Frequent Followers"
           words={frequentFollowers}
           handleRightClick={handleRightClick}
+          handleLeftClick={handleLeftClick}
         />
       )}
       {relatedWords.length > 0 && (
@@ -103,6 +112,7 @@ const Suggested = ({
           title="Related Words"
           words={relatedWords}
           handleRightClick={handleRightClick}
+          handleLeftClick={handleLeftClick}
         />
       )}
     </div>
