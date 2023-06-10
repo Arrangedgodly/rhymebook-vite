@@ -11,6 +11,7 @@ import Settings from "./components/Settings";
 import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
 import Footer from "./components/Footer";
+import Missing from "./components/Missing";
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -93,6 +94,7 @@ function App() {
           path="/profile"
           element={<Profile currentUser={currentUser} />}
         />
+        <Route path="*" element={<Missing />} />
       </Routes>
       <Footer />
     </div>
