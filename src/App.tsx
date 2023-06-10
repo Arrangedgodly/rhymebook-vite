@@ -94,7 +94,7 @@ function App() {
           path="/profile"
           element={<Profile currentUser={currentUser} />}
         />
-        <Route path="*" element={<Missing />} />
+        <Route path="*" element={<Missing loggedIn={loggedIn} />} />
       </Routes>
       <Footer />
     </div>

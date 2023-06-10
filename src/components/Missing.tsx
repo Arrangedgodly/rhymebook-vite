@@ -1,7 +1,7 @@
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
-import { BookmarkSquareIcon, BookOpenIcon, QueueListIcon, RssIcon } from '@heroicons/react/24/solid'
+import { BookmarkSquareIcon, BookOpenIcon, QueueListIcon } from '@heroicons/react/24/solid'
 
-const links = [
+const unloggedLinks = [
   {
     name: 'Documentation',
     href: '#',
@@ -15,10 +15,40 @@ const links = [
     description: 'Installation guides that cover popular setups.',
     icon: BookmarkSquareIcon,
   },
-  { name: 'Blog', href: '#', description: 'Read our latest news and articles.', icon: RssIcon },
 ];
 
-const Missing = () => {
+const loggedLinks = [
+  {
+    name: 'Your Profile',
+    href: '#',
+    description: 'View your profile information and change your settings.',
+    icon: UserCircleIcon,
+  },
+  {
+    name: 'Your Profile',
+    href: '#',
+    description: 'View your profile information and change your settings.',
+    icon: UserCircleIcon,
+  },
+  {
+    name: 'Your Profile',
+    href: '#',
+    description: 'View your profile information and change your settings.',
+    icon: UserCircleIcon,
+  },
+  {
+    name: 'Your Profile',
+    href: '#',
+    description: 'View your profile information and change your settings.',
+    icon: UserCircleIcon,
+  }
+]
+
+interface MissingProps {
+  loggedIn: boolean;
+}
+
+const Missing = ({ loggedIn }: MissingProps) => {
   return (
     <main className='mx-auto w-full max-w-7xl px-6 pb-16 pt-10 sm:pb-24 lg:px-8'>
       <div className="mx-auto mt-20 max-w-2xl text-center sm:mt-24">
@@ -31,7 +61,7 @@ const Missing = () => {
         <div className="mx-auto mt-16 flow-root max-w-lg sm:mt-20">
           <h2 className="sr-only">Popular pages</h2>
           <ul role="list" className="-mt-6 divide-y divide-gray-900/5 border-b border-gray-900/5">
-            {links.map((link, linkIdx) => (
+            {unloggedLinks.map((link, linkIdx) => (
               <li key={linkIdx} className="relative flex gap-x-6 py-6">
                 <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg shadow-sm ring-1 ring-gray-900/10">
                   <link.icon className="h-6 w-6 text-indigo-600" aria-hidden="true" />
