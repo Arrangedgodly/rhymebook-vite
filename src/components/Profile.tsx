@@ -7,7 +7,7 @@ interface ProfileProps {
   currentUser: any;
 }
 
-const Profile: React.FC<ProfileProps> = ({ currentUser }) => {
+const Profile = ({ currentUser }: ProfileProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
