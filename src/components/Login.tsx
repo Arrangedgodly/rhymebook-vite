@@ -56,7 +56,7 @@ const Login = ({ setCurrentUser, loggedIn }: LoginProps) => {
   }, [loggedIn]);
 
   return (
-    <div className="flex flex-col flex-grow items-center justify-center w-full">
+    <div className="container-main justify-center">
       <div className="card card-bordered items-center text-center shadow-lg compact w-96 bg-primary-focus text-secondary-content">
         <h1 className="card-title text-2xl mt-4 mb-2 text-primary-content">
           Login

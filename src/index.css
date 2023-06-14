@@ -1,3 +1,5 @@
+@import url('./blocks/containers.css');
+@import url('./blocks/text.css');
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';

@@ -110,7 +110,7 @@ const Landing = ({ loggedIn }: LandingProps) => {
   }, []);
 
   return (
-    <div className="flex flex-col w-screen flex-grow items-center">
+    <div className="container-main">
       <h1 className="text-5xl text-center m-4 mt-10">
         Welcome to <span className="text-primary-content font-bold">Rhyme</span>
         <span className="text-secondary-content font-bold">Page</span>
@@ -123,29 +123,29 @@ const Landing = ({ loggedIn }: LandingProps) => {
         <p className="text-3xl text-center text-secondary-content m-2 alt-font typing p-5"></p>
       </div>
       <div className="grid md:grid-cols-6 grid-cols-3 my-20 content-center m-5 gap-5">
-        <div className="flex flex-col items-center m-4 gap-4">
+        <div className="container-landing">
           <h3 className="text-lg">Rhymes</h3>
-          <p className="text-md text-center text-accent self-center pr-20 alt-font rhymes"></p>
+          <p className="text-landing rhymes"></p>
         </div>
-        <div className="flex flex-col items-center m-4 gap-4">
+        <div className="container-landing">
           <h3 className="text-lg">Sound-Alikes</h3>
-          <p className="text-md text-center text-accent self-center pr-20 alt-font soundalikes"></p>
+          <p className="text-landing soundalikes"></p>
         </div>
-        <div className="flex flex-col items-center m-4 gap-4">
+        <div className="container-landing">
           <h3 className="text-lg">Synonyms</h3>
-          <p className="text-md text-center text-accent self-center pr-20 alt-font synonyms"></p>
+          <p className="text-landing synonyms"></p>
         </div>
-        <div className="flex flex-col items-center m-4 gap-4">
+        <div className="container-landing">
           <h3 className="text-lg">Related Words</h3>
-          <p className="text-md text-center text-accent self-center pr-20 alt-font related"></p>
+          <p className="text-landing related"></p>
         </div>
-        <div className="flex flex-col items-center m-4 gap-4">
+        <div className="container-landing">
           <h3 className="text-lg">Adjectives</h3>
-          <p className="text-md text-center text-accent self-center pr-20 alt-font adjectives"></p>
+          <p className="text-landing adjectives"></p>
         </div>
-        <div className="flex flex-col items-center m-4 gap-4">
+        <div className="container-landing">
           <h3 className="text-lg">Nouns</h3>
-          <p className="text-md text-center text-accent self-center pr-20 alt-font nouns"></p>
+          <p className="text-landing nouns"></p>
         </div>
       </div>
       <div className="h-1/5 w-full"></div>

@@ -1,0 +1,11 @@
+.container-main {
+  @apply flex flex-col flex-grow items-center w-screen;
+}
+
+.container-notes {
+  @apply flex flex-grow items-center w-screen;
+}
+
+.container-landing {
+  @apply flex flex-col items-center m-4 gap-4;
+}

@@ -6,7 +6,7 @@ interface NotesProps {
 
 const Notes = ({ currentUser }: NotesProps) => {
   return (
-    <div className="flex flex-grow items-center w-screen">
+    <div className="container-notes">
       <div className="flex flex-col w-1/10 items-center bg-accent h-full relative z-10">
         <button className="btn btn-md btn-accent m-2">
           <BookOpenIcon className="w-8 h-8 text-accent-content" />

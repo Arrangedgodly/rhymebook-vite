@@ -4,7 +4,7 @@ interface SettingsProps {
 
 const Settings: React.FC<SettingsProps> = ({ currentUser }) => {
   return (
-    <div className='flex flex-col flex-grow items-center justify-center'>
+    <div className='container-main'>
       
     </div>
   )

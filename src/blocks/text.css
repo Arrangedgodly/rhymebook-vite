@@ -1,0 +1,3 @@
+.text-landing {
+  @apply text-center text-accent self-center pr-20 alt-font;
+}

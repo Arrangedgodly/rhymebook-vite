@@ -144,7 +144,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   }, [lastWord]);
 
   return (
-    <div className="flex flex-col flex-grow items-center w-screen">
+    <div className="container-main">
       <div className="flex flex-row space-around w-full">
         <div className="flex flex-col items-center w-1/5 m-5">
         </div>
