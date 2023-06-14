@@ -1,5 +1,5 @@
 import { getDefinition } from "../utils/dictionaryApi";
-import { useEffect, useState, MouseEvent } from "react";
+import { MouseEvent } from "react";
 import SuggestedSection from "./SuggestedSection";
 
 interface SuggestedProps {
@@ -12,6 +12,7 @@ interface SuggestedProps {
   frequentFollowers: string[];
   relatedWords: string[];
   handleLeftClick: (word: string) => void;
+  setDefinitions: (arg0: any) => void;
 }
 
 const Suggested = ({
@@ -24,30 +25,18 @@ const Suggested = ({
   frequentFollowers,
   relatedWords,
   handleLeftClick,
+  setDefinitions,
 }: SuggestedProps) => {
-  const [partsOfSpeech, setPartsOfSpeech] = useState<string[]>([]);
-  const [definitions, setDefinitions] = useState<string[]>([]);
-
   const handleDictionary = async (word: string) => {
     getDefinition(word).then((res) => {
-      let def = [];
-      let pos = [];
-      const resData = res[0].meanings;
-      for (let i = 0; i < resData.length; i++) {
-        pos.push(resData[i].partOfSpeech);
-        for (let j = 0; j < resData[i].definitions.length; j++) {
-          def.push(resData[i].definitions[j].definition);
-        }
-      }
-      setDefinitions(def);
-      setPartsOfSpeech(pos);
-    })
-  }
+      setDefinitions(res[0]);
+    });
+  };
 
   const handleRightClick = (e: MouseEvent, word: string) => {
     e.preventDefault();
     handleDictionary(word);
-  }
+  };
 
   return (
     <div className="flex flex-col justify-start items-center w-1/5 my-auto m-5 max-h-[70vh] overflow-y-auto">

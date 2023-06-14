@@ -7,8 +7,9 @@ import {
   getRelatedWords,
   getSynonyms,
   getAntonyms,
-  getFrequentFollowers
+  getFrequentFollowers,
 } from "../utils/rhymeApi";
+import Definitions from "./Definitions";
 import Suggested from "./Suggested";
 
 interface DashboardProps {
@@ -28,6 +29,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   const [antonyms, setAntonyms] = useState<string[]>([]);
   const [frequentFollowers, setFrequentFollowers] = useState<string[]>([]);
   const [relatedWords, setRelatedWords] = useState<string[]>([]);
+  const [definitions, setDefinitions] = useState<any>({});
 
   const handleReset = () => {
     setTitle("");
@@ -42,7 +44,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
     setAntonyms([]);
     setFrequentFollowers([]);
     setRelatedWords([]);
-  }
+  };
 
   const getLastWord = (str: string) => {
     const words = str.split(" ");
@@ -61,7 +63,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   };
 
   const getRhymes = async () => {
-    const res = await getRhyme(lastWord, 'topic', themes, 50);
+    const res = await getRhyme(lastWord, "topic", themes, 50);
     let values = [];
     for (let i = 0; i < res.length; i++) {
       values.push(res[i].word);
@@ -70,7 +72,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   };
 
   const getSoundAlikes = async () => {
-    const res = await getSoundAlike(lastWord, 'topic', themes, 50);
+    const res = await getSoundAlike(lastWord, "topic", themes, 50);
     let values = [];
     for (let i = 0; i < res.length; i++) {
       values.push(res[i].word);
@@ -79,7 +81,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   };
 
   const getNouns = async () => {
-    const res = await getRelatedNouns(lastWord, 'topic', themes, 50);
+    const res = await getRelatedNouns(lastWord, "topic", themes, 50);
     let values = [];
     for (let i = 0; i < res.length; i++) {
       values.push(res[i].word);
@@ -88,7 +90,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   };
 
   const getAdjs = async () => {
-    const res = await getRelatedAdjectives(lastWord, 'topic', themes, 50);
+    const res = await getRelatedAdjectives(lastWord, "topic", themes, 50);
     let values = [];
     for (let i = 0; i < res.length; i++) {
       values.push(res[i].word);
@@ -97,7 +99,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   };
 
   const getSyns = async () => {
-    const res = await getSynonyms(lastWord, 'topic', themes, 50);
+    const res = await getSynonyms(lastWord, "topic", themes, 50);
     let values = [];
     for (let i = 0; i < res.length; i++) {
       values.push(res[i].word);
@@ -106,7 +108,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   };
 
   const getAnts = async () => {
-    const res = await getAntonyms(lastWord, 'topic', themes, 50);
+    const res = await getAntonyms(lastWord, "topic", themes, 50);
     let values = [];
     for (let i = 0; i < res.length; i++) {
       values.push(res[i].word);
@@ -115,7 +117,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   };
 
   const getFreqFollowers = async () => {
-    const res = await getFrequentFollowers(lastWord, 'topic', themes, 50);
+    const res = await getFrequentFollowers(lastWord, "topic", themes, 50);
     let values = [];
     for (let i = 0; i < res.length; i++) {
       values.push(res[i].word);
@@ -124,7 +126,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   };
 
   const getRelWords = async () => {
-    const res = await getRelatedWords(lastWord, 'topic', themes, 50);
+    const res = await getRelatedWords(lastWord, "topic", themes, 50);
     let values = [];
     for (let i = 0; i < res.length; i++) {
       values.push(res[i].word);
@@ -146,8 +148,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
   return (
     <div className="container-main">
       <div className="flex flex-row space-around w-full">
-        <div className="flex flex-col items-center w-1/5 m-5">
-        </div>
+        <Definitions definitions={definitions} />
         <div className="flex flex-col items-center w-3/5 m-5">
           <div className="form-control w-1/2">
             <label className="label">
@@ -208,6 +209,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
           frequentFollowers={frequentFollowers}
           relatedWords={relatedWords}
           handleLeftClick={handleLeftClick}
+          setDefinitions={setDefinitions}
         />
       </div>
       <ul className="menu bg-base-200 menu-horizontal m-2 text-primary">
