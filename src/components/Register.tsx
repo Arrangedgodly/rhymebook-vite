@@ -41,20 +41,18 @@ const Register = ({ setCurrentUser, loggedIn }: RegisterProps) => {
         setCurrentUser(user);
         localStorage.setItem("currentUser", JSON.stringify(user));
         setGoogleLoading(false);
-      }
-      ).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
         setGoogleLoading(false);
-      }
-      );
+      });
   };
 
   useEffect(() => {
     if (loggedIn) {
       navigate("/");
     }
-  }
-  , [loggedIn]);
+  }, [loggedIn]);
 
   return (
     <div className="container-main justify-center">
@@ -103,8 +101,14 @@ const Register = ({ setCurrentUser, loggedIn }: RegisterProps) => {
             </div>
             <div className="form-control mt-6">
               <button className="btn btn-secondary" onClick={handleRegister}>
-                {loading && (<span className="loading loading-spinner loading-md" />)}
-                {loading ? (<span className='text-md'>Loading...</span>) : (<span className='text-md'>Register</span>)}
+                {loading && (
+                  <span className="loading loading-spinner loading-md" />
+                )}
+                {loading ? (
+                  <span className="text-md">Loading...</span>
+                ) : (
+                  <span className="text-md">Register</span>
+                )}
               </button>
             </div>
           </form>
@@ -114,8 +118,16 @@ const Register = ({ setCurrentUser, loggedIn }: RegisterProps) => {
               className="btn btn-outline text-primary-content flex flex-col items-center p-2"
               onClick={handleGoogleRegister}
             >
-              {googleLoading ? (<span className="loading loading-spinner loading-md" />) : (<FcGoogle size='2rem' />)}
-              {googleLoading ? (<span className='text-md'>Loading...</span>) : (<span className='text-md'>Login with Google</span>)}
+              {googleLoading ? (
+                <span className="loading loading-spinner loading-md" />
+              ) : (
+                <FcGoogle size="2rem" />
+              )}
+              {googleLoading ? (
+                <span className="text-md">Loading...</span>
+              ) : (
+                <span className="text-md">Login with Google</span>
+              )}
             </button>
           </div>
           <div className="text-primary-content flex flex-col items-center">

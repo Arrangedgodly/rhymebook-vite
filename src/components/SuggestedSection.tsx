@@ -1,11 +1,19 @@
 interface SuggestedSectionProps {
   title: string;
   words: string[];
-  handleRightClick: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>, word: string) => void;
+  handleRightClick: (
+    e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+    word: string
+  ) => void;
   handleLeftClick: (word: string) => void;
 }
 
-const SuggestedSection = ({ title, words, handleRightClick, handleLeftClick }: SuggestedSectionProps) => {
+const SuggestedSection = ({
+  title,
+  words,
+  handleRightClick,
+  handleLeftClick,
+}: SuggestedSectionProps) => {
   return (
     <>
       <h3 className="text-md mt-2 mb-1">{title}</h3>

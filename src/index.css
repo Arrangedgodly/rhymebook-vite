@@ -4,6 +4,20 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+::-webkit-scrollbar {
+  width: .75rem;
+  margin-left: .5rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
   font-family: 'Raleway';

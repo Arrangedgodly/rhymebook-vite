@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import { auth } from "./firebase";
-import { signOut } from "firebase/auth";
+import useAppLogic from "./hooks/useAppLogic";
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
 import Landing from "./components/Landing";
@@ -15,47 +13,7 @@ import Footer from "./components/Footer";
 import Missing from "./components/Missing";
 
 function App() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<string | null>(() => {
-    const savedUser = localStorage.getItem("currentUser");
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
-  const [theme, setTheme] = useState<string>(localStorage.getItem("theme") || "winter");
-  const navigate = useNavigate();
-
-  const changeTheme = () => {
-    if (theme === "winter") {
-      localStorage.setItem("theme", "forest");
-      setTheme("forest");
-    } else {
-      localStorage.setItem("theme", "winter");
-      setTheme("winter");
-    }
-  };
-
-  const handleLogout = () => {
-    setIsLoading(true);
-    signOut(auth)
-      .then(() => {
-        setCurrentUser(null);
-        localStorage.removeItem("currentUser");
-        navigate("/");
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    if (currentUser) {
-      setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
-    }
-  }, [currentUser]);
+  const { isLoading, loggedIn, currentUser, theme, changeTheme, handleLogout, setCurrentUser } = useAppLogic();
 
   return (
     <div className="flex flex-col items-center h-screen main-font bg-neutral text-neutral-content" data-theme={theme}>

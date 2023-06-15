@@ -161,6 +161,6 @@ const useDashboardLogic = () => {
     definitions,
     handleKeyDown,
   };
-}
+};
 
 export default useDashboardLogic;
