@@ -1,4 +1,11 @@
 import { auth, provider } from "../firebase";
+import {
+  getFirestore,
+  collection,
+  doc,
+  setDoc,
+  getDocs,
+} from "firebase/firestore";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useState, useEffect, MouseEvent } from "react";
 import { Link } from "react-router-dom";
@@ -7,15 +14,27 @@ import { useNavigate } from "react-router-dom";
 
 interface LoginProps {
   setCurrentUser: any;
+  currentUser: any;
   loggedIn: boolean;
 }
 
-const Login = ({ setCurrentUser, loggedIn }: LoginProps) => {
+const Login = ({ setCurrentUser, currentUser, loggedIn }: LoginProps) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [googleLoading, setGoogleLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [usersList, setUsersList] = useState<any[]>([]);
   const navigate = useNavigate();
+  const db = getFirestore();
+  const users = collection(db, "users");
+
+  const getUsers = async () => {
+    if (currentUser) {
+    const data = await getDocs(users);
+    const usersList = data.docs.map((doc) => doc.data());
+    setUsersList(usersList);
+    }
+  };
 
   const handleLogin = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -33,6 +52,23 @@ const Login = ({ setCurrentUser, loggedIn }: LoginProps) => {
       });
   };
 
+  const handleUserDoc = (user: any) => {
+    const userExists = usersList.find(
+      (person) => person.email === user.email
+    );
+    if (!userExists) {
+      setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        uid: user.uid,
+        username: user.displayName,
+        photoURL: user.photoURL,
+        notes: [],
+      });
+    } else {
+      console.log(userExists)
+    }
+  }
+
   const handleGoogleLogin = () => {
     setGoogleLoading(true);
     signInWithPopup(auth, provider)
@@ -41,12 +77,11 @@ const Login = ({ setCurrentUser, loggedIn }: LoginProps) => {
         setCurrentUser(user);
         localStorage.setItem("currentUser", JSON.stringify(user));
         setGoogleLoading(false);
-      }
-      ).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
         setGoogleLoading(false);
-      }
-      );
+      });
   };
 
   useEffect(() => {
@@ -54,6 +89,17 @@ const Login = ({ setCurrentUser, loggedIn }: LoginProps) => {
       navigate("/");
     }
   }, [loggedIn]);
+
+  useEffect(() => {
+    getUsers();
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (currentUser) {
+      handleUserDoc(currentUser);
+    }
+  }
+  , [currentUser])
 
   return (
     <div className="container-main justify-center">
@@ -102,8 +148,14 @@ const Login = ({ setCurrentUser, loggedIn }: LoginProps) => {
             </div>
             <div className="form-control mt-6">
               <button className="btn btn-secondary" onClick={handleLogin}>
-                {loading && (<span className="loading loading-spinner loading-md" />)}
-                {loading ? (<span className='text-md'>Loading...</span>) : (<span className='text-md'>Login</span>)}
+                {loading && (
+                  <span className="loading loading-spinner loading-md" />
+                )}
+                {loading ? (
+                  <span className="text-md">Loading...</span>
+                ) : (
+                  <span className="text-md">Login</span>
+                )}
               </button>
             </div>
           </form>
@@ -113,8 +165,16 @@ const Login = ({ setCurrentUser, loggedIn }: LoginProps) => {
               className="btn btn-outline text-primary-content flex flex-col items-center p-2"
               onClick={handleGoogleLogin}
             >
-              {googleLoading ? (<span className="loading loading-spinner loading-md" />) : (<FcGoogle size='2rem' />)}
-              {googleLoading ? (<span className='text-md'>Loading...</span>) : (<span className='text-md'>Login with Google</span>)}
+              {googleLoading ? (
+                <span className="loading loading-spinner loading-md" />
+              ) : (
+                <FcGoogle size="2rem" />
+              )}
+              {googleLoading ? (
+                <span className="text-md">Loading...</span>
+              ) : (
+                <span className="text-md">Login with Google</span>
+              )}
             </button>
           </div>
           <div className="text-primary-content flex flex-col items-center">

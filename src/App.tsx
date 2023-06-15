@@ -74,7 +74,7 @@ function App() {
         <Route
           path="/login"
           element={
-            <Login setCurrentUser={setCurrentUser} loggedIn={loggedIn} />
+            <Login setCurrentUser={setCurrentUser} currentUser={currentUser} loggedIn={loggedIn} />
           }
         />
         <Route
@@ -85,7 +85,7 @@ function App() {
         />
         <Route
           path="/settings"
-          element={<Settings currentUser={currentUser} />}
+          element={<Settings />}
         />
         <Route
           path="/dashboard"
@@ -93,7 +93,7 @@ function App() {
         />
         <Route
           path="/notes"
-          element={<Notes currentUser={currentUser} />}
+          element={<Notes />}
         />
         <Route
           path="/profile"

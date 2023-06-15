@@ -1,8 +1,4 @@
-interface SettingsProps {
-  currentUser: any;
-}
-
-const Settings: React.FC<SettingsProps> = ({ currentUser }) => {
+const Settings = () => {
   return (
     <div className='container-main'>
       

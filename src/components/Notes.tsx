@@ -1,10 +1,6 @@
 import { BookOpenIcon, TagIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 
-interface NotesProps {
-  currentUser: any;
-}
-
-const Notes = ({ currentUser }: NotesProps) => {
+const Notes = () => {
   return (
     <div className="container-notes">
       <div className="flex flex-col w-1/10 items-center bg-accent h-full relative z-10">
