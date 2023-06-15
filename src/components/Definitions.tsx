@@ -3,12 +3,14 @@ interface DefinitionsProps {
 }
 
 const Definitions = ({ definitions }: DefinitionsProps) => {
+  const meanings = definitions?.meanings;
+
   return (
     <div className="flex flex-col justify-start items-center w-1/5 my-auto m-10 max-h-[70vh] overflow-y-auto text-center">
       {definitions && (
         <>
           <h1 className="text-2xl font-bold m-5">{definitions.word}</h1>
-          {definitions.meanings.map((meaning: any, index: number) => (
+          {meanings && meanings.map((meaning: any, index: number) => (
             <div key={index}>
               <h2 className="text-xl font-bold m-2">{meaning.partOfSpeech}</h2>
               {meaning.definitions.map((definition: any, index: number) => (
