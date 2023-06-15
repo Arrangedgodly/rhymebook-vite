@@ -1,23 +1,65 @@
-import { BookOpenIcon, TagIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
+import {
+  BookOpenIcon,
+  TagIcon,
+  PencilSquareIcon,
+} from "@heroicons/react/24/solid";
+import useNotesLogic from "../hooks/useNotesLogic";
 
-const Notes = () => {
+interface NotesProps {
+  currentUser: any;
+}
+
+const Notes = ({ currentUser }: NotesProps) => {
+  const { notes, activeTab, setActiveTab, addBlankNote } = useNotesLogic({ currentUser });
   return (
     <div className="container-notes">
       <div className="flex flex-col w-1/10 items-center bg-accent h-full relative z-10">
-        <button className="btn btn-md btn-accent m-2">
-          <BookOpenIcon className="w-8 h-8 text-accent-content" />
+        <button
+          className={
+            activeTab === "notebook" ? "button-note_active" : "button-note"
+          }
+          onClick={() => setActiveTab("notebook")}
+        >
+          <BookOpenIcon
+            className={
+              activeTab === "notebook"
+                ? "button-note-content_active"
+                : "button-note-content"
+            }
+          />
         </button>
-        <button className="btn btn-md btn-accent m-2">
-          <TagIcon className="w-8 h-8 text-accent-content" />
+        <button
+          className={
+            activeTab === "tags" ? "button-note_active" : "button-note"
+          }
+          onClick={() => setActiveTab("tags")}
+        >
+          <TagIcon
+            className={
+              activeTab === "tags"
+                ? "button-note-content_active"
+                : "button-note-content"
+            }
+          />
         </button>
-        <button className="btn btn-md btn-accent m-2 mt-auto">
-          <PencilSquareIcon className="w-8 h-8 text-accent-content" />
+        <button className="button-note mt-auto" onClick={addBlankNote}>
+          <PencilSquareIcon className="button-note-content" />
         </button>
       </div>
-      <div className='flex flex-col w-3/10 items-center bg-primary h-full relative z-10'>
+      <div className="flex flex-col w-3/10 items-center bg-base-300 text-secondary h-full relative z-10">
+        {activeTab === "notebook" && (
+          <>
+            {notes && notes.map((note: any) => (
+              <>
+              <div key={note.id} className='badge badge-outline badge-lg m-5'>
+                <h1 className='text-lg font-bold'>{note.title}</h1>
+              </div>
+              </>
+            ))}
+          </>
+        )}
       </div>
-      <div className='flex flex-col w-6/10 items-center h-full relative z-0'>
-      </div>
+      <div className="flex flex-col w-6/10 items-center h-full relative z-0"></div>
     </div>
   );
 };

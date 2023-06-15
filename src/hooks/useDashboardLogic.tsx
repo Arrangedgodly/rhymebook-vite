@@ -9,8 +9,14 @@ import {
   getAntonyms,
   getFrequentFollowers,
 } from "../utils/rhymeApi";
+import { getFirestore } from "firebase/firestore";
+import { doc, collection, setDoc, addDoc } from "firebase/firestore";
 
-const useDashboardLogic = () => {
+interface DashboardProps {
+  currentUser: any;
+}
+
+const useDashboardLogic = ({ currentUser }: DashboardProps) => {
   const [title, setTitle] = useState<string>("");
   const [lyrics, setLyrics] = useState<string>("");
   const [themes, setThemes] = useState<string>("");
@@ -24,6 +30,24 @@ const useDashboardLogic = () => {
   const [frequentFollowers, setFrequentFollowers] = useState<string[]>([]);
   const [relatedWords, setRelatedWords] = useState<string[]>([]);
   const [definitions, setDefinitions] = useState<any>({});
+  const [noteId, setNoteId] = useState<string>("");
+  const db = getFirestore();
+
+  const handleSave = async () => {
+    const note = {
+      title,
+      lyrics,
+      themes,
+    };
+    if (noteId) {
+      setDoc(doc(collection(db, "notes", currentUser.uid), noteId), note);
+    } else {
+      const noteRef = await addDoc(collection(db, "notes", currentUser.uid), note);
+      if (noteRef) {
+        setNoteId(noteRef.id);
+      }
+    }
+  };
 
   const handleReset = () => {
     setTitle("");
@@ -155,6 +179,7 @@ const useDashboardLogic = () => {
     antonyms,
     frequentFollowers,
     relatedWords,
+    handleSave,
     handleReset,
     handleLeftClick,
     setDefinitions,

@@ -1,0 +1,15 @@
+.button-note {
+  @apply btn btn-md btn-accent bg-accent text-accent m-2;
+}
+
+.button-note_active {
+  @apply btn btn-md btn-accent bg-accent-focus text-accent-focus m-2;
+}
+
+.button-note-content {
+  @apply w-8 h-8 text-primary-content;
+}
+
+.button-note-content_active {
+  @apply w-8 h-8 text-secondary;
+}

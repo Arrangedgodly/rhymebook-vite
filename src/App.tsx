@@ -32,7 +32,7 @@ function App() {
         <Route
           path="/login"
           element={
-            <Login setCurrentUser={setCurrentUser} currentUser={currentUser} loggedIn={loggedIn} />
+            <Login setCurrentUser={setCurrentUser} loggedIn={loggedIn} />
           }
         />
         <Route
@@ -47,11 +47,11 @@ function App() {
         />
         <Route
           path="/dashboard"
-          element={<Dashboard currentUser={currentUser}/>}
+          element={<Dashboard currentUser={currentUser} />}
         />
         <Route
           path="/notes"
-          element={<Notes />}
+          element={<Notes currentUser={currentUser} />}
         />
         <Route
           path="/profile"

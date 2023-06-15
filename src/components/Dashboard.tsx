@@ -22,12 +22,13 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
     antonyms,
     frequentFollowers,
     relatedWords,
+    handleSave,
     handleReset,
     handleLeftClick,
     setDefinitions,
     definitions,
     handleKeyDown,
-  } = useDashboardLogic();
+  } = useDashboardLogic({ currentUser });
 
   return (
     <div className="container-main">
@@ -110,7 +111,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
           }
         >
           <li className={currentUser ? "" : "disabled"}>
-            <a>Save</a>
+            <a onClick={handleSave}>Save</a>
           </li>
         </div>
         <li>

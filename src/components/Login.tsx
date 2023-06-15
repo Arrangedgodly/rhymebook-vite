@@ -1,10 +1,9 @@
 import { auth, provider } from "../firebase";
 import {
   getFirestore,
-  collection,
   doc,
   setDoc,
-  getDocs,
+  getDoc,
 } from "firebase/firestore";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useState, useEffect, MouseEvent } from "react";
@@ -14,27 +13,16 @@ import { useNavigate } from "react-router-dom";
 
 interface LoginProps {
   setCurrentUser: any;
-  currentUser: any;
   loggedIn: boolean;
 }
 
-const Login = ({ setCurrentUser, currentUser, loggedIn }: LoginProps) => {
+const Login = ({ setCurrentUser, loggedIn }: LoginProps) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [googleLoading, setGoogleLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [usersList, setUsersList] = useState<any[]>([]);
   const navigate = useNavigate();
   const db = getFirestore();
-  const users = collection(db, "users");
-
-  const getUsers = async () => {
-    if (currentUser) {
-    const data = await getDocs(users);
-    const usersList = data.docs.map((doc) => doc.data());
-    setUsersList(usersList);
-    }
-  };
 
   const handleLogin = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -44,6 +32,7 @@ const Login = ({ setCurrentUser, currentUser, loggedIn }: LoginProps) => {
         const user = userCredential.user;
         setCurrentUser(user);
         localStorage.setItem("currentUser", JSON.stringify(user));
+        handleUserDoc(user);
         setLoading(false);
       })
       .catch((error) => {
@@ -52,22 +41,21 @@ const Login = ({ setCurrentUser, currentUser, loggedIn }: LoginProps) => {
       });
   };
 
-  const handleUserDoc = (user: any) => {
-    const userExists = usersList.find(
-      (person) => person.email === user.email
-    );
-    if (!userExists) {
-      setDoc(doc(db, "users", user.uid), {
-        email: user.email,
-        uid: user.uid,
-        username: user.displayName,
-        photoURL: user.photoURL,
-        notes: [],
-      });
-    } else {
-      console.log(userExists)
+  const handleUserDoc = async (user: any) => {
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+
+      if (!docSnap.exists()) {
+        setDoc(userRef, {
+          email: user.email,
+          uid: user.uid,
+        });
+      } else {
+        console.log("User already exists.");
+      }
     }
-  }
+  };
 
   const handleGoogleLogin = () => {
     setGoogleLoading(true);
@@ -76,6 +64,7 @@ const Login = ({ setCurrentUser, currentUser, loggedIn }: LoginProps) => {
         const user = result.user;
         setCurrentUser(user);
         localStorage.setItem("currentUser", JSON.stringify(user));
+        handleUserDoc(user);
         setGoogleLoading(false);
       })
       .catch((error) => {
@@ -89,17 +78,6 @@ const Login = ({ setCurrentUser, currentUser, loggedIn }: LoginProps) => {
       navigate("/");
     }
   }, [loggedIn]);
-
-  useEffect(() => {
-    getUsers();
-  }, [currentUser]);
-
-  useEffect(() => {
-    if (currentUser) {
-      handleUserDoc(currentUser);
-    }
-  }
-  , [currentUser])
 
   return (
     <div className="container-main justify-center">
