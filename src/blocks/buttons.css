@@ -13,3 +13,11 @@
 .button-note-content_active {
   @apply w-8 h-8 text-secondary;
 }
+
+.button-badge {
+  @apply btn badge badge-outline badge-lg hover:bg-accent hover:text-accent-content m-5 w-4/5 h-10;
+}
+
+.button-badge_active {
+  @apply btn badge badge-outline badge-lg bg-accent text-accent-content hover:bg-accent hover:text-accent-content m-5 w-4/5 h-10;
+}
