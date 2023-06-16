@@ -8,7 +8,14 @@ interface NotesProps {
 }
 
 const Notes = ({ currentUser }: NotesProps) => {
-  const { notes, activeTab, setActiveTab, addBlankNote } = useNotesLogic({
+  const {
+    notes,
+    activeTab,
+    setActiveTab,
+    addBlankNote,
+    activeNote,
+    setActiveNote,
+  } = useNotesLogic({
     currentUser,
   });
   return (
@@ -18,8 +25,13 @@ const Notes = ({ currentUser }: NotesProps) => {
         setActiveTab={setActiveTab}
         addBlankNote={addBlankNote}
       />
-      <NotesSideBar activeTab={activeTab} notes={notes} />
-      <NotesContent />
+      <NotesSideBar
+        activeTab={activeTab}
+        notes={notes}
+        activeNote={activeNote}
+        setActiveNote={setActiveNote}
+      />
+      <NotesContent activeNote={activeNote} />
     </div>
   );
 };

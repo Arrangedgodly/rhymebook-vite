@@ -39,15 +39,17 @@ const useDashboardLogic = ({ currentUser }: DashboardProps) => {
       lyrics,
       themes,
     };
+    const userNotesCollection = collection(db, "users", currentUser.uid, "notes");
     if (noteId) {
-      setDoc(doc(collection(db, "notes", currentUser.uid), noteId), note);
+      await setDoc(doc(userNotesCollection, noteId), note);
     } else {
-      const noteRef = await addDoc(collection(db, "notes", currentUser.uid), note);
+      const noteRef = await addDoc(userNotesCollection, note);
       if (noteRef) {
         setNoteId(noteRef.id);
       }
     }
   };
+  
 
   const handleReset = () => {
     setTitle("");

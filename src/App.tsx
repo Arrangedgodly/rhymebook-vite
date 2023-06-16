@@ -13,10 +13,21 @@ import Footer from "./components/Footer";
 import Missing from "./components/Missing";
 
 function App() {
-  const { isLoading, loggedIn, currentUser, theme, changeTheme, handleLogout, setCurrentUser } = useAppLogic();
+  const {
+    isLoading,
+    loggedIn,
+    currentUser,
+    theme,
+    changeTheme,
+    handleLogout,
+    setCurrentUser,
+  } = useAppLogic();
 
   return (
-    <div className="flex flex-col items-center h-screen main-font bg-neutral text-neutral-content" data-theme={theme}>
+    <div
+      className="flex flex-col items-center h-screen main-font bg-neutral text-neutral-content"
+      data-theme={theme}
+    >
       <Header
         currentUser={currentUser}
         theme={theme}
@@ -25,10 +36,7 @@ function App() {
       />
       {isLoading && <Loading />}
       <Routes>
-        <Route
-          path="/"
-          element={<Landing loggedIn={loggedIn} />}
-        />
+        <Route path="/" element={<Landing loggedIn={loggedIn} />} />
         <Route
           path="/login"
           element={
@@ -41,18 +49,12 @@ function App() {
             <Register setCurrentUser={setCurrentUser} loggedIn={loggedIn} />
           }
         />
-        <Route
-          path="/settings"
-          element={<Settings />}
-        />
+        <Route path="/settings" element={<Settings />} />
         <Route
           path="/dashboard"
           element={<Dashboard currentUser={currentUser} />}
         />
-        <Route
-          path="/notes"
-          element={<Notes currentUser={currentUser} />}
-        />
+        <Route path="/notes" element={<Notes currentUser={currentUser} />} />
         <Route
           path="/profile"
           element={<Profile currentUser={currentUser} />}

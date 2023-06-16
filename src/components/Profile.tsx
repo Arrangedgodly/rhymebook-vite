@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {MdOutlineStickyNote2} from 'react-icons/md';
 import {RiUserFollowLine} from 'react-icons/ri';
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 interface ProfileProps {
   currentUser: any;
@@ -9,6 +10,34 @@ interface ProfileProps {
 
 const Profile = ({ currentUser }: ProfileProps) => {
   const navigate = useNavigate();
+  const [noteCount, setNoteCount] = useState(0);
+  const [followerCount, setFollowerCount] = useState(0);
+  const db = getFirestore();
+
+  const handleNotesCount = async () => {
+    if (currentUser) {
+      const notesCollection = collection(db, 'users', currentUser.uid, 'notes');
+      const notesSnapshot = await getDocs(notesCollection);
+      if (notesSnapshot) {
+        setNoteCount(notesSnapshot.docs.length);
+      }
+    }
+  }
+
+  const handleFollowersCount = async () => {
+    if (currentUser) {
+      const followersCollection = collection(db, 'users', currentUser.uid, 'followers');
+      const followersSnapshot = await getDocs(followersCollection);
+      if (followersSnapshot) {
+        setFollowerCount(followersSnapshot.docs.length);
+      }
+    }
+  }
+
+  useEffect(() => {
+    handleNotesCount();
+    handleFollowersCount();
+  }, [currentUser]);
 
   useEffect(() => {
     if (!currentUser) {
@@ -36,14 +65,14 @@ const Profile = ({ currentUser }: ProfileProps) => {
                   <MdOutlineStickyNote2 className='w-6 h-6' />
                 </div>
                 <div className='stat-title'>Total Notes</div>
-                <div className='stat-value'>0</div>
+                <div className='stat-value'>{noteCount}</div>
               </div>
               <div className='stat place-items-center'>
                 <div className='stat-figure text-accent'>
                   <RiUserFollowLine className='w-6 h-6' />
                 </div>
                 <div className='stat-title'>Followers</div>
-                <div className='stat-value'>0</div>
+                <div className='stat-value'>{followerCount}</div>
               </div>
             </div>
           </div>

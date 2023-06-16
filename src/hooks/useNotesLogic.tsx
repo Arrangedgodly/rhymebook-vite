@@ -9,6 +9,7 @@ interface NotesProps {
 const useNotesLogic = ({ currentUser }: NotesProps) => {
   const [notes, setNotes] = useState<any>([]);
   const [activeTab, setActiveTab] = useState<string>("notebook");
+  const [activeNote, setActiveNote] = useState<any>(null);
   const navigate = useNavigate();
   const db = getFirestore();
 
@@ -20,6 +21,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
       ...doc.data(),
     }));
     setNotes(notesData);
+    setActiveNote(notesData[0]);
   };
 
   const addBlankNote = async () => {
@@ -40,7 +42,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
       id: docRef.id,
       ...newNote,
     };
-    setNotes([...notes, newNoteWithId]);
+    setNotes([newNoteWithId, ...notes]);
   };
 
   useEffect(() => {
@@ -56,6 +58,8 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     activeTab,
     setActiveTab,
     addBlankNote,
+    activeNote,
+    setActiveNote
   };
 };
 
