@@ -57,7 +57,7 @@ const Header = ({
           </div>
           <ul
             tabIndex={0}
-            className="p-2 shadow menu dropdown-content bg-neutral text-neutral-content items-center rounded-box w-52"
+            className="p-2 shadow menu dropdown-content bg-neutral text-neutral-content items-center rounded-box w-52 z-50"
           >
             {currentUser ? (
               <>

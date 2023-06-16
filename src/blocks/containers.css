@@ -9,3 +9,11 @@
 .container-landing {
   @apply flex flex-col items-center m-4 gap-4;
 }
+
+.container-notecard {
+  @apply card bg-primary text-primary-content shadow-xl m-10 relative z-30 w-1/2 h-3/4;
+}
+
+.container-notebody {
+  @apply card-body mx-auto p-5 w-full;
+}
