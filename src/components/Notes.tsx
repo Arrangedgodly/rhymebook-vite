@@ -31,7 +31,7 @@ const Notes = ({ currentUser }: NotesProps) => {
         activeNote={activeNote}
         setActiveNote={setActiveNote}
       />
-      <NotesContent activeNote={activeNote} />
+      <NotesContent notes={notes} activeNote={activeNote} />
     </div>
   );
 };

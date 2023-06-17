@@ -6,6 +6,16 @@
   @apply flex flex-grow items-center w-screen;
 }
 
+.container-notes-content {
+  @apply flex flex-grow items-center justify-center flex-wrap max-h-[90vh] relative z-0 gap-10 p-10 overflow-y-auto overflow-x-hidden bg-neutral;
+}
+
+.container-note {
+  @apply card flex flex-col items-center justify-start bg-base-200 rounded-xl shadow-xl p-4 m-5 hover:grow transition-all;
+  width: 300px;
+  height: 450px;
+}
+
 .container-landing {
   @apply flex flex-col items-center m-4 gap-4;
 }

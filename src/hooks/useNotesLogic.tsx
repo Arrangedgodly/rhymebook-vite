@@ -28,7 +28,6 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
       ...doc.data(),
     }));
     setNotes(notesData);
-    setActiveNote(notesData[0]);
   };
 
   const addBlankNote = async () => {

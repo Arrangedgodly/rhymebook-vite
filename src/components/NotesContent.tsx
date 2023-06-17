@@ -1,26 +1,20 @@
 interface NotesContentProps {
+  notes: any;
   activeNote: any;
 }
 
-const NotesContent = ({ activeNote }: NotesContentProps) => {
+const NotesContent = ({ notes, activeNote }: NotesContentProps) => {
   return (
-    <div className="flex flex-col flex-grow items-center justify-center h-full relative z-0">
-      {activeNote ? (
-        <div className="container-notecard">
-          <h2 className="card-title m-5 text-2xl mx-auto">
-            {activeNote.title}
-          </h2>
-          <div className="container-notebody">
-            <textarea
-              className="textarea textarea-ghost text-center text-lg min-h-full px-5 bg-secondary text-secondary-content"
-              value={activeNote.lyrics}
-              readOnly
-            ></textarea>
+    <div className="container-notes-content">
+      {notes.map((note: any) => (
+          <div
+            className="container-note bg-secondary text-secondary-content"
+            key={`note-${note.id}`}
+          >
+            <h3 className="font-bold text-xl truncate overflow-hidden w-[80%] text-center">{note.title}</h3>
+            <textarea className="text-base text-ellipsis overflow-hidden w-full h-full m-auto text-center p-5 bg-secondary text-secondary-content" readOnly>{note.lyrics}</textarea>
           </div>
-        </div>
-      ) : (
-        <div className="card"></div>
-      )}
+        ))}
     </div>
   );
 };
