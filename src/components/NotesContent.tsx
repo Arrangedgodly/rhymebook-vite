@@ -1,11 +1,6 @@
-import {
-  UserPlusIcon,
-  ArrowsPointingInIcon,
-  ArrowsPointingOutIcon,
-  EllipsisVerticalIcon,
-  TrashIcon,
-} from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import ActiveNote from "./ActiveNote";
+import InactiveNote from "./InactiveNote";
 
 interface NotesContentProps {
   notes: any;
@@ -19,57 +14,29 @@ const NotesContent = ({
   setActiveNote,
 }: NotesContentProps) => {
   const [hoveredNote, setHoveredNote] = useState(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (activeNote && containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
+  }, [activeNote]);
+
   return (
-    <div className="container-notes-content">
+    <div className="container-notes-content" ref={containerRef}>
       {activeNote && (
-        <div
-          className="container-note bg-secondary text-secondary-content active-note"
-          key={`note-${activeNote.id}`}
-        >
-          <h3 className="font-bold text-xl truncate overflow-hidden w-[80%] text-center">
-            {activeNote.title}
-          </h3>
-          <textarea
-            className="text-base text-ellipsis overflow-hidden w-full h-full m-auto text-center p-5 bg-secondary text-secondary-content overflow-y-auto"
-            readOnly
-            value={activeNote.lyrics}
-          />
-          <div className="absolute bottom-0 left-0 right-0 flex justify-evenly p-2 bg-gray-100">
-            <UserPlusIcon className="h-6 w-6 text-gray-500 cursor-pointer" />
-            <ArrowsPointingInIcon className="h-6 w-6 text-gray-500 cursor-pointer" />
-            <EllipsisVerticalIcon className="h-6 w-6 text-gray-500 cursor-pointer" />
-            <TrashIcon className="h-6 w-6 text-gray-500 cursor-pointer" />
-          </div>
-        </div>
+        <ActiveNote activeNote={activeNote} setActiveNote={setActiveNote} />
       )}
       {notes
         .filter((note: any) => !activeNote || note.id !== activeNote.id)
         .map((note: any) => (
-          <div
-            className="container-note bg-secondary text-secondary-content relative"
+          <InactiveNote
             key={`note-${note.id}`}
-            onMouseEnter={() => setHoveredNote(note.id)}
-            onMouseLeave={() => setHoveredNote(null)}
-            onClick={() => setActiveNote?.(note)}
-          >
-            <h3 className="font-bold text-xl truncate overflow-hidden w-[80%] text-center">
-              {note.title}
-            </h3>
-            <textarea
-              className="text-base text-ellipsis overflow-hidden w-full h-full m-auto text-center p-5 bg-secondary text-secondary-content overflow-y-auto"
-              readOnly
-              value={note.content}
-            />
-
-            {hoveredNote === note.id && (
-              <div className="absolute bottom-0 left-0 right-0 flex justify-evenly p-2 bg-gray-100">
-                <UserPlusIcon className="h-6 w-6 text-gray-500 cursor-pointer" />
-                <ArrowsPointingOutIcon className="h-6 w-6 text-gray-500 cursor-pointer" />
-                <EllipsisVerticalIcon className="h-6 w-6 text-gray-500 cursor-pointer" />
-                <TrashIcon className="h-6 w-6 text-gray-500 cursor-pointer" />
-              </div>
-            )}
-          </div>
+            note={note}
+            setActiveNote={setActiveNote}
+            hoveredNote={hoveredNote}
+            setHoveredNote={setHoveredNote}
+          />
         ))}
     </div>
   );
