@@ -35,10 +35,7 @@ const Header = ({
         </button>
         <HeaderLogo />
         <div className="dropdown dropdown-hover">
-          <div
-            tabIndex={0}
-            className='avatar placeholder'
-          >
+          <div tabIndex={0} className="avatar placeholder">
             <div className="rounded-full w-10 h-10 m-1 bg-neutral-focus">
               {photoURL ? (
                 <img
@@ -62,23 +59,21 @@ const Header = ({
             {currentUser ? (
               <>
                 <li>
-                  <a onClick={() => navigate('/profile')}>Profile</a>
+                  <a onClick={() => navigate("/profile")}>Profile</a>
                 </li>
                 <li>
-                  <a onClick={() => navigate('/notes')}>Notes</a>
+                  <a onClick={() => navigate("/notes")}>Notes</a>
                 </li>
                 <li>
-                  <a onClick={() => navigate('/settings')}>Settings</a>
+                  <a onClick={() => navigate("/settings")}>Settings</a>
                 </li>
                 <li>
-                  <a onClick={handleLogout}>
-                    Logout
-                  </a>
+                  <a onClick={handleLogout}>Logout</a>
                 </li>
               </>
             ) : (
               <li>
-                <a onClick={() => navigate('/login')}>Login</a>
+                <a onClick={() => navigate("/login")}>Login</a>
               </li>
             )}
           </ul>

@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getFirestore, collection, getDocs, addDoc, query, where } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  query,
+  where,
+} from "firebase/firestore";
 
 interface NotesProps {
   currentUser: any;
@@ -59,7 +66,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     setActiveTab,
     addBlankNote,
     activeNote,
-    setActiveNote
+    setActiveNote,
   };
 };
 
