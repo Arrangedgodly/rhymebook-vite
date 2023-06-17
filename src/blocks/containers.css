@@ -16,6 +16,10 @@
   height: 450px;
 }
 
+.active-note {
+  @apply w-full m-20;
+}
+
 .container-landing {
   @apply flex flex-col items-center m-4 gap-4;
 }
