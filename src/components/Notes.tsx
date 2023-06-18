@@ -10,11 +10,13 @@ interface NotesProps {
 const Notes = ({ currentUser }: NotesProps) => {
   const {
     notes,
+    pinnedNotes,
     activeTab,
     setActiveTab,
     addBlankNote,
     activeNote,
     setActiveNote,
+    handlePinClick,
   } = useNotesLogic({
     currentUser,
   });
@@ -31,7 +33,13 @@ const Notes = ({ currentUser }: NotesProps) => {
         activeNote={activeNote}
         setActiveNote={setActiveNote}
       />
-      <NotesContent notes={notes} activeNote={activeNote} setActiveNote={setActiveNote} />
+      <NotesContent
+        notes={notes}
+        activeNote={activeNote}
+        setActiveNote={setActiveNote}
+        handlePinClick={handlePinClick}
+        pinnedNotes={pinnedNotes}
+      />
     </div>
   );
 };

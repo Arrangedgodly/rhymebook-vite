@@ -12,7 +12,7 @@ interface NotesIconBarProps {
 
 const NotesIconBar = ({ activeTab, setActiveTab, addBlankNote }: NotesIconBarProps) => {
   return (
-    <div className="flex flex-col w-1/10 items-center bg-accent h-full relative z-10">
+    <div className="flex flex-col w-[1/12] items-center bg-accent h-full relative z-10">
         <button
           className={
             activeTab === "notebook" ? "button-note_active" : "button-note"

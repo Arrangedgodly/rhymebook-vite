@@ -7,17 +7,17 @@
 }
 
 .container-notes-content {
-  @apply flex flex-grow items-center justify-center flex-wrap max-h-[90vh] relative z-0 gap-10 p-10 overflow-y-auto overflow-x-hidden bg-neutral;
+  @apply flex grow items-center justify-center flex-wrap max-h-[90vh] relative z-0 gap-10 p-10 overflow-y-auto overflow-x-hidden bg-neutral;
 }
 
 .container-note {
-  @apply card flex flex-col items-center justify-start bg-base-200 rounded-xl shadow-xl p-4 m-5 hover:grow transition-all;
+  @apply card flex flex-col items-center justify-start bg-base-200 rounded-xl shadow-xl p-4 m-5 basis-1/4 hover:basis-1/3 transition-all;
   width: 300px;
   height: 450px;
 }
 
 .active-note {
-  @apply w-full m-20;
+  @apply card flex flex-col items-center justify-start bg-base-200 rounded-xl shadow-xl p-4 m-5 w-full h-[50vh] transition-all bg-secondary text-secondary-content;
 }
 
 .container-landing {
@@ -30,4 +30,17 @@
 
 .container-notebody {
   @apply card-body mx-auto p-5 w-full;
+}
+
+.container-notebuttons {
+  @apply absolute bottom-0 left-0 right-0 flex justify-evenly p-2 bg-base-200;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.container-noteselect {
+  @apply absolute top-0 left-0 p-2;
+}
+
+.container-notepin {
+  @apply absolute top-0 right-0 p-2;
 }

@@ -11,8 +11,16 @@ const NotesSideBar = ({
   activeNote,
   setActiveNote,
 }: NotesSideBarProps) => {
+  const handleBadgeClick = (note: any) => {
+    if (activeNote?.id === note.id) {
+      setActiveNote?.(null);
+    } else {
+      setActiveNote?.(note);
+    }
+  };
+
   return (
-    <div className="flex flex-col w-3/10 items-center bg-base-300 text-secondary h-full relative z-10">
+    <div className="flex flex-col w-1/6 items-center bg-base-300 text-secondary h-full relative z-10">
       {activeTab === "notebook" && (
         <>
           {notes &&
@@ -24,9 +32,9 @@ const NotesSideBar = ({
                     ? "button-badge_active"
                     : "button-badge"
                 }
-                onClick={() => setActiveNote?.(note)}
+                onClick={() => handleBadgeClick(note)}
               >
-                <h1 className="text-lg font-bold truncate">{note.title}</h1>
+                <h1 className="text-md font-bold truncate">{note.title}</h1>
               </div>
             ))}
         </>

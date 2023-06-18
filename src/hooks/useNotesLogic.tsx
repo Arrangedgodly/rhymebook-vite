@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import {
   getFirestore,
   collection,
+  doc,
   getDocs,
   addDoc,
+  updateDoc,
   query,
   where,
 } from "firebase/firestore";
@@ -13,8 +15,16 @@ interface NotesProps {
   currentUser: any;
 }
 
+interface Note {
+  id: string;
+  title: string;
+  lyrics: string;
+  isPinned?: boolean;
+}
+
 const useNotesLogic = ({ currentUser }: NotesProps) => {
-  const [notes, setNotes] = useState<any>([]);
+  const [pinnedNotes, setPinnedNotes] = useState<Note[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [activeTab, setActiveTab] = useState<string>("notebook");
   const [activeNote, setActiveNote] = useState<any>(null);
   const navigate = useNavigate();
@@ -25,9 +35,17 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     const notesSnapshot = await getDocs(notesCollection);
     const notesData = notesSnapshot.docs.map((doc) => ({
       id: doc.id,
+      title: doc.data().title,
+      lyrics: doc.data().lyrics,
+      isPinned: doc.data().isPinned,
       ...doc.data(),
     }));
-    setNotes(notesData);
+
+    const pinned = notesData.filter((note: Note) => note.isPinned);
+    const unpinned = notesData.filter((note: Note) => !note.isPinned);
+
+    setPinnedNotes(pinned);
+    setNotes(unpinned);
   };
 
   const addBlankNote = async () => {
@@ -51,6 +69,24 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     setNotes([newNoteWithId, ...notes]);
   };
 
+  const handlePinClick = async (noteId: string, isPinned: boolean) => {
+    const noteRef = doc(db, "users", currentUser.uid, "notes", noteId);
+    await updateDoc(noteRef, { isPinned: !isPinned });
+    if (isPinned) {
+      const note = pinnedNotes.find((note: Note) => note.id === noteId);
+      if (note) {
+        setPinnedNotes(pinnedNotes.filter((note: Note) => note.id !== noteId));
+        setNotes([...notes, { ...note, isPinned: false }]);
+      }
+    } else {
+      const note = notes.find((note: Note) => note.id === noteId);
+      if (note) {
+        setNotes(notes.filter((note: Note) => note.id !== noteId));
+        setPinnedNotes([...pinnedNotes, { ...note, isPinned: true }]);
+      }
+    }
+  };
+
   useEffect(() => {
     if (!currentUser) {
       navigate("/");
@@ -61,11 +97,13 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
 
   return {
     notes,
+    pinnedNotes,
     activeTab,
     setActiveTab,
     addBlankNote,
     activeNote,
     setActiveNote,
+    handlePinClick,
   };
 };
 

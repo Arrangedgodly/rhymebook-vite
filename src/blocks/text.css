@@ -1,3 +1,19 @@
 .text-landing {
   @apply text-center text-accent self-center pr-20 alt-font;
 }
+
+.text-icon {
+  @apply h-6 w-6 text-accent hover:text-accent-focus cursor-pointer transition-all;
+}
+
+.text-icon_alt {
+  @apply h-6 w-6 text-neutral hover:text-neutral-focus cursor-pointer transition-all;
+}
+
+.text-note-title {
+  @apply font-bold text-xl truncate overflow-hidden w-[80%] text-center;
+}
+
+.text-note-body {
+  @apply text-base text-ellipsis overflow-hidden w-full h-full m-auto text-center p-5 bg-secondary text-secondary-content overflow-y-auto;
+}

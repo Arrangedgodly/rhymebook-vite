@@ -50,7 +50,6 @@ const useDashboardLogic = ({ currentUser }: DashboardProps) => {
     }
   };
   
-
   const handleReset = () => {
     setTitle("");
     setLyrics("");
