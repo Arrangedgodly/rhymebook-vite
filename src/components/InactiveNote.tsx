@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { AiOutlineCheckCircle, AiFillCheckCircle } from "react-icons/ai";
 import { MdPushPin, MdOutlinePushPin } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 interface InactiveNoteProps {
   note: any;
@@ -28,9 +29,10 @@ const InactiveNote = ({
   handleSelectedNotes,
   selectedNotes,
 }: InactiveNoteProps) => {
+  const navigate = useNavigate();
   return (
     <div
-      className="container-note bg-secondary text-secondary-content relative"
+      className={selectedNotes.includes(note.id) ? "container-note container-note_selected border-primary" : "container-note"}
       onMouseEnter={() => setHoveredNote(note.id)}
       onMouseLeave={() => setHoveredNote(null)}
     >
@@ -50,7 +52,9 @@ const InactiveNote = ({
             className="text-icon"
             onClick={() => setActiveNote?.(note)}
           />
-          <PencilSquareIcon className="text-icon" />
+          <PencilSquareIcon className="text-icon" 
+            onClick={() => navigate(`/notes/${note.id}`)}
+          />
           <TrashIcon className="text-icon" />
         </div>
       )}

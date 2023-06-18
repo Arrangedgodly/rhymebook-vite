@@ -4,6 +4,7 @@ import {
   PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
+import { useNavigate } from "react-router-dom";
 
 interface ActiveNoteProps {
   activeNote: any;
@@ -11,6 +12,7 @@ interface ActiveNoteProps {
 }
 
 const ActiveNote = ({ activeNote, setActiveNote }: ActiveNoteProps) => {
+  const navigate = useNavigate();
   return (
     <div
       className="active-note"
@@ -30,7 +32,7 @@ const ActiveNote = ({ activeNote, setActiveNote }: ActiveNoteProps) => {
           className="text-icon"
           onClick={() => setActiveNote?.(null)}
         />
-        <PencilSquareIcon className="text-icon" />
+        <PencilSquareIcon className="text-icon" onClick={() => navigate(`/notes/${activeNote.id}`)}/>
         <TrashIcon className="text-icon" />
       </div>
     </div>

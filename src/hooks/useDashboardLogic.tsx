@@ -10,13 +10,14 @@ import {
   getFrequentFollowers,
 } from "../utils/rhymeApi";
 import { getFirestore } from "firebase/firestore";
-import { doc, collection, setDoc, addDoc, serverTimestamp } from "firebase/firestore";
+import { doc, collection, setDoc, addDoc, getDoc, serverTimestamp } from "firebase/firestore";
 
 interface DashboardProps {
   currentUser: any;
+  existingNoteId?: string;
 }
 
-const useDashboardLogic = ({ currentUser }: DashboardProps) => {
+const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
   const [title, setTitle] = useState<string>("");
   const [lyrics, setLyrics] = useState<string>("");
   const [themes, setThemes] = useState<string>("");
@@ -30,7 +31,7 @@ const useDashboardLogic = ({ currentUser }: DashboardProps) => {
   const [frequentFollowers, setFrequentFollowers] = useState<string[]>([]);
   const [relatedWords, setRelatedWords] = useState<string[]>([]);
   const [definitions, setDefinitions] = useState<any>({});
-  const [noteId, setNoteId] = useState<string>("");
+  const [noteId, setNoteId] = useState<string>(existingNoteId || "");
   const db = getFirestore();
 
   const handleSave = async () => {
@@ -165,6 +166,23 @@ const useDashboardLogic = ({ currentUser }: DashboardProps) => {
     getFreqFollowers();
     getRelWords();
   }, [lastWord]);
+
+  useEffect(() => {
+    const fetchNoteData = async () => {
+      if (existingNoteId) {
+        const noteRef = doc(db, "users", currentUser.uid, "notes", existingNoteId);
+        const noteData = await getDoc(noteRef);
+        if (noteData.exists()) {
+          const note = noteData.data();
+          setTitle(note.title);
+          setLyrics(note.lyrics);
+          setThemes(note.themes);
+          setLastWord(getLastWord(note.lyrics));
+        }
+      }
+    };
+    fetchNoteData();
+  }, [existingNoteId]);
 
   return {
     title,

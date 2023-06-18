@@ -28,7 +28,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
   const [pinnedNotes, setPinnedNotes] = useState<Note[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState<string>("notebook");
+  const [activeTab, setActiveTab] = useState<string>("");
   const [activeNote, setActiveNote] = useState<any>(null);
   const navigate = useNavigate();
   const db = getFirestore();

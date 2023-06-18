@@ -152,7 +152,7 @@ const Landing = ({ loggedIn }: LandingProps) => {
         {loggedIn ? (
           <p className="text-center text-2xl text-neutral-content">
             Ready to get started?{" "}
-            <a onClick={() => navigate('/dashboard')} className="text-primary-content hover:cursor-pointer">
+            <a onClick={() => navigate('/notes/new')} className="text-primary-content hover:cursor-pointer">
               Go to your dashboard!
             </a>
           </p>
@@ -171,7 +171,7 @@ const Landing = ({ loggedIn }: LandingProps) => {
           </p>
           <p className="text-center text-lg text-neutral-content">
             Don't want to sign up quite yet?{" "}
-            <a onClick={() => navigate('/dashboard')} className="text-accent-content hover:cursor-pointer">
+            <a onClick={() => navigate('/notes/new')} className="text-accent-content hover:cursor-pointer">
               Try the demo!
             </a>
           </p>

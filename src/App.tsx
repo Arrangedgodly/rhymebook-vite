@@ -50,11 +50,9 @@ function App() {
           }
         />
         <Route path="/settings" element={<Settings />} />
-        <Route
-          path="/dashboard"
-          element={<Dashboard currentUser={currentUser} />}
-        />
         <Route path="/notes" element={<Notes currentUser={currentUser} />} />
+        <Route path='/notes/new' element={<Dashboard currentUser={currentUser} />} />
+        <Route path='/notes/:existingNoteId' element={<Dashboard currentUser={currentUser} />} />
         <Route
           path="/profile"
           element={<Profile currentUser={currentUser} />}

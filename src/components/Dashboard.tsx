@@ -1,12 +1,14 @@
 import useDashboardLogic from "../hooks/useDashboardLogic";
 import Definitions from "./Definitions";
 import Suggested from "./Suggested";
+import { useParams } from "react-router-dom";
 
 interface DashboardProps {
   currentUser: any;
 }
 
 const Dashboard = ({ currentUser }: DashboardProps) => {
+  const { existingNoteId } = useParams<{ existingNoteId?: string }>();
   const {
     title,
     setTitle,
@@ -28,7 +30,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
     setDefinitions,
     definitions,
     handleKeyDown,
-  } = useDashboardLogic({ currentUser });
+  } = useDashboardLogic({ currentUser, existingNoteId });
 
   return (
     <div className="container-main">

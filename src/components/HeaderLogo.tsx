@@ -6,7 +6,7 @@ const HeaderLogo = () => {
   return (
     <button
       className="btn btn-ghost text-3xl font-bold items-center justify-center header-button"
-      onClick={() => navigate("/dashboard")}
+      onClick={() => navigate("/notes/new")}
     >
       <span className="whitespace-none text-primary-content">
         R<span className="button-text button-text-main">hyme</span>
