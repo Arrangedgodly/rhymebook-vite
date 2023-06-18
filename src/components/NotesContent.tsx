@@ -49,6 +49,7 @@ const NotesContent = ({
                   hoveredNote={hoveredNote}
                   setHoveredNote={setHoveredNote}
                   handlePinClick={handlePinClick}
+                  pinnedNotes={pinnedNotes}
                   handleSelectedNotes={handleSelectedNotes}
                   selectedNotes={selectedNotes}
                 />
@@ -66,6 +67,7 @@ const NotesContent = ({
             hoveredNote={hoveredNote}
             setHoveredNote={setHoveredNote}
             handlePinClick={handlePinClick}
+            pinnedNotes={pinnedNotes}
             handleSelectedNotes={handleSelectedNotes}
             selectedNotes={selectedNotes}
           />

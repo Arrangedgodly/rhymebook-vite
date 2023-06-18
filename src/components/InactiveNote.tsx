@@ -13,6 +13,7 @@ interface InactiveNoteProps {
   hoveredNote: any;
   setHoveredNote: any;
   handlePinClick: any;
+  pinnedNotes: any;
   handleSelectedNotes: any;
   selectedNotes: string[];
 }
@@ -23,6 +24,7 @@ const InactiveNote = ({
   hoveredNote,
   setHoveredNote,
   handlePinClick,
+  pinnedNotes,
   handleSelectedNotes,
   selectedNotes,
 }: InactiveNoteProps) => {
@@ -61,7 +63,7 @@ const InactiveNote = ({
           )}
         </div>
       )}
-      {hoveredNote === note.id && (
+      {(hoveredNote === note.id || pinnedNotes.includes(note)) && (
         <div className="container-notepin" onClick={() => handlePinClick(note.id, note.isPinned)}>
           {note.isPinned ? (
             <MdPushPin className="text-icon_alt" />
