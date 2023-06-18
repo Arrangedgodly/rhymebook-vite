@@ -9,6 +9,8 @@ import {
   updateDoc,
   query,
   where,
+  serverTimestamp,
+  deleteDoc
 } from "firebase/firestore";
 
 interface NotesProps {
@@ -25,6 +27,7 @@ interface Note {
 const useNotesLogic = ({ currentUser }: NotesProps) => {
   const [pinnedNotes, setPinnedNotes] = useState<Note[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
+  const [selectedNotes, setSelectedNotes] = useState<Note[]>([]);
   const [activeTab, setActiveTab] = useState<string>("notebook");
   const [activeNote, setActiveNote] = useState<any>(null);
   const navigate = useNavigate();
@@ -60,6 +63,8 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     const newNote = {
       title: "Untitled",
       lyrics: "",
+      createdAt: serverTimestamp(),
+      lastEditedAt: serverTimestamp(),
     };
     const docRef = await addDoc(notesCollection, newNote);
     const newNoteWithId = {
@@ -87,6 +92,14 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     }
   };
 
+  const deleteNote = async (noteId: string) => {
+    const noteRef = doc(db, "users", currentUser.uid, "notes", noteId);
+    await deleteDoc(noteRef);
+
+    setNotes(notes.filter((note: Note) => note.id !== noteId));
+    setPinnedNotes(pinnedNotes.filter((note) => note.id !== noteId));
+  };
+
   useEffect(() => {
     if (!currentUser) {
       navigate("/");
@@ -104,6 +117,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     activeNote,
     setActiveNote,
     handlePinClick,
+    deleteNote,
   };
 };
 

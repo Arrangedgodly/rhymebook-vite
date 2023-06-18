@@ -10,7 +10,7 @@ import {
   getFrequentFollowers,
 } from "../utils/rhymeApi";
 import { getFirestore } from "firebase/firestore";
-import { doc, collection, setDoc, addDoc } from "firebase/firestore";
+import { doc, collection, setDoc, addDoc, serverTimestamp } from "firebase/firestore";
 
 interface DashboardProps {
   currentUser: any;
@@ -38,6 +38,7 @@ const useDashboardLogic = ({ currentUser }: DashboardProps) => {
       title,
       lyrics,
       themes,
+      lastEditedAt: serverTimestamp(),
     };
     const userNotesCollection = collection(db, "users", currentUser.uid, "notes");
     if (noteId) {
