@@ -8,6 +8,8 @@ interface NotesContentProps {
   setActiveNote: any;
   handlePinClick: any;
   pinnedNotes: any;
+  handleSelectedNotes: any;
+  selectedNotes: string[];
 }
 
 const NotesContent = ({
@@ -16,6 +18,8 @@ const NotesContent = ({
   setActiveNote,
   handlePinClick,
   pinnedNotes,
+  handleSelectedNotes,
+  selectedNotes,
 }: NotesContentProps) => {
   const [hoveredNote, setHoveredNote] = useState(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -45,6 +49,8 @@ const NotesContent = ({
                   hoveredNote={hoveredNote}
                   setHoveredNote={setHoveredNote}
                   handlePinClick={handlePinClick}
+                  handleSelectedNotes={handleSelectedNotes}
+                  selectedNotes={selectedNotes}
                 />
               ))}
           </div>
@@ -60,6 +66,8 @@ const NotesContent = ({
             hoveredNote={hoveredNote}
             setHoveredNote={setHoveredNote}
             handlePinClick={handlePinClick}
+            handleSelectedNotes={handleSelectedNotes}
+            selectedNotes={selectedNotes}
           />
         ))}
     </div>

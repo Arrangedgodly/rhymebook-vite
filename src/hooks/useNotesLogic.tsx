@@ -27,7 +27,7 @@ interface Note {
 const useNotesLogic = ({ currentUser }: NotesProps) => {
   const [pinnedNotes, setPinnedNotes] = useState<Note[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
-  const [selectedNotes, setSelectedNotes] = useState<Note[]>([]);
+  const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<string>("notebook");
   const [activeNote, setActiveNote] = useState<any>(null);
   const navigate = useNavigate();
@@ -92,6 +92,14 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     }
   };
 
+  const handleSelectedNotes = (noteId: string) => {
+    if (selectedNotes.includes(noteId)) {
+      setSelectedNotes(selectedNotes.filter((id) => id !== noteId));
+    } else {
+      setSelectedNotes([...selectedNotes, noteId]);
+    }
+  }
+
   const deleteNote = async (noteId: string) => {
     const noteRef = doc(db, "users", currentUser.uid, "notes", noteId);
     await deleteDoc(noteRef);
@@ -118,6 +126,8 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     setActiveNote,
     handlePinClick,
     deleteNote,
+    handleSelectedNotes,
+    selectedNotes
   };
 };
 

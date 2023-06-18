@@ -11,13 +11,28 @@ interface NotesIconBarProps {
 }
 
 const NotesIconBar = ({ activeTab, setActiveTab, addBlankNote }: NotesIconBarProps) => {
+  const handleTagsClick = () => {
+    if (activeTab === "tags") {
+      setActiveTab("");
+    } else {
+      setActiveTab("tags");
+    }
+  }
+
+  const handleNotebookClick = () => {
+    if (activeTab === "notebook") {
+      setActiveTab("");
+    } else {
+      setActiveTab("notebook");
+    }
+  }
   return (
     <div className="flex flex-col w-[1/12] items-center bg-accent h-full relative z-10">
         <button
           className={
             activeTab === "notebook" ? "button-note_active" : "button-note"
           }
-          onClick={() => setActiveTab("notebook")}
+          onClick={handleNotebookClick}
         >
           <BookOpenIcon
             className={
@@ -31,7 +46,7 @@ const NotesIconBar = ({ activeTab, setActiveTab, addBlankNote }: NotesIconBarPro
           className={
             activeTab === "tags" ? "button-note_active" : "button-note"
           }
-          onClick={() => setActiveTab("tags")}
+          onClick={handleTagsClick}
         >
           <TagIcon
             className={

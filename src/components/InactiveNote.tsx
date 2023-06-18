@@ -13,6 +13,8 @@ interface InactiveNoteProps {
   hoveredNote: any;
   setHoveredNote: any;
   handlePinClick: any;
+  handleSelectedNotes: any;
+  selectedNotes: string[];
 }
 
 const InactiveNote = ({
@@ -21,6 +23,8 @@ const InactiveNote = ({
   hoveredNote,
   setHoveredNote,
   handlePinClick,
+  handleSelectedNotes,
+  selectedNotes,
 }: InactiveNoteProps) => {
   return (
     <div
@@ -48,9 +52,13 @@ const InactiveNote = ({
           <TrashIcon className="text-icon" />
         </div>
       )}
-      {hoveredNote === note.id && (
-        <div className="container-noteselect">
-          <AiOutlineCheckCircle className="text-icon_alt" />
+      {(hoveredNote === note.id || selectedNotes.includes(note.id)) && (
+        <div className="container-noteselect" onClick={() => handleSelectedNotes(note.id)}>
+          {selectedNotes.includes(note.id) ? (
+            <AiFillCheckCircle className="text-icon_alt" />
+          ) : (
+            <AiOutlineCheckCircle className="text-icon_alt" />
+          )}
         </div>
       )}
       {hoveredNote === note.id && (

@@ -17,6 +17,8 @@ const Notes = ({ currentUser }: NotesProps) => {
     activeNote,
     setActiveNote,
     handlePinClick,
+    handleSelectedNotes,
+    selectedNotes
   } = useNotesLogic({
     currentUser,
   });
@@ -27,18 +29,22 @@ const Notes = ({ currentUser }: NotesProps) => {
         setActiveTab={setActiveTab}
         addBlankNote={addBlankNote}
       />
-      <NotesSideBar
+      {activeTab && (
+        <NotesSideBar
         activeTab={activeTab}
         notes={notes}
         activeNote={activeNote}
         setActiveNote={setActiveNote}
       />
+      )}
       <NotesContent
         notes={notes}
         activeNote={activeNote}
         setActiveNote={setActiveNote}
         handlePinClick={handlePinClick}
         pinnedNotes={pinnedNotes}
+        handleSelectedNotes={handleSelectedNotes}
+        selectedNotes={selectedNotes}
       />
     </div>
   );
