@@ -32,7 +32,11 @@ const InactiveNote = ({
   const navigate = useNavigate();
   return (
     <div
-      className={selectedNotes.includes(note.id) ? "container-note container-note_selected border-primary" : "container-note"}
+      className={
+        selectedNotes.includes(note.id)
+          ? "container-note container-note_selected border-primary"
+          : "container-note"
+      }
       onMouseEnter={() => setHoveredNote(note.id)}
       onMouseLeave={() => setHoveredNote(null)}
     >
@@ -52,14 +56,18 @@ const InactiveNote = ({
             className="text-icon"
             onClick={() => setActiveNote?.(note)}
           />
-          <PencilSquareIcon className="text-icon" 
+          <PencilSquareIcon
+            className="text-icon"
             onClick={() => navigate(`/notes/${note.id}`)}
           />
           <TrashIcon className="text-icon" />
         </div>
       )}
       {(hoveredNote === note.id || selectedNotes.includes(note.id)) && (
-        <div className="container-noteselect" onClick={() => handleSelectedNotes(note.id)}>
+        <div
+          className="container-noteselect"
+          onClick={() => handleSelectedNotes(note.id)}
+        >
           {selectedNotes.includes(note.id) ? (
             <AiFillCheckCircle className="text-icon_alt" />
           ) : (
@@ -68,7 +76,10 @@ const InactiveNote = ({
         </div>
       )}
       {(hoveredNote === note.id || pinnedNotes.includes(note)) && (
-        <div className="container-notepin" onClick={() => handlePinClick(note.id, note.isPinned)}>
+        <div
+          className="container-notepin"
+          onClick={() => handlePinClick(note.id, note.isPinned)}
+        >
           {note.isPinned ? (
             <MdPushPin className="text-icon_alt" />
           ) : (

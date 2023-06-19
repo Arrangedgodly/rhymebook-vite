@@ -10,7 +10,7 @@ import {
   query,
   where,
   serverTimestamp,
-  deleteDoc
+  deleteDoc,
 } from "firebase/firestore";
 
 interface NotesProps {
@@ -98,7 +98,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     } else {
       setSelectedNotes([...selectedNotes, noteId]);
     }
-  }
+  };
 
   const deleteNote = async (noteId: string) => {
     const noteRef = doc(db, "users", currentUser.uid, "notes", noteId);
@@ -127,7 +127,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     handlePinClick,
     deleteNote,
     handleSelectedNotes,
-    selectedNotes
+    selectedNotes,
   };
 };
 
