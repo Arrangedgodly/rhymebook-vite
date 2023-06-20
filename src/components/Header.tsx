@@ -17,6 +17,14 @@ const Header = ({
 }: HeaderProps) => {
   const displayName = currentUser?.displayName;
   const photoURL = currentUser?.photoURL;
+  /**
+   * The function takes a name string and returns the uppercase initials of the name.
+   * @param {string} name - A string representing a person's full name.
+   * @returns The function `getInitials` takes a string argument `name` and returns a string that
+   * consists of the first and last initials of the name in uppercase. If the name has only one word,
+   * the function returns the first letter of that word twice. If the name is an empty string or
+   * contains no word characters, the function returns an empty string.
+   */
   const getInitials = (name: string) => {
     const initials = name.match(/\b\w/g) || [];
     return ((initials.shift() || "") + (initials.pop() || "")).toUpperCase();

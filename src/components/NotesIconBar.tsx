@@ -11,6 +11,9 @@ interface NotesIconBarProps {
 }
 
 const NotesIconBar = ({ activeTab, setActiveTab, addBlankNote }: NotesIconBarProps) => {
+  /**
+   * The function toggles the active tab between "tags" and an empty string.
+   */
   const handleTagsClick = () => {
     if (activeTab === "tags") {
       setActiveTab("");
@@ -19,6 +22,9 @@ const NotesIconBar = ({ activeTab, setActiveTab, addBlankNote }: NotesIconBarPro
     }
   }
 
+  /**
+   * This function toggles the active tab between "notebook" and an empty string.
+   */
   const handleNotebookClick = () => {
     if (activeTab === "notebook") {
       setActiveTab("");

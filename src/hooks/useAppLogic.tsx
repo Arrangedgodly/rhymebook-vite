@@ -13,6 +13,10 @@ const useAppLogic = () => {
   const [theme, setTheme] = useState<string>(localStorage.getItem("theme") || "winter");
   const navigate = useNavigate();
 
+  /**
+   * The function changes the theme from winter to forest and vice versa, and updates the theme in
+   * local storage.
+   */
   const changeTheme = () => {
     if (theme === "winter") {
       localStorage.setItem("theme", "forest");
@@ -23,6 +27,10 @@ const useAppLogic = () => {
     }
   };
 
+  /**
+   * This function logs out the current user, removes their data from local storage, and navigates them
+   * to the home page.
+   */
   const handleLogout = () => {
     setIsLoading(true);
     signOut(auth)
@@ -38,6 +46,10 @@ const useAppLogic = () => {
       });
   };
 
+  /* This `useEffect` hook is checking if the `currentUser` state has changed and updating the
+  `loggedIn` state accordingly. If `currentUser` is not null, `loggedIn` is set to `true`, otherwise
+  it is set to `false`. The dependency array `[currentUser]` ensures that this effect only runs when
+  `currentUser` changes. */
   useEffect(() => {
     if (currentUser) {
       setLoggedIn(true);

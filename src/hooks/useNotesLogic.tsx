@@ -33,6 +33,10 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
   const navigate = useNavigate();
   const db = getFirestore();
 
+  /**
+   * This function retrieves notes data from a Firestore collection, separates pinned and unpinned
+   * notes, and sets the state of the component accordingly.
+   */
   const getNotes = async () => {
     const notesCollection = collection(db, "users", currentUser.uid, "notes");
     const notesSnapshot = await getDocs(notesCollection);
@@ -51,6 +55,13 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     setNotes(unpinned);
   };
 
+  /**
+   * This function adds a new note with a default title and empty lyrics to a Firestore collection if
+   * there are no existing notes with the same title and lyrics.
+   * @returns If the `querySnapshot` is not empty, the function will return nothing (`undefined`). If
+   * the `querySnapshot` is empty, the function will add a new note to the Firestore database and
+   * update the state of the `notes` array by adding the new note at the beginning.
+   */
   const addBlankNote = async () => {
     const notesCollection = collection(db, "users", currentUser.uid, "notes");
     const untitledQuery = query(
@@ -74,6 +85,13 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     setNotes([newNoteWithId, ...notes]);
   };
 
+  /**
+   * This function toggles the "isPinned" property of a note and moves it between the "pinnedNotes" and
+   * "notes" arrays.
+   * @param {string} noteId - a string representing the unique identifier of a note.
+   * @param {boolean} isPinned - A boolean value indicating whether the note is currently pinned or
+   * not.
+   */
   const handlePinClick = async (noteId: string, isPinned: boolean) => {
     const noteRef = doc(db, "users", currentUser.uid, "notes", noteId);
     await updateDoc(noteRef, { isPinned: !isPinned });
@@ -92,6 +110,12 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     }
   };
 
+  /**
+   * This function handles the selection and deselection of notes by adding or removing their IDs from
+   * an array.
+   * @param {string} noteId - a string representing the ID of a note that is being selected or
+   * deselected.
+   */
   const handleSelectedNotes = (noteId: string) => {
     if (selectedNotes.includes(noteId)) {
       setSelectedNotes(selectedNotes.filter((id) => id !== noteId));
@@ -100,6 +124,13 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     }
   };
 
+  /**
+   * This function deletes a note from a user's collection and updates the state of the notes and
+   * pinnedNotes arrays.
+   * @param {string} noteId - The `noteId` parameter is a string that represents the unique identifier
+   * of a note that needs to be deleted. This function uses the `noteId` to locate the specific note
+   * document in the Firestore database and delete it.
+   */
   const deleteNote = async (noteId: string) => {
     const noteRef = doc(db, "users", currentUser.uid, "notes", noteId);
     await deleteDoc(noteRef);
@@ -108,6 +139,12 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     setPinnedNotes(pinnedNotes.filter((note) => note.id !== noteId));
   };
 
+  /* This `useEffect` hook is responsible for fetching the notes data from Firestore and setting the
+  state of the component when the `currentUser` prop changes. If `currentUser` is falsy (i.e. not
+  logged in), the user is redirected to the home page. If `currentUser` is truthy, the `getNotes`
+  function is called to retrieve the notes data from Firestore and set the state of the component
+  accordingly. The `useEffect` hook is dependent on the `currentUser` prop, so it will only run when
+  `currentUser` changes. */
   useEffect(() => {
     if (!currentUser) {
       navigate("/");

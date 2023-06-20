@@ -11,6 +11,11 @@ const NotesSideBar = ({
   activeNote,
   setActiveNote,
 }: NotesSideBarProps) => {
+  /**
+   * This function handles a click event on a badge and toggles the active note based on its ID.
+   * @param {any} note - The `note` parameter is of type `any` and is used as an argument in the
+   * `handleBadgeClick` function. It is likely an object that represents a note in an application.
+   */
   const handleBadgeClick = (note: any) => {
     if (activeNote?.id === note.id) {
       setActiveNote?.(null);

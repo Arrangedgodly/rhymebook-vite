@@ -24,6 +24,10 @@ const NotesContent = ({
   const [hoveredNote, setHoveredNote] = useState(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  /* This `useEffect` hook is used to scroll the notes container to the top when a new active note is
+  selected. It checks if there is an active note and if the container reference exists, and then
+  sets the `scrollTop` property of the container to 0 to scroll it to the top. The dependency array
+  `[activeNote]` ensures that this effect only runs when the `activeNote` prop changes. */
   useEffect(() => {
     if (activeNote && containerRef.current) {
       containerRef.current.scrollTop = 0;
