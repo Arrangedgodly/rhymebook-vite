@@ -13,7 +13,7 @@ import { getFirestore } from "firebase/firestore";
 import {
   doc,
   collection,
-  setDoc,
+  updateDoc,
   addDoc,
   getDoc,
   serverTimestamp,
@@ -28,6 +28,7 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
   const [title, setTitle] = useState<string>("");
   const [lyrics, setLyrics] = useState<string>("");
   const [themes, setThemes] = useState<string>("");
+  const [isPinned, setIsPinned] = useState<boolean>(false);
   const [lastWord, setLastWord] = useState<string>("");
   const [rhymes, setRhymes] = useState<string[]>([]);
   const [soundAlikes, setSoundAlikes] = useState<string[]>([]);
@@ -50,6 +51,7 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
       title,
       lyrics,
       themes,
+      isPinned,
       lastEditedAt: serverTimestamp(),
     };
     const userNotesCollection = collection(
@@ -59,7 +61,7 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
       "notes"
     );
     if (noteId) {
-      await setDoc(doc(userNotesCollection, noteId), note);
+      await updateDoc(doc(userNotesCollection, noteId), note);
     } else {
       const noteRef = await addDoc(userNotesCollection, note);
       if (noteRef) {
@@ -231,6 +233,7 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
           setTitle(note.title);
           setLyrics(note.lyrics);
           setThemes(note.themes);
+          setIsPinned(note.isPinned);
           setLastWord(getLastWord(note.lyrics));
         }
       }
@@ -262,7 +265,7 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
           currentUser.uid,
           "notes"
         );
-        await setDoc(doc(userNotesCollection, noteId), note);
+        await updateDoc(doc(userNotesCollection, noteId), note);
       }
     };
 

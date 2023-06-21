@@ -1,5 +1,9 @@
+.text-landing-title {
+  @apply md:text-lg font-bold text-center truncate w-[90%];
+}
+
 .text-landing {
-  @apply text-center text-accent self-center pr-20 alt-font;
+  @apply text-center text-accent self-center pr-20 alt-font text-sm;
 }
 
 .text-icon {

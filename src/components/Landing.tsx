@@ -111,46 +111,46 @@ const Landing = ({ loggedIn }: LandingProps) => {
 
   return (
     <div className="container-main">
-      <h1 className="text-5xl text-center m-4 mt-10">
+      <h1 className="md:text-5xl text-3xl text-center m-4 mt-10">
         Welcome to <span className="text-primary-content font-bold">Rhyme</span>
         <span className="text-secondary-content font-bold">Page</span>
       </h1>
-      <h2 className="text-3xl text-center m-2">
+      <h2 className="md:text-3xl text-xl text-center m-2">
         An API powered lyric writing application that writes your rhymes with
         you!
       </h2>
       <div className="card bg-secondary text-secondary-content m-4">
-        <p className="text-3xl text-center text-secondary-content m-2 alt-font typing p-5"></p>
+        <p className="md:text-3xl text-xl text-center text-secondary-content m-2 alt-font typing p-5"></p>
       </div>
-      <div className="grid md:grid-cols-6 grid-cols-3 my-20 content-center m-5 gap-5">
+      <div className="grid md:grid-cols-6 grid-cols-3 my-5 content-center m-5 gap-5">
         <div className="container-landing">
-          <h3 className="text-lg">Rhymes</h3>
-          <p className="text-landing rhymes"></p>
+          <h3 className="text-landing-title text-md">Rhymes</h3>
+          <p className="text-landing md:text-md rhymes"></p>
         </div>
         <div className="container-landing">
-          <h3 className="text-lg">Sound-Alikes</h3>
-          <p className="text-landing soundalikes"></p>
+          <h3 className="text-landing-title text-md">Sound-Alikes</h3>
+          <p className="text-landing md:text-md soundalikes"></p>
         </div>
         <div className="container-landing">
-          <h3 className="text-lg">Synonyms</h3>
-          <p className="text-landing synonyms"></p>
+          <h3 className="text-landing-title text-md">Synonyms</h3>
+          <p className="text-landing md:text-md synonyms"></p>
         </div>
-        <div className="container-landing">
-          <h3 className="text-lg">Related Words</h3>
-          <p className="text-landing related"></p>
+        <div className="container-landing container-landing-alt">
+          <h3 className="text-landing-title text-md">Related Words</h3>
+          <p className="text-landing md:text-md related"></p>
         </div>
-        <div className="container-landing">
-          <h3 className="text-lg">Adjectives</h3>
-          <p className="text-landing adjectives"></p>
+        <div className="container-landing container-landing-alt">
+          <h3 className="text-landing-title text-md">Adjectives</h3>
+          <p className="text-landing md:text-md adjectives"></p>
         </div>
-        <div className="container-landing">
-          <h3 className="text-lg">Nouns</h3>
-          <p className="text-landing nouns"></p>
+        <div className="container-landing container-landing-alt">
+          <h3 className="text-landing-title text-md">Nouns</h3>
+          <p className="text-landing md:text-md nouns"></p>
         </div>
       </div>
       <div className="h-1/5 w-full"></div>
         {loggedIn ? (
-          <p className="text-center text-2xl text-neutral-content">
+          <p className="text-center md:text-2xl text-lg text-neutral-content my-5">
             Ready to get started?{" "}
             <a onClick={() => navigate('/notes/new')} className="text-primary-content hover:cursor-pointer">
               Go to your dashboard!
@@ -158,7 +158,7 @@ const Landing = ({ loggedIn }: LandingProps) => {
           </p>
         ) : (
           <>
-          <p className="text-center text-2xl text-neutral-content">
+          <p className="text-center md:text-2xl text-lg text-neutral-content my-5">
             Want to get started?{" "}
             <a onClick={() => navigate('/register')} className="text-primary-content hover:cursor-pointer">
               Register
@@ -169,7 +169,7 @@ const Landing = ({ loggedIn }: LandingProps) => {
             </a>{" "}
             now!
           </p>
-          <p className="text-center text-lg text-neutral-content">
+          <p className="text-center md:text-lg text-sm text-neutral-content">
             Don't want to sign up quite yet?{" "}
             <a onClick={() => navigate('/notes/new')} className="text-accent-content hover:cursor-pointer">
               Try the demo!

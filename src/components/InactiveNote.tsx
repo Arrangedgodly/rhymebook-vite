@@ -34,7 +34,7 @@ const InactiveNote = ({
     <div
       className={
         selectedNotes.includes(note.id)
-          ? "container-note container-note_selected border-primary"
+          ? "container-note container-note_selected border-white shadow-2xl"
           : "container-note"
       }
       onMouseEnter={() => setHoveredNote(note.id)}
