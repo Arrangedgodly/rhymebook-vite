@@ -11,6 +11,7 @@ import {
   where,
   serverTimestamp,
   deleteDoc,
+  writeBatch
 } from "firebase/firestore";
 
 interface NotesProps {
@@ -139,6 +140,20 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     setPinnedNotes(pinnedNotes.filter((note) => note.id !== noteId));
   };
 
+  /**
+   * This function deletes multiple notes from a Firestore database using a batch write.
+   * @param {string[]} notes - an array of strings representing the IDs of the notes to be deleted.
+   */
+  const deleteNotes = async (notes: string[]) => {
+    const batch = writeBatch(db);
+    notes.forEach((noteId) => {
+      const noteRef = doc(db, "users", currentUser.uid, "notes", noteId);
+      batch.delete(noteRef);
+    });
+    await batch.commit();
+    setSelectedNotes([]);
+  }
+
   /* This `useEffect` hook is responsible for fetching the notes data from Firestore and setting the
   state of the component when the `currentUser` prop changes. If `currentUser` is falsy (i.e. not
   logged in), the user is redirected to the home page. If `currentUser` is truthy, the `getNotes`
@@ -163,6 +178,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     setActiveNote,
     handlePinClick,
     deleteNote,
+    deleteNotes,
     handleSelectedNotes,
     selectedNotes,
   };

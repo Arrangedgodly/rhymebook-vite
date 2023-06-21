@@ -257,6 +257,7 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
           title,
           lyrics,
           themes,
+          isPinned,
           lastEditedAt: serverTimestamp(),
         };
         const userNotesCollection = collection(
