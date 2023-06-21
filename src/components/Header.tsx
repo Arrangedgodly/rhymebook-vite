@@ -42,7 +42,7 @@ const Header = ({
           {theme === "winter" ? <BsSun /> : <BsMoon />}
         </button>
         <HeaderLogo />
-        <div className="dropdown dropdown-hover">
+        <div className="dropdown dropdown-end dropdown-hover">
           <div tabIndex={0} className="avatar placeholder">
             <div className="rounded-full w-10 h-10 m-1 bg-neutral-focus">
               {photoURL ? (

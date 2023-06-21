@@ -37,7 +37,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
       <div className="flex flex-row space-around w-full">
         <Definitions definitions={definitions} />
         <div className="flex flex-col items-center w-3/5 m-5">
-          <div className="form-control w-1/2">
+          <div className="form-control w-[90%] max-w-[750px]">
             <label className="label">
               <span className="label-text text-xl text-primary-content">
                 Title
@@ -51,7 +51,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
-          <div className="form-control w-2/3">
+          <div className="form-control w-[90%] max-w-[750px]">
             <label className="label">
               <span className="label-text text-xl text-primary-content">
                 Lyrics
@@ -65,7 +65,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
               onKeyDown={handleKeyDown}
             />
           </div>
-          <div className="form-control w-1/2">
+          <div className="form-control w-[90%] max-w-[750px]">
             <label className="label">
               <span className="label-text text-xl text-primary-content">
                 Themes
@@ -80,7 +80,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
             />
             <label className="label">
               <span className="label-text-alt"></span>
-              <span className="label-text-alt text-lg italic text-primary-content">
+              <span className="label-text-alt text-sm italic text-primary-content">
                 Seperate themes with spaces or commas!
               </span>
             </label>

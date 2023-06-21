@@ -20,7 +20,7 @@ const SuggestedSection = ({
       <div className="flex flex-row flex-wrap justify-around w-4/5">
         {words.map((word) => (
           <span
-            className="badge badge-accent badge-lg m-1 hover:badge-secondary hover:cursor-context-menu"
+            className="badge badge-accent badge-sm m-1 hover:badge-secondary hover:cursor-context-menu"
             key={`${title}-${word}`}
             onContextMenu={(e) => handleRightClick(e, word)}
             onClick={() => handleLeftClick(word)}
