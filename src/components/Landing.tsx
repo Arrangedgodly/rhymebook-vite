@@ -127,11 +127,11 @@ const Landing = ({ loggedIn }: LandingProps) => {
           <h3 className="text-landing-title text-md">Rhymes</h3>
           <p className="text-landing md:text-md rhymes"></p>
         </div>
-        <div className="container-landing">
+        <div className="container-landing container-landing-alt">
           <h3 className="text-landing-title text-md">Sound-Alikes</h3>
           <p className="text-landing md:text-md soundalikes"></p>
         </div>
-        <div className="container-landing">
+        <div className="container-landing container-landing-alt">
           <h3 className="text-landing-title text-md">Synonyms</h3>
           <p className="text-landing md:text-md synonyms"></p>
         </div>
@@ -139,11 +139,11 @@ const Landing = ({ loggedIn }: LandingProps) => {
           <h3 className="text-landing-title text-md">Related Words</h3>
           <p className="text-landing md:text-md related"></p>
         </div>
-        <div className="container-landing container-landing-alt">
+        <div className="container-landing">
           <h3 className="text-landing-title text-md">Adjectives</h3>
           <p className="text-landing md:text-md adjectives"></p>
         </div>
-        <div className="container-landing container-landing-alt">
+        <div className="container-landing">
           <h3 className="text-landing-title text-md">Nouns</h3>
           <p className="text-landing md:text-md nouns"></p>
         </div>

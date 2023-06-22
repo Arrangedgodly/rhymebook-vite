@@ -39,7 +39,7 @@ const Suggested = ({
   };
 
   return (
-    <div className="flex flex-col justify-start items-center w-1/5 my-auto m-5 max-h-[70vh] overflow-y-auto">
+    <div className="flex flex-col justify-start items-center md:w-1/5 w-screen my-auto m-5 max-h-[70vh] overflow-y-auto">
       {rhymes.length > 0 && (
         <SuggestedSection
           title="Rhymes"

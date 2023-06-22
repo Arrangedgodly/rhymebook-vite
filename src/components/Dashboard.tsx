@@ -34,9 +34,9 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
 
   return (
     <div className="container-main">
-      <div className="flex flex-row space-around w-full">
+      <div className="flex md:flex-row flex-col space-around w-screen">
         <Definitions definitions={definitions} />
-        <div className="flex flex-col items-center w-3/5 m-5">
+        <div className="flex flex-col items-center md:w-3/5 w-screen md:m-5">
           <div className="form-control w-[90%] max-w-[750px]">
             <label className="label">
               <span className="label-text text-xl text-primary-content">
@@ -80,7 +80,7 @@ const Dashboard = ({ currentUser }: DashboardProps) => {
             />
             <label className="label">
               <span className="label-text-alt"></span>
-              <span className="label-text-alt text-sm italic text-primary-content">
+              <span className="label-text-alt text-sm italic text-primary-content md:block hidden">
                 Seperate themes with spaces or commas!
               </span>
             </label>
