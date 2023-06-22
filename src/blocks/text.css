@@ -1,5 +1,5 @@
 .text-landing-title {
-  @apply md:text-lg font-bold text-center truncate w-[90%];
+  @apply md:text-lg font-bold text-center whitespace-break-spaces w-[95%] m-2;
 }
 
 .text-landing {

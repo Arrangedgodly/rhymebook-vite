@@ -58,6 +58,12 @@ const useAppLogic = () => {
     }
   }, [currentUser]);
 
+  useEffect(() => {
+    if (!loggedIn) {
+      navigate("/");
+    }
+  }, [loggedIn]);
+
   return {
     isLoading,
     loggedIn,
