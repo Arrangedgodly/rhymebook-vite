@@ -5,18 +5,62 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 interface ActiveNoteProps {
   activeNote: any;
   setActiveNote: any;
+  handleNoteSave: any;
 }
 
-const ActiveNote = ({ activeNote, setActiveNote }: ActiveNoteProps) => {
+const ActiveNote = ({ activeNote, setActiveNote, handleNoteSave }: ActiveNoteProps) => {
+  const [editing, setEditing] = useState({ title: false, lyrics: false });
+  const [updatedNote, setUpdatedNote] = useState(activeNote);
+
+  const updateNote = () => {
+    handleNoteSave(updatedNote, activeNote.id)
+  }
+
+  const handleDoubleClick = (section: string) => {
+    setEditing({ ...editing, [section]: true });
+  };
+
+  const handleBlur = () => {
+    setEditing({ title: false, lyrics: false });
+    updateNote();
+  };
+
+  const handleChange = (section: string, value: string) => {
+    setUpdatedNote({ ...updatedNote, [section]: value });
+  };
+
   const navigate = useNavigate();
   return (
     <div className="active-note" key={`note-${activeNote.id}`}>
-      <h3 className="text-note-title">{activeNote.title}</h3>
-      <textarea className="text-note-body" readOnly value={activeNote.lyrics} />
+      {editing.title ? (
+        <input
+          value={updatedNote.title}
+          onChange={(e) => handleChange("title", e.target.value)}
+          onBlur={handleBlur}
+          className="text-note-title_input"
+          autoFocus
+        />
+      ) : (
+        <h3 className="text-note-title" onDoubleClick={() => handleDoubleClick("title")}>
+          {updatedNote.title}
+        </h3>
+      )}
+      {editing.lyrics ? (
+        <textarea
+          value={updatedNote.lyrics}
+          onChange={(e) => handleChange("lyrics", e.target.value)}
+          onBlur={handleBlur}
+          autoFocus
+          className="text-note-body"
+        />
+      ) : (
+        <textarea className="text-note-body" readOnly onDoubleClick={() => handleDoubleClick("lyrics")} value={updatedNote.lyrics} />
+      )}
       <div className="container-notebuttons">
         <UserPlusIcon className="text-icon" />
         <ArrowsPointingInIcon

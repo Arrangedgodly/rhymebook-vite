@@ -111,6 +111,29 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     }
   };
 
+  const handleNoteSave = async (updatedNote: Note, noteId: string) => {
+    const defaults = {
+      isPinned: false,
+    };
+
+    const note = {
+      ...updatedNote,
+      ...defaults,
+      lastEditedAt: serverTimestamp(),
+    };
+    
+    const userNotesCollection = collection(db, "users", currentUser.uid, "notes");
+    
+    if (noteId) {
+      await updateDoc(doc(userNotesCollection, noteId), note);
+      setNotes(notes.map((note: Note) => (note.id === noteId ? { ...note, ...updatedNote } : note)));
+    } else {
+      const noteRef = await addDoc(userNotesCollection, note);
+      return noteRef.id;
+    }
+  };
+
+
   /**
    * This function handles the selection and deselection of notes by adding or removing their IDs from
    * an array.
@@ -177,6 +200,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     activeNote,
     setActiveNote,
     handlePinClick,
+    handleNoteSave,
     deleteNote,
     deleteNotes,
     handleSelectedNotes,

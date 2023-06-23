@@ -1,12 +1,10 @@
 interface NotesSideBarProps {
-  activeTab: string;
   notes: any;
   activeNote: any;
   setActiveNote: any;
 }
 
 const NotesSideBar = ({
-  activeTab,
   notes,
   activeNote,
   setActiveNote,
@@ -25,12 +23,14 @@ const NotesSideBar = ({
   };
 
   return (
-    <div className="flex flex-col w-1/6 items-center bg-base-300 text-secondary h-full relative z-10">
-      {activeTab === "notebook" && (
-        <>
-          {notes &&
+    <div className="drawer w-auto text-secondary z-10">
+      <input id="notebook-drawer" type="checkbox" className="drawer-toggle" />
+      <div className="drawer-side">
+        <label htmlFor="notebook-drawer" className="drawer-overlay"></label>
+        <ul className="menu p-4 h-full bg-base-200 items-center justify-center text-base-content">
+        {notes &&
             notes.map((note: any) => (
-              <div
+              <li
                 key={`tab-${note.id}`}
                 className={
                   activeNote?.id === note.id
@@ -40,10 +40,10 @@ const NotesSideBar = ({
                 onClick={() => handleBadgeClick(note)}
               >
                 <h1 className="text-md font-bold truncate">{note.title}</h1>
-              </div>
+              </li>
             ))}
-        </>
-      )}
+        </ul>
+      </div>
     </div>
   );
 };

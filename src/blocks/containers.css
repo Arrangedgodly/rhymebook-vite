@@ -6,22 +6,34 @@
   @apply flex flex-grow items-center w-screen;
 }
 
-.container-notes-content {
-  @apply flex grow items-center justify-center flex-wrap max-h-[90vh] relative z-0 gap-10 p-10 overflow-y-auto overflow-x-hidden bg-neutral;
-}
-
 .container-note {
-  @apply card flex flex-col items-center justify-start bg-base-200 rounded-xl shadow-lg p-4 m-5 basis-1/4 hover:basis-1/3 transition-all bg-secondary text-secondary-content relative;
-  width: 300px;
+  @apply card flex flex-col items-center justify-start bg-base-200 rounded-xl shadow-lg p-4 m-5 transition-all bg-secondary text-secondary-content hover:bg-accent hover:text-accent-content relative;
+  width: 100%;
   height: 450px;
 }
 
-.container-note_selected {
-  border: 5px solid;
+.container-notes-content {
+  @apply flex grow items-center justify-center flex-wrap max-h-[90vh] relative z-0 gap-10 p-5 overflow-y-auto overflow-x-hidden bg-neutral;
+  
+  @screen md {
+    flex-direction: row;
+  }
+}
+
+.container-note:hover .container-note-textarea {
+  @apply bg-accent text-accent-content;
 }
 
 .active-note {
   @apply card flex flex-col items-center justify-start bg-base-200 rounded-xl shadow-xl p-4 m-5 w-full h-[60vh] transition-all bg-secondary text-secondary-content;
+  
+  @screen md {
+    width: 70%;
+  }
+}
+
+.container-note_selected {
+  border: 5px solid;
 }
 
 .container-landing {
@@ -52,3 +64,13 @@
 .container-notepin {
   @apply absolute top-0 right-0 p-2;
 }
+
+.notes-grid {
+  @apply grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+  align-items: start;
+}
+

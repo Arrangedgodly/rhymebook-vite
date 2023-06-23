@@ -15,9 +15,13 @@
 }
 
 .text-note-title {
-  @apply font-bold text-xl truncate overflow-hidden w-[80%] text-center;
+  @apply font-bold text-xl truncate overflow-hidden w-[80%] text-center m-2;
+}
+
+.text-note-title_input {
+  @apply font-bold text-xl truncate overflow-hidden w-[80%] text-center bg-transparent;
 }
 
 .text-note-body {
-  @apply text-base text-ellipsis overflow-hidden w-full h-full m-auto text-center p-5 bg-secondary text-secondary-content overflow-y-auto;
+  @apply text-base text-ellipsis overflow-hidden w-full h-full m-auto text-center bg-secondary text-secondary-content overflow-y-auto;
 }

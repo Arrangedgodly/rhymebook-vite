@@ -7,9 +7,11 @@ interface NotesContentProps {
   activeNote: any;
   setActiveNote: any;
   handlePinClick: any;
+  handleNoteSave: any;
   pinnedNotes: any;
   handleSelectedNotes: any;
   selectedNotes: string[];
+  deleteNote: any;
 }
 
 const NotesContent = ({
@@ -17,12 +19,26 @@ const NotesContent = ({
   activeNote,
   setActiveNote,
   handlePinClick,
+  handleNoteSave,
   pinnedNotes,
   handleSelectedNotes,
   selectedNotes,
+  deleteNote,
 }: NotesContentProps) => {
   const [hoveredNote, setHoveredNote] = useState(null);
+  const [pendingNote, setPendingNote] = useState<string>('');
   const containerRef = useRef<HTMLDivElement>(null);
+  const deleteDialogRef = useRef<HTMLDialogElement>(null);
+
+  const openDeleteDialog = (note: string) => {
+    setPendingNote?.(note);
+    deleteDialogRef.current?.showModal();
+  }
+
+  const confirmDelete = () => {
+    deleteNote?.(pendingNote);
+    deleteDialogRef.current?.close();
+  }
 
   /* This `useEffect` hook is used to scroll the notes container to the top when a new active note is
   selected. It checks if there is an active note and if the container reference exists, and then
@@ -37,12 +53,16 @@ const NotesContent = ({
   return (
     <div className="container-notes-content" ref={containerRef}>
       {activeNote && (
-        <ActiveNote activeNote={activeNote} setActiveNote={setActiveNote} />
+        <ActiveNote
+          activeNote={activeNote}
+          setActiveNote={setActiveNote}
+          handleNoteSave={handleNoteSave}
+        />
       )}
       {pinnedNotes.length > 0 && (
         <>
           <h3 className="text-note-title">Pinned Notes</h3>
-          <div className="w-full flex items-center justify-center">
+          <div className="notes-grid">
             {pinnedNotes
               .filter((note: any) => !activeNote || note.id !== activeNote.id)
               .map((note: any) => (
@@ -56,26 +76,43 @@ const NotesContent = ({
                   pinnedNotes={pinnedNotes}
                   handleSelectedNotes={handleSelectedNotes}
                   selectedNotes={selectedNotes}
+                  openDeleteDialog={openDeleteDialog}
                 />
               ))}
           </div>
         </>
       )}
-      {notes
-        .filter((note: any) => !activeNote || note.id !== activeNote.id)
-        .map((note: any) => (
-          <InactiveNote
-            key={`note-${note.id}`}
-            note={note}
-            setActiveNote={setActiveNote}
-            hoveredNote={hoveredNote}
-            setHoveredNote={setHoveredNote}
-            handlePinClick={handlePinClick}
-            pinnedNotes={pinnedNotes}
-            handleSelectedNotes={handleSelectedNotes}
-            selectedNotes={selectedNotes}
-          />
-        ))}
+      <div className="notes-grid">
+        {notes
+          .filter((note: any) => !activeNote || note.id !== activeNote.id)
+          .map((note: any) => (
+            <InactiveNote
+              key={`note-${note.id}`}
+              note={note}
+              setActiveNote={setActiveNote}
+              hoveredNote={hoveredNote}
+              setHoveredNote={setHoveredNote}
+              handlePinClick={handlePinClick}
+              pinnedNotes={pinnedNotes}
+              handleSelectedNotes={handleSelectedNotes}
+              selectedNotes={selectedNotes}
+              openDeleteDialog={openDeleteDialog}
+            />
+          ))}
+      </div>
+      <dialog id="delete" className="modal" ref={deleteDialogRef}>
+        <form method="dialog" className="modal-box">
+          <h3 className="font-bold text-lg text-center">Are you sure you'd like to delete this note?</h3>
+          <p className="py-4 text-center">This action cannot be undone!</p>
+          <div className="modal-action flex justify-center items-center">
+            <button className="btn btn-primary" onClick={()=>deleteDialogRef.current?.close()}>Cancel</button>
+            <button className="btn btn-error" onClick={confirmDelete}>Delete</button>
+          </div>
+        </form>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
     </div>
   );
 };

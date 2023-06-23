@@ -17,6 +17,7 @@ interface InactiveNoteProps {
   pinnedNotes: any;
   handleSelectedNotes: any;
   selectedNotes: string[];
+  openDeleteDialog: any;
 }
 
 const InactiveNote = ({
@@ -28,6 +29,7 @@ const InactiveNote = ({
   pinnedNotes,
   handleSelectedNotes,
   selectedNotes,
+  openDeleteDialog,
 }: InactiveNoteProps) => {
   const navigate = useNavigate();
   return (
@@ -44,7 +46,7 @@ const InactiveNote = ({
         {note.title}
       </h3>
       <textarea
-        className="text-base text-ellipsis overflow-hidden w-full h-full m-auto text-center p-5 bg-secondary text-secondary-content overflow-y-auto"
+        className="container-note-textarea text-base text-ellipsis overflow-hidden w-full h-full m-auto text-center p-5 bg-secondary text-secondary-content overflow-y-auto"
         readOnly
         value={note.lyrics}
       />
@@ -60,7 +62,9 @@ const InactiveNote = ({
             className="text-icon"
             onClick={() => navigate(`/notes/${note.id}`)}
           />
-          <TrashIcon className="text-icon" />
+          <TrashIcon className="text-icon" 
+          onClick={()=>openDeleteDialog(note.id)}
+          />
         </div>
       )}
       {(hoveredNote === note.id || selectedNotes.includes(note.id)) && (

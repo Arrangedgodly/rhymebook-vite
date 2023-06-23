@@ -13,12 +13,12 @@ const Notes = ({ currentUser }: NotesProps) => {
   const {
     notes,
     pinnedNotes,
-    activeTab,
-    setActiveTab,
     addBlankNote,
     activeNote,
     setActiveNote,
     handlePinClick,
+    handleNoteSave,
+    deleteNote,
     handleSelectedNotes,
     selectedNotes
   } = useNotesLogic({
@@ -27,28 +27,25 @@ const Notes = ({ currentUser }: NotesProps) => {
   return (
     <div className="container-notes">
       <NotesIconBar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
         addBlankNote={addBlankNote}
       />
-      {activeTab && (
-        <NotesSideBar
-        activeTab={activeTab}
+      <NotesSideBar
         notes={notes}
         activeNote={activeNote}
         setActiveNote={setActiveNote}
       />
-      )}
       <Suspense fallback={<Loading />}>
-      <NotesContent
-        notes={notes}
-        activeNote={activeNote}
-        setActiveNote={setActiveNote}
-        handlePinClick={handlePinClick}
-        pinnedNotes={pinnedNotes}
-        handleSelectedNotes={handleSelectedNotes}
-        selectedNotes={selectedNotes}
-      />
+        <NotesContent
+          notes={notes}
+          activeNote={activeNote}
+          setActiveNote={setActiveNote}
+          handlePinClick={handlePinClick}
+          handleNoteSave={handleNoteSave}
+          pinnedNotes={pinnedNotes}
+          handleSelectedNotes={handleSelectedNotes}
+          selectedNotes={selectedNotes}
+          deleteNote={deleteNote}
+        />
       </Suspense>
     </div>
   );
