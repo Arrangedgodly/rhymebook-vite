@@ -111,6 +111,15 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     }
   };
 
+  /**
+   * This function saves a note to a user's collection in a Firestore database, either by updating an
+   * existing note or creating a new one.
+   * @param {Note} updatedNote - The updated version of a note object that needs to be saved.
+   * @param {string} noteId - The ID of the note being updated. If it is null or undefined, a new note
+   * will be created.
+   * @returns If `noteId` is not provided, the function returns the ID of the newly created note. If
+   * `noteId` is provided, the function does not return anything (`undefined`).
+   */
   const handleNoteSave = async (updatedNote: Note, noteId: string) => {
     const defaults = {
       isPinned: false,
