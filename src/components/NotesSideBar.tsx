@@ -39,7 +39,7 @@ const NotesSideBar = ({
                 }
                 onClick={() => handleBadgeClick(note)}
               >
-                <h1 className="text-md font-bold truncate">{note.title}</h1>
+                <h1 className="text-md font-bold w-[90%] truncate text-ellipsis">{note.title}</h1>
               </li>
             ))}
         </ul>

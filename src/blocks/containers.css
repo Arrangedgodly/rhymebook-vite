@@ -7,7 +7,7 @@
 }
 
 .container-note {
-  @apply card flex flex-col items-center justify-start bg-base-200 rounded-xl shadow-lg p-4 m-5 transition-all bg-secondary text-secondary-content hover:bg-accent hover:text-accent-content relative;
+  @apply card flex flex-col items-center justify-start bg-base-200 rounded-xl shadow-lg p-4 m-5 bg-secondary text-secondary-content hover:bg-accent hover:text-accent-content relative;
   width: 100%;
   height: 450px;
 }
