@@ -11,7 +11,7 @@ import MissingLinks from "./MissingLinks";
 const unloggedLinks = [
   {
     name: "Demo",
-    href: "/dashboard",
+    href: "/notes/new",
     description: "Test out our application without creating an account.",
     icon: BookOpenIcon,
   },
@@ -44,7 +44,7 @@ const loggedLinks = [
   },
   {
     name: 'Dashboard',
-    href: '/dashboard',
+    href: '/notes/new',
     description: 'Create a new note using the API powered interface.',
     icon: UserCircleIcon,
   }

@@ -2,16 +2,16 @@ import useAppLogic from "./hooks/useAppLogic";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
-import Landing from "./components/Landing";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Settings from "./components/Settings";
-import Dashboard from "./components/Dashboard";
-import Notes from "./components/Notes";
-import Profile from "./components/Profile";
 import Footer from "./components/Footer";
-import Missing from "./components/Missing";
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
+const Notes = lazy(() => import("./components/Notes"));
+const Landing = lazy(() => import("./components/Landing"));
+const Login = lazy(() => import("./components/Login"));
+const Register = lazy(() => import("./components/Register"));
+const Settings = lazy(() => import("./components/Settings"));
+const Dashboard = lazy(() => import("./components/Dashboard"));
+const Profile = lazy(() => import("./components/Profile"));
+const Missing = lazy(() => import("./components/Missing"));
 
 function App() {
   const {

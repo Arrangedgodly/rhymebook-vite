@@ -2,6 +2,8 @@ import useNotesLogic from "../hooks/useNotesLogic";
 import NotesIconBar from "./NotesIconBar";
 import NotesSideBar from "./NotesSideBar";
 import NotesContent from "./NotesContent";
+import { Suspense } from "react";
+import Loading from "./Loading";
 
 interface NotesProps {
   currentUser: any;
@@ -37,6 +39,7 @@ const Notes = ({ currentUser }: NotesProps) => {
         setActiveNote={setActiveNote}
       />
       )}
+      <Suspense fallback={<Loading />}>
       <NotesContent
         notes={notes}
         activeNote={activeNote}
@@ -46,6 +49,7 @@ const Notes = ({ currentUser }: NotesProps) => {
         handleSelectedNotes={handleSelectedNotes}
         selectedNotes={selectedNotes}
       />
+      </Suspense>
     </div>
   );
 };
