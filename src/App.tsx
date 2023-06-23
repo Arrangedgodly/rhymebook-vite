@@ -11,6 +11,7 @@ import Notes from "./components/Notes";
 import Profile from "./components/Profile";
 import Footer from "./components/Footer";
 import Missing from "./components/Missing";
+import { Suspense } from "react";
 
 function App() {
   const {
@@ -35,6 +36,7 @@ function App() {
         handleLogout={handleLogout}
       />
       {isLoading && <Loading />}
+      <Suspense fallback={<Loading />}>
       <Routes>
         <Route path="/" element={<Landing loggedIn={loggedIn} />} />
         <Route
@@ -65,6 +67,7 @@ function App() {
         />
         <Route path="*" element={<Missing loggedIn={loggedIn} />} />
       </Routes>
+      </Suspense>
       <Footer />
     </div>
   );
