@@ -51,7 +51,7 @@ function App() {
             <Register setCurrentUser={setCurrentUser} loggedIn={loggedIn} />
           }
         />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/settings" element={<Settings currentUser={currentUser} />} />
         <Route path="/notes" element={<Notes currentUser={currentUser} />} />
         <Route
           path="/notes/new"
