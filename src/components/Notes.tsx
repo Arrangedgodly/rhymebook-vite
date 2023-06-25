@@ -12,7 +12,6 @@ interface NotesProps {
 const Notes = ({ currentUser }: NotesProps) => {
   const {
     notes,
-    pinnedNotes,
     addBlankNote,
     activeNote,
     setActiveNote,
@@ -41,7 +40,6 @@ const Notes = ({ currentUser }: NotesProps) => {
           setActiveNote={setActiveNote}
           handlePinClick={handlePinClick}
           handleNoteSave={handleNoteSave}
-          pinnedNotes={pinnedNotes}
           handleSelectedNotes={handleSelectedNotes}
           selectedNotes={selectedNotes}
           deleteNote={deleteNote}

@@ -8,7 +8,6 @@ interface NotesContentProps {
   setActiveNote: any;
   handlePinClick: any;
   handleNoteSave: any;
-  pinnedNotes: any;
   handleSelectedNotes: any;
   selectedNotes: string[];
   deleteNote: any;
@@ -20,7 +19,6 @@ const NotesContent = ({
   setActiveNote,
   handlePinClick,
   handleNoteSave,
-  pinnedNotes,
   handleSelectedNotes,
   selectedNotes,
   deleteNote,
@@ -59,12 +57,13 @@ const NotesContent = ({
           handleNoteSave={handleNoteSave}
         />
       )}
-      {pinnedNotes.length > 0 && (
+      {notes.filter((note: any) => note.isPinned).length > 0 && (
         <>
           <h3 className="text-note-title">Pinned Notes</h3>
           <div className="notes-grid">
-            {pinnedNotes
+            {notes
               .filter((note: any) => !activeNote || note.id !== activeNote.id)
+              .filter((note: any) => note.isPinned)
               .map((note: any) => (
                 <InactiveNote
                   key={`note-${note.id}`}
@@ -73,7 +72,6 @@ const NotesContent = ({
                   hoveredNote={hoveredNote}
                   setHoveredNote={setHoveredNote}
                   handlePinClick={handlePinClick}
-                  pinnedNotes={pinnedNotes}
                   handleSelectedNotes={handleSelectedNotes}
                   selectedNotes={selectedNotes}
                   openDeleteDialog={openDeleteDialog}
@@ -85,6 +83,7 @@ const NotesContent = ({
       <div className="notes-grid">
         {notes
           .filter((note: any) => !activeNote || note.id !== activeNote.id)
+          .filter((note: any) => !note.isPinned)
           .map((note: any) => (
             <InactiveNote
               key={`note-${note.id}`}
@@ -93,7 +92,6 @@ const NotesContent = ({
               hoveredNote={hoveredNote}
               setHoveredNote={setHoveredNote}
               handlePinClick={handlePinClick}
-              pinnedNotes={pinnedNotes}
               handleSelectedNotes={handleSelectedNotes}
               selectedNotes={selectedNotes}
               openDeleteDialog={openDeleteDialog}
@@ -102,9 +100,9 @@ const NotesContent = ({
       </div>
       <dialog id="delete" className="modal" ref={deleteDialogRef}>
         <form method="dialog" className="modal-box">
-          <h3 className="font-bold text-lg text-center">Are you sure you'd like to delete this note?</h3>
+          <h3 className="text-lg font-bold text-center">Are you sure you'd like to delete this note?</h3>
           <p className="py-4 text-center">This action cannot be undone!</p>
-          <div className="modal-action flex justify-center items-center">
+          <div className="flex items-center justify-center modal-action">
             <button className="btn btn-primary" onClick={()=>deleteDialogRef.current?.close()}>Cancel</button>
             <button className="btn btn-error" onClick={confirmDelete}>Delete</button>
           </div>

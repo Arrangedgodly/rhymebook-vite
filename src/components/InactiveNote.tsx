@@ -14,7 +14,6 @@ interface InactiveNoteProps {
   hoveredNote: any;
   setHoveredNote: any;
   handlePinClick: any;
-  pinnedNotes: any;
   handleSelectedNotes: any;
   selectedNotes: string[];
   openDeleteDialog: any;
@@ -26,7 +25,6 @@ const InactiveNote = ({
   hoveredNote,
   setHoveredNote,
   handlePinClick,
-  pinnedNotes,
   handleSelectedNotes,
   selectedNotes,
   openDeleteDialog,
@@ -46,7 +44,7 @@ const InactiveNote = ({
         {note.title}
       </h3>
       <textarea
-        className="container-note-textarea text-base text-ellipsis overflow-hidden w-full h-full m-auto text-center p-5 bg-secondary text-secondary-content overflow-y-auto"
+        className="w-full h-full p-5 m-auto overflow-hidden overflow-y-auto text-base text-center container-note-textarea text-ellipsis bg-secondary text-secondary-content"
         readOnly
         value={note.lyrics}
       />
@@ -79,7 +77,7 @@ const InactiveNote = ({
           )}
         </div>
       )}
-      {(hoveredNote === note.id || pinnedNotes.includes(note)) && (
+      {(hoveredNote === note.id || note.isPinned) && (
         <div
           className="container-notepin"
           onClick={() => handlePinClick(note.id, note.isPinned)}

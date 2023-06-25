@@ -26,7 +26,6 @@ interface Note {
 }
 
 const useNotesLogic = ({ currentUser }: NotesProps) => {
-  const [pinnedNotes, setPinnedNotes] = useState<Note[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<string>("");
@@ -49,11 +48,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
       ...doc.data(),
     }));
 
-    const pinned = notesData.filter((note: Note) => note.isPinned);
-    const unpinned = notesData.filter((note: Note) => !note.isPinned);
-
-    setPinnedNotes(pinned);
-    setNotes(unpinned);
+    setNotes(notesData);
   };
 
   /**
@@ -97,16 +92,14 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     const noteRef = doc(db, "users", currentUser.uid, "notes", noteId);
     await updateDoc(noteRef, { isPinned: !isPinned });
     if (isPinned) {
-      const note = pinnedNotes.find((note: Note) => note.id === noteId);
+      const note = notes.find((note: Note) => note.id === noteId);
       if (note) {
-        setPinnedNotes(pinnedNotes.filter((note: Note) => note.id !== noteId));
         setNotes([...notes, { ...note, isPinned: false }]);
       }
     } else {
       const note = notes.find((note: Note) => note.id === noteId);
       if (note) {
         setNotes(notes.filter((note: Note) => note.id !== noteId));
-        setPinnedNotes([...pinnedNotes, { ...note, isPinned: true }]);
       }
     }
   };
@@ -169,7 +162,6 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     await deleteDoc(noteRef);
 
     setNotes(notes.filter((note: Note) => note.id !== noteId));
-    setPinnedNotes(pinnedNotes.filter((note) => note.id !== noteId));
   };
 
   /**
@@ -202,7 +194,6 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
 
   return {
     notes,
-    pinnedNotes,
     activeTab,
     setActiveTab,
     addBlankNote,
