@@ -29,7 +29,9 @@ const NotesSideBar = ({
         <label htmlFor="notebook-drawer" className="drawer-overlay"></label>
         <ul className="menu p-4 h-full bg-base-200 items-center justify-center text-base-content">
         {notes &&
-            notes.map((note: any) => (
+            notes
+            .filter((note: any) => note.title !== "")
+            .map((note: any) => (
               <li
                 key={`tab-${note.id}`}
                 className={
