@@ -11,7 +11,7 @@ import {
   where,
   serverTimestamp,
   deleteDoc,
-  writeBatch
+  writeBatch,
 } from "firebase/firestore";
 
 interface NotesProps {
@@ -91,17 +91,11 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
   const handlePinClick = async (noteId: string, isPinned: boolean) => {
     const noteRef = doc(db, "users", currentUser.uid, "notes", noteId);
     await updateDoc(noteRef, { isPinned: !isPinned });
-    if (isPinned) {
-      const note = notes.find((note: Note) => note.id === noteId);
-      if (note) {
-        setNotes([...notes, { ...note, isPinned: false }]);
-      }
-    } else {
-      const note = notes.find((note: Note) => note.id === noteId);
-      if (note) {
-        setNotes(notes.filter((note: Note) => note.id !== noteId));
-      }
-    }
+    setNotes(
+      notes.map((note: Note) =>
+        note.id === noteId ? { ...note, isPinned: !isPinned } : note
+      )
+    );
   };
 
   /**
@@ -123,18 +117,26 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
       ...defaults,
       lastEditedAt: serverTimestamp(),
     };
-    
-    const userNotesCollection = collection(db, "users", currentUser.uid, "notes");
-    
+
+    const userNotesCollection = collection(
+      db,
+      "users",
+      currentUser.uid,
+      "notes"
+    );
+
     if (noteId) {
       await updateDoc(doc(userNotesCollection, noteId), note);
-      setNotes(notes.map((note: Note) => (note.id === noteId ? { ...note, ...updatedNote } : note)));
+      setNotes(
+        notes.map((note: Note) =>
+          note.id === noteId ? { ...note, ...updatedNote } : note
+        )
+      );
     } else {
       const noteRef = await addDoc(userNotesCollection, note);
       return noteRef.id;
     }
   };
-
 
   /**
    * This function handles the selection and deselection of notes by adding or removing their IDs from
@@ -176,7 +178,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
     });
     await batch.commit();
     setSelectedNotes([]);
-  }
+  };
 
   /* This `useEffect` hook is responsible for fetching the notes data from Firestore and setting the
   state of the component when the `currentUser` prop changes. If `currentUser` is falsy (i.e. not
