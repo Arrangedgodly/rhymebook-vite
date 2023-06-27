@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
+import SettingsDashboard from "./SettingsDashboard";
+import SettingsProfile from "./SettingsProfile";
 
 interface SettingsProps {
   currentUser: any;
 }
 
 const Settings = ({ currentUser }: SettingsProps) => {
+  const [activeTab, setActiveTab] = useState<string>("dashboard");
   const [rhy, setRhy] = useState<boolean>(true);
   const [sdl, setSdl] = useState<boolean>(true);
   const [adj, setAdj] = useState<boolean>(true);
@@ -31,6 +34,14 @@ const Settings = ({ currentUser }: SettingsProps) => {
     },
   ];
 
+  const handleProfileTabClick = () => {
+    if (activeTab === "profile") {
+      setActiveTab("");
+    } else {
+      setActiveTab("profile");
+    }
+  }
+
   useEffect(() => {
     if (currentUser.settings) {
       setRhy(currentUser.settings.rhy);
@@ -48,70 +59,22 @@ const Settings = ({ currentUser }: SettingsProps) => {
 
   return (
     <div className="container-main">
-      <h1 className="text-5xl text-primary font-bold text-center m-5">User Settings</h1>
-      <div className="flex flex-col items-center justify-center w-full">
-        <h2 className='text-3xl font-bold text-center text-secondary m-5'>Dashboard / API Engine</h2>
-        {preferenceBooleans.map((prefBoolean) => (
-          <div className="form-control" key={`${prefBoolean.name}-selector`}>
-            <label className="label cursor-pointer">
-              <span className="label-text text-xl text-primary-content mr-5">
-                {prefBoolean.name}
-              </span>
-              <input
-                type="checkbox"
-                checked={prefBoolean.value}
-                onChange={prefBoolean.function}
-                className="checkbox checkbox-primary"
-              />
-            </label>
-          </div>
-        ))}
-        <div className="flex flex-col items-center">
-          <h3 className="text-2xl font-bold text-center text-secondary m-5">Engine Type</h3>
-          <div className="flex flex-row items-center justify-center w-full">
-            <div className="form-control">
-              <label className="label cursor-pointer">
-                <span className="label-text text-xl text-primary-content mr-5">Broad</span>
-                <input
-                  type="radio"
-                  name="engine"
-                  value="topic"
-                  checked={engine === "topic"}
-                  onChange={() => setEngine("topic")}
-                  className="radio radio-secondary"
-                />
-              </label>
-            </div>
-            <div className="form-control">
-              <label className="label cursor-pointer">
-                <span className="label text text-xl text-primary-content mr-5">Specific</span>
-                <input
-                  type="radio"
-                  name="engine"
-                  value="ml"
-                  checked={engine === "ml"}
-                  onChange={() => setEngine("ml")}
-                  className="radio radio-secondary"
-                />
-              </label>
-            </div>
-          </div>
-          <div className='form-control'>
-            <label className='label'>
-              <span className='label-text text-xl text-primary-content mr-5'>Max Results</span>
-            </label>
-            <input
-              type='range'
-              min='5'
-              max='50'
-              value={max}
-              onChange={(e) => setMax(parseInt(e.target.value))}
-              className='range range-primary'
-            />
-            <span className='text-xl text-primary-content text-center'>{max}</span>
-          </div>
-        </div>
-      </div>
+      <h1 className="text-5xl text-primary font-bold text-center m-5">
+        User Settings
+      </h1>
+      <SettingsDashboard
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        preferenceBooleans={preferenceBooleans}
+        engine={engine}
+        setEngine={setEngine}
+        max={max}
+        setMax={setMax}
+      />
+      <SettingsProfile
+        activeTab={activeTab}
+        handleProfileTabClick={handleProfileTabClick}
+      />
     </div>
   );
 };
