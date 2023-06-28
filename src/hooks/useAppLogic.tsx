@@ -10,22 +10,8 @@ const useAppLogic = () => {
     const savedUser = localStorage.getItem("currentUser");
     return savedUser ? JSON.parse(savedUser) : null;
   });
-  const [theme, setTheme] = useState<string>(localStorage.getItem("theme") || "winter");
+  const [theme, setTheme] = useState<string>(localStorage.getItem("theme") || "light");
   const navigate = useNavigate();
-
-  /**
-   * The function changes the theme from winter to forest and vice versa, and updates the theme in
-   * local storage.
-   */
-  const changeTheme = () => {
-    if (theme === "winter") {
-      localStorage.setItem("theme", "forest");
-      setTheme("forest");
-    } else {
-      localStorage.setItem("theme", "winter");
-      setTheme("winter");
-    }
-  };
 
   /**
    * This function logs out the current user, removes their data from local storage, and navigates them
@@ -63,7 +49,7 @@ const useAppLogic = () => {
     loggedIn,
     currentUser,
     theme,
-    changeTheme,
+    setTheme,
     handleLogout,
     setCurrentUser,
   }

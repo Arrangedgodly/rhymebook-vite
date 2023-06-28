@@ -1,18 +1,18 @@
-import { BsSun, BsMoon } from "react-icons/bs";
 import HeaderLogo from "./HeaderLogo";
+import HeaderTheme from "./HeaderTheme";
 import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   currentUser: any;
   theme: string;
-  changeTheme: () => void;
+  setTheme: (arg0: string) => void;
   handleLogout: () => void;
 }
 
 const Header = ({
   currentUser,
   theme,
-  changeTheme,
+  setTheme,
   handleLogout,
 }: HeaderProps) => {
   const displayName = currentUser?.displayName;
@@ -35,12 +35,7 @@ const Header = ({
     <div className="navbar bg-primary text-primary-content p-2 lg:px-8">
       <div className="navbar-start"></div>
       <div className="navbar-center gap-5">
-        <button
-          className="btn btn-ghost btn-sm rounded-btn"
-          onClick={changeTheme}
-        >
-          {theme === "winter" ? <BsSun /> : <BsMoon />}
-        </button>
+        <HeaderTheme theme={theme} setTheme={setTheme} />
         <HeaderLogo />
         <div className="dropdown dropdown-end dropdown-hover">
           <div tabIndex={0} className="avatar placeholder">

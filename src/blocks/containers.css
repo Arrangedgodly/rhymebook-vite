@@ -68,8 +68,8 @@
 .notes-grid {
   @apply grid;
   width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-auto-rows: repeat(auto-fit, minmax(auto, 200px));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-auto-rows: repeat(auto-fit, minmax(auto, 250px));
   gap: 1rem;
   justify-items: center;
   align-items: start;

@@ -19,7 +19,7 @@ function App() {
     loggedIn,
     currentUser,
     theme,
-    changeTheme,
+    setTheme,
     handleLogout,
     setCurrentUser,
   } = useAppLogic();
@@ -32,41 +32,44 @@ function App() {
       <Header
         currentUser={currentUser}
         theme={theme}
-        changeTheme={changeTheme}
+        setTheme={setTheme}
         handleLogout={handleLogout}
       />
       {isLoading && <Loading />}
       <Suspense fallback={<Loading />}>
-      <Routes>
-        <Route path="/" element={<Landing loggedIn={loggedIn} />} />
-        <Route
-          path="/login"
-          element={
-            <Login setCurrentUser={setCurrentUser} loggedIn={loggedIn} />
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <Register setCurrentUser={setCurrentUser} loggedIn={loggedIn} />
-          }
-        />
-        <Route path="/settings" element={<Settings currentUser={currentUser} />} />
-        <Route path="/notes" element={<Notes currentUser={currentUser} />} />
-        <Route
-          path="/notes/new"
-          element={<Dashboard currentUser={currentUser} />}
-        />
-        <Route
-          path="/notes/:existingNoteId"
-          element={<Dashboard currentUser={currentUser} />}
-        />
-        <Route
-          path="/profile"
-          element={<Profile currentUser={currentUser} />}
-        />
-        <Route path="*" element={<Missing loggedIn={loggedIn} />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Landing loggedIn={loggedIn} />} />
+          <Route
+            path="/login"
+            element={
+              <Login setCurrentUser={setCurrentUser} loggedIn={loggedIn} />
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <Register setCurrentUser={setCurrentUser} loggedIn={loggedIn} />
+            }
+          />
+          <Route
+            path="/settings"
+            element={<Settings currentUser={currentUser} />}
+          />
+          <Route path="/notes" element={<Notes currentUser={currentUser} />} />
+          <Route
+            path="/notes/new"
+            element={<Dashboard currentUser={currentUser} />}
+          />
+          <Route
+            path="/notes/:existingNoteId"
+            element={<Dashboard currentUser={currentUser} />}
+          />
+          <Route
+            path="/profile"
+            element={<Profile currentUser={currentUser} />}
+          />
+          <Route path="*" element={<Missing loggedIn={loggedIn} />} />
+        </Routes>
       </Suspense>
       <Footer />
     </div>
