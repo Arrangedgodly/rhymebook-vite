@@ -1,8 +1,8 @@
 import useNotesLogic from "../hooks/useNotesLogic";
-import NotesIconBar from "./NotesIconBar";
-import NotesSideBar from "./NotesSideBar";
-import NotesContent from "./NotesContent";
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
+const NotesIconBar = lazy(() => import("./NotesIconBar"));
+const NotesSideBar = lazy(() => import("./NotesSideBar"));
+const NotesContent = lazy(() => import("./NotesContent"));
 import Loading from "./Loading";
 
 interface NotesProps {

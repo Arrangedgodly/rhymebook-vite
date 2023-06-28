@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import SettingsDashboard from "./SettingsDashboard";
-import SettingsProfile from "./SettingsProfile";
+import { useState, useEffect, lazy } from "react";
+const SettingsDashboard = lazy(() => import("./SettingsDashboard"));
+const SettingsProfile = lazy(() => import("./SettingsProfile"));
 
 interface SettingsProps {
   currentUser: any;
