@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
-import ActiveNote from "./ActiveNote";
-import InactiveNote from "./InactiveNote";
+import { useState, useEffect, useRef, lazy } from "react";
+const ActiveNote = lazy(() => import("./ActiveNote"));
+const InactiveNote = lazy(() => import("./InactiveNote"));
 
 interface NotesContentProps {
   notes: any;
