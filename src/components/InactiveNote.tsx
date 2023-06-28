@@ -40,11 +40,11 @@ const InactiveNote = ({
       onMouseEnter={() => setHoveredNote(note.id)}
       onMouseLeave={() => setHoveredNote(null)}
     >
-      <h3 className="font-bold text-xl truncate overflow-hidden w-[90%] text-center m-2">
+      <h3 className="font-bold text-md truncate overflow-hidden w-[90%] text-center m-2">
         {note.title}
       </h3>
       <textarea
-        className="w-full h-full p-5 m-auto overflow-hidden overflow-y-auto text-base text-center container-note-textarea text-ellipsis bg-secondary text-secondary-content"
+        className="w-full h-full p-2 m-auto overflow-hidden overflow-y-auto text-xs text-center container-note-textarea text-ellipsis bg-secondary text-secondary-content"
         readOnly
         value={note.lyrics}
       />
