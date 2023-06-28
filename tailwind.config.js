@@ -13,9 +13,6 @@ export default {
       "forest",
       "corporate",
       "business",
-      "dracula",
-      "lemonade",
-      "garden",
     ],
   },
 };

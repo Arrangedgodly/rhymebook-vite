@@ -18,9 +18,6 @@ const HeaderTheme = ({ theme, setTheme }: HeaderThemeProps) => {
     "forest",
     "corporate",
     "business",
-    "dracula",
-    "lemonade",
-    "garden",
   ];
 
   return (
