@@ -1,5 +1,5 @@
 .container-main {
-  @apply flex flex-col flex-grow items-center md:justify-center w-screen;
+  @apply flex flex-col flex-grow items-center w-screen;
 }
 
 .container-notes {

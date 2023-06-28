@@ -7,7 +7,7 @@ interface SettingsProps {
 }
 
 const Settings = ({ currentUser }: SettingsProps) => {
-  const [activeTab, setActiveTab] = useState<string>("dashboard");
+  const [activeTab, setActiveTab] = useState<string>("");
   const [rhy, setRhy] = useState<boolean>(true);
   const [sdl, setSdl] = useState<boolean>(true);
   const [adj, setAdj] = useState<boolean>(true);
