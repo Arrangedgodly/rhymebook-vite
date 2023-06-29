@@ -14,5 +14,10 @@ export default {
       "corporate",
       "business",
     ],
+    darkTheme: 'corporate',
+    base: true,
+    utils: true,
+    logs: true,
+    rtl: false,
   },
 };
