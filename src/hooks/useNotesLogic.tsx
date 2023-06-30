@@ -23,6 +23,7 @@ interface Note {
   title: string;
   lyrics: string;
   isPinned?: boolean;
+  userId: string;
 }
 
 const useNotesLogic = ({ currentUser }: NotesProps) => {
@@ -38,13 +39,14 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
    * notes, and sets the state of the component accordingly.
    */
   const getNotes = async () => {
-    const notesCollection = collection(db, "users", currentUser.uid, "notes");
-    const notesSnapshot = await getDocs(notesCollection);
+    const notesCollection = collection(db, "notes");
+    const notesQuery = query(notesCollection, where("userId", "==", currentUser.uid));
+    const notesSnapshot = await getDocs(notesQuery);
     const notesData = notesSnapshot.docs.map((doc) => ({
       id: doc.id,
       title: doc.data().title,
       lyrics: doc.data().lyrics,
-      isPinned: doc.data().isPinned,
+      userId: doc.data().userId,
       ...doc.data(),
     }));
 
@@ -59,19 +61,22 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
    * update the state of the `notes` array by adding the new note at the beginning.
    */
   const addBlankNote = async () => {
-    const notesCollection = collection(db, "users", currentUser.uid, "notes");
+    const notesCollection = collection(db, "notes");
     const untitledQuery = query(
       notesCollection,
       where("title", "==", "Untitled"),
-      where("lyrics", "==", "")
+      where("lyrics", "==", ""),
+      where("userId", "==", currentUser.uid)
     );
     const querySnapshot = await getDocs(untitledQuery);
     if (!querySnapshot.empty) return;
+
     const newNote = {
       title: "Untitled",
       lyrics: "",
       createdAt: serverTimestamp(),
       lastEditedAt: serverTimestamp(),
+      userId: currentUser.uid,
     };
     const docRef = await addDoc(notesCollection, newNote);
     const newNoteWithId = {
@@ -89,7 +94,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
    * not.
    */
   const handlePinClick = async (noteId: string, isPinned: boolean) => {
-    const noteRef = doc(db, "users", currentUser.uid, "notes", noteId);
+    const noteRef = doc(db, "notes", noteId);
     await updateDoc(noteRef, { isPinned: !isPinned });
     setNotes(
       notes.map((note: Note) =>
@@ -118,22 +123,18 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
       lastEditedAt: serverTimestamp(),
     };
 
-    const userNotesCollection = collection(
-      db,
-      "users",
-      currentUser.uid,
-      "notes"
-    );
+    const notesCollection = collection(db, "notes");
 
     if (noteId) {
-      await updateDoc(doc(userNotesCollection, noteId), note);
+      const noteRef = doc(notesCollection, noteId);
+      await updateDoc(noteRef, note);
       setNotes(
         notes.map((note: Note) =>
           note.id === noteId ? { ...note, ...updatedNote } : note
         )
       );
     } else {
-      const noteRef = await addDoc(userNotesCollection, note);
+      const noteRef = await addDoc(notesCollection, note);
       return noteRef.id;
     }
   };
@@ -160,9 +161,8 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
    * document in the Firestore database and delete it.
    */
   const deleteNote = async (noteId: string) => {
-    const noteRef = doc(db, "users", currentUser.uid, "notes", noteId);
+    const noteRef = doc(db, "notes", noteId);
     await deleteDoc(noteRef);
-
     setNotes(notes.filter((note: Note) => note.id !== noteId));
   };
 
@@ -173,7 +173,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
   const deleteNotes = async (notes: string[]) => {
     const batch = writeBatch(db);
     notes.forEach((noteId) => {
-      const noteRef = doc(db, "users", currentUser.uid, "notes", noteId);
+      const noteRef = doc(db, "notes", noteId);
       batch.delete(noteRef);
     });
     await batch.commit();

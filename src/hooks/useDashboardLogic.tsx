@@ -9,7 +9,7 @@ import {
   getAntonyms,
   getFrequentFollowers,
 } from "../utils/rhymeApi";
-import { getFirestore } from "firebase/firestore";
+import { Timestamp, getFirestore } from "firebase/firestore";
 import {
   doc,
   collection,
@@ -29,6 +29,7 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
   const [lyrics, setLyrics] = useState<string>("");
   const [themes, setThemes] = useState<string>("");
   const [isPinned, setIsPinned] = useState<boolean>(false);
+  const [createdAt, setCreatedAt] = useState<Timestamp>();
   const [lastWord, setLastWord] = useState<string>("");
   const [rhymes, setRhymes] = useState<string[]>([]);
   const [soundAlikes, setSoundAlikes] = useState<string[]>([]);
@@ -48,22 +49,20 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
    */
   const handleSave = async () => {
     const note = {
+      userId: currentUser.uid,
       title,
       lyrics,
-      themes,
-      isPinned,
+      themes: themes || "",
+      isPinned: isPinned || false,
+      createdAt: createdAt || serverTimestamp(),
       lastEditedAt: serverTimestamp(),
     };
-    const userNotesCollection = collection(
-      db,
-      "users",
-      currentUser.uid,
-      "notes"
-    );
+    
+    const notesCollection = collection(db, "notes");
     if (noteId) {
-      await updateDoc(doc(userNotesCollection, noteId), note);
+      await updateDoc(doc(notesCollection, noteId), note);
     } else {
-      const noteRef = await addDoc(userNotesCollection, note);
+      const noteRef = await addDoc(notesCollection, note);
       if (noteRef) {
         setNoteId(noteRef.id);
       }
@@ -220,20 +219,15 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
   useEffect(() => {
     const fetchNoteData = async () => {
       if (existingNoteId) {
-        const noteRef = doc(
-          db,
-          "users",
-          currentUser.uid,
-          "notes",
-          existingNoteId
-        );
+        const noteRef = doc(db, "notes", existingNoteId);
         const noteData = await getDoc(noteRef);
         if (noteData.exists()) {
           const note = noteData.data();
           setTitle(note.title);
           setLyrics(note.lyrics);
-          setThemes(note.themes);
+          setThemes(note.themes || "");
           setIsPinned(note.isPinned);
+          setCreatedAt(note.createdAt);
           setLastWord(getLastWord(note.lyrics));
         }
       }
@@ -254,26 +248,24 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
     const autoSave = async () => {
       if (noteId) {
         const note = {
+          userId: currentUser.uid,
           title,
           lyrics,
-          themes,
-          isPinned,
+          themes: themes || "",
+          isPinned: isPinned || false,
+          createdAt: createdAt || serverTimestamp(),
           lastEditedAt: serverTimestamp(),
-        };
-        const userNotesCollection = collection(
-          db,
-          "users",
-          currentUser.uid,
-          "notes"
-        );
-        await updateDoc(doc(userNotesCollection, noteId), note);
+        };        
+        const notesCollection = collection(db, "notes");
+        await updateDoc(doc(notesCollection, noteId), note);
       }
     };
-
+  
     const saveTimer = setTimeout(autoSave, 2000);
-
+  
     return () => clearTimeout(saveTimer);
   }, [title, lyrics, themes, noteId]);
+  
 
   return {
     title,
