@@ -17,13 +17,6 @@ const useRegisterLogic = ({ setCurrentUser, loggedIn }: RegisterProps) => {
   const navigate = useNavigate();
   const db = getFirestore();
 
-  /**
-   * This function handles user registration by creating a new user with email and password
-   * authentication and storing their information in local storage.
-   * @param e - The "e" parameter is an event object of type MouseEvent<HTMLButtonElement>, which is
-   * passed as an argument to the handleRegister function. It represents the event that triggered the
-   * function, in this case, a click event on a button element.
-   */
   const handleRegister = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -41,11 +34,6 @@ const useRegisterLogic = ({ setCurrentUser, loggedIn }: RegisterProps) => {
       });
   };
 
-  /**
-   * This function creates a user document in a Firestore database if it does not already exist.
-   * @param {any} user - The `user` parameter is an object that represents a user in the application.
-   * It contains properties such as `uid` (user ID), `email`, `displayName`, and `photoURL`.
-   */
   const createUserDoc = async (user: any) => {
     if (user) {
       const userRef = doc(db, "users", user.uid);
@@ -63,9 +51,6 @@ const useRegisterLogic = ({ setCurrentUser, loggedIn }: RegisterProps) => {
     }
   }
 
-  /**
-   * This function handles the registration process using Google authentication.
-   */
   const handleGoogleRegister = () => {
     setGoogleLoading(true);
     signInWithPopup(auth, provider)

@@ -22,12 +22,6 @@ const useLoginLogic = ({ setCurrentUser, loggedIn }: LoginProps) => {
   const navigate = useNavigate();
   const db = getFirestore();
 
-  /**
-   * This function handles the login process by signing in with email and password, setting the current
-   * user, and storing the user in local storage.
-   * @param e - MouseEvent<HTMLButtonElement> - This is the event object that is passed when the login
-   * button is clicked. It is of type MouseEvent and specifically for a button element.
-   */
   const handleLogin = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -45,12 +39,6 @@ const useLoginLogic = ({ setCurrentUser, loggedIn }: LoginProps) => {
       });
   };
 
-  /**
-   * This function checks if a user document exists in a Firestore database and creates one if it
-   * doesn't.
-   * @param {any} user - The `user` parameter is an object that represents a user in the application.
-   * It contains properties such as `uid` (user ID) and `email` (user email address).
-   */
   const handleUserDoc = async (user: any) => {
     if (user) {
       const userRef = doc(db, "users", user.uid);
@@ -67,10 +55,6 @@ const useLoginLogic = ({ setCurrentUser, loggedIn }: LoginProps) => {
     }
   };
 
-  /**
-   * This function handles the Google login process using Firebase authentication and updates the
-   * current user state.
-   */
   const handleGoogleLogin = () => {
     setGoogleLoading(true);
     signInWithPopup(auth, provider)
