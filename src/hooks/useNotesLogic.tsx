@@ -9,6 +9,7 @@ import {
   updateDoc,
   query,
   where,
+  orderBy,
   serverTimestamp,
   deleteDoc,
   writeBatch,
@@ -36,7 +37,7 @@ const useNotesLogic = ({ currentUser }: NotesProps) => {
 
   const getNotes = async () => {
     const notesCollection = collection(db, "notes");
-    const notesQuery = query(notesCollection, where("userId", "==", currentUser.uid));
+    const notesQuery = query(notesCollection, where("userId", "==", currentUser.uid), orderBy("lastEditedAt", "desc"));
     const notesSnapshot = await getDocs(notesQuery);
     const notesData = notesSnapshot.docs.map((doc) => ({
       id: doc.id,
