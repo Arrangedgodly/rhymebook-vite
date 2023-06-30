@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {MdOutlineStickyNote2} from 'react-icons/md';
 import {RiUserFollowLine} from 'react-icons/ri';
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
 
 interface ProfileProps {
   currentUser: any;
@@ -16,8 +16,9 @@ const Profile = ({ currentUser }: ProfileProps) => {
 
   const handleNotesCount = async () => {
     if (currentUser) {
-      const notesCollection = collection(db, 'users', currentUser.uid, 'notes');
-      const notesSnapshot = await getDocs(notesCollection);
+      const notesCollection = collection(db, 'notes');
+      const notesQuery = query(notesCollection, where("userId", "==", currentUser.uid));
+      const notesSnapshot = await getDocs(notesQuery);
       if (notesSnapshot) {
         setNoteCount(notesSnapshot.docs.length);
       }

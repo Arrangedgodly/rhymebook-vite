@@ -35,6 +35,7 @@ const HeaderTheme = ({ theme, setTheme }: HeaderThemeProps) => {
           <li
             className="btn btn-ghost btn-sm w-full h-6 m-0 p-0"
             onClick={() => setTheme(themeOption)}
+            key={`theme-${themeOption}`}
           >
             {themeOption}
           </li>

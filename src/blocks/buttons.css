@@ -15,9 +15,9 @@
 }
 
 .button-badge {
-  @apply btn badge badge-secondary badge-sm hover:bg-accent hover:text-accent-content m-2 w-4/5 h-10 transition-all;
+  @apply btn btn-secondary btn-sm hover:btn-accent hover:text-accent-content m-2 w-4/5 h-10 transition-all;
 }
 
 .button-badge_active {
-  @apply btn badge badge-sm bg-accent text-accent-content hover:bg-accent hover:text-accent-content m-2 w-4/5 h-10 transition-all;
+  @apply btn btn-sm btn-accent text-accent-content hover:btn-accent hover:text-accent-content m-2 w-4/5 h-10 transition-all;
 }

@@ -73,6 +73,7 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
    * The function "handleReset" resets multiple state variables to their initial values.
    */
   const handleReset = () => {
+    setNoteId("");
     setTitle("");
     setLyrics("");
     setThemes("");
@@ -218,7 +219,7 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
   runs whenever the `existingNoteId` state variable changes. */
   useEffect(() => {
     const fetchNoteData = async () => {
-      if (existingNoteId) {
+      if (existingNoteId && existingNoteId !== "") {
         const noteRef = doc(db, "notes", existingNoteId);
         const noteData = await getDoc(noteRef);
         if (noteData.exists()) {
@@ -230,6 +231,8 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
           setCreatedAt(note.createdAt);
           setLastWord(getLastWord(note.lyrics));
         }
+      } else {
+        handleReset();
       }
     };
     fetchNoteData();
@@ -265,7 +268,6 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
   
     return () => clearTimeout(saveTimer);
   }, [title, lyrics, themes, noteId]);
-  
 
   return {
     title,

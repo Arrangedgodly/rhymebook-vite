@@ -5,7 +5,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ActiveNoteProps {
   activeNote: any;
@@ -35,6 +35,11 @@ const ActiveNote = ({ activeNote, setActiveNote, handleNoteSave }: ActiveNotePro
   };
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setUpdatedNote(activeNote);
+  }, [activeNote]);
+  
   return (
     <div className="active-note" key={`note-${activeNote.id}`}>
       {editing.title ? (
