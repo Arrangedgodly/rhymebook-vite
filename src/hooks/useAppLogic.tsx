@@ -10,7 +10,7 @@ const useAppLogic = () => {
     const savedUser = localStorage.getItem("currentUser");
     return savedUser ? JSON.parse(savedUser) : null;
   });
-  const [theme, setTheme] = useState<string>(localStorage.getItem("theme") || "light");
+  const [theme, setTheme] = useState<string>(localStorage.getItem("theme") || "pastel");
   const navigate = useNavigate();
 
   const handleLogout = () => {
