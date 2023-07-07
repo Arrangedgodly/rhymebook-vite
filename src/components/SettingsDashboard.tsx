@@ -22,20 +22,31 @@ const SettingsDashboard = ({
   setMax,
 }: SettingsDashboardProps) => {
   const handleTabClick = () => {
-    if (activeTab === 'dashboard') {
-      setActiveTab('')
+    if (activeTab === "dashboard") {
+      setActiveTab("");
     } else {
-      setActiveTab('dashboard')
-  }
-}
+      setActiveTab("dashboard");
+    }
+  };
 
   return (
     <div className="collapse md:w-1/2 w-4/5 bg-secondary text-secondary-content m-5">
-      <input type='radio' name='settings' checked={activeTab === 'dashboard' ? true : false} onClick={handleTabClick} />
+      <input
+        type="radio"
+        name="settings"
+        checked={activeTab === "dashboard" ? true : false}
+        onClick={handleTabClick}
+      />
       <h2 className="collapse-title text-3xl font-bold text-center">
         Dashboard / API Engine
       </h2>
-      <div className={activeTab === 'dashboard' ? 'collapse-content transition-all' : 'hidden transition-all'}>
+      <div
+        className={
+          activeTab === "dashboard"
+            ? "collapse-content transition-all"
+            : "hidden transition-all"
+        }
+      >
         {preferenceBooleans.map((prefBoolean) => (
           <div className="form-control" key={`${prefBoolean.name}-selector`}>
             <label className="label cursor-pointer">
@@ -52,9 +63,7 @@ const SettingsDashboard = ({
           </div>
         ))}
         <div className="flex flex-col items-center">
-          <h3 className="text-2xl font-bold text-center m-5">
-            Engine Type
-          </h3>
+          <h3 className="text-2xl font-bold text-center m-5">Engine Type</h3>
           <div className="flex flex-row items-center justify-center w-full">
             <div className="form-control">
               <label className="label cursor-pointer">
