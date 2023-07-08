@@ -74,6 +74,7 @@ const Settings = ({ currentUser }: SettingsProps) => {
       <SettingsProfile
         activeTab={activeTab}
         handleProfileTabClick={handleProfileTabClick}
+        currentUser={currentUser}
       />
     </div>
   );
