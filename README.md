@@ -41,3 +41,7 @@ RhymePage is a dynamic web application designed to streamline and enrich the lyr
 - New users can create an account, while returning users can log in.
 - Password recovery is supported.
 - Google Authentication is integrated for an expedited sign-in process.
+
+### Settings
+- Users can change the way the rhyming api returns results by customizing the maximum number of results, specifying categories of words to include, and adding thematic filters.
+- Users can also change their profile information, such as email, username, display image, and password here.
