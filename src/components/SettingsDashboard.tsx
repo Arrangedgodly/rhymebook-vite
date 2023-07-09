@@ -115,6 +115,7 @@ const SettingsDashboard = ({
               {max}
             </span>
           </div>
+          <button className="btn btn-primary btn-lg m-2 w-full">Save</button>
         </div>
       </div>
     </div>
