@@ -24,7 +24,7 @@ const Header = ({
   const navigate = useNavigate();
 
   return (
-    <div className="navbar bg-primary text-primary-content p-2 lg:px-8">
+    <div className="navbar bg-primary-content text-primary p-2 lg:px-8">
       <div className="navbar-start"></div>
       <div className="navbar-center gap-5">
         <HeaderTheme theme={theme} setTheme={setTheme} />

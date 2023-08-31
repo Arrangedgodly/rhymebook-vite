@@ -112,8 +112,8 @@ const Landing = ({ loggedIn }: LandingProps) => {
   return (
     <div className="container-main">
       <h1 className="md:text-5xl text-3xl text-center m-4 mt-10">
-        Welcome to <span className="text-primary-content font-bold">Rhyme</span>
-        <span className="text-secondary-content font-bold">Page</span>
+        Welcome to <span className="text-primary font-bold">Rhyme</span>
+        <span className="text-secondary font-bold">Page</span>
       </h1>
       <h2 className="md:text-3xl text-xl text-center m-2">
         An API powered lyric writing application that writes your rhymes with
@@ -150,28 +150,28 @@ const Landing = ({ loggedIn }: LandingProps) => {
       </div>
       <div className="h-1/5 w-full"></div>
         {loggedIn ? (
-          <p className="text-center md:text-2xl text-lg text-neutral-content my-5">
+          <p className="text-center md:text-2xl text-lg text-primary my-5">
             Ready to get started?{" "}
-            <a onClick={() => navigate('/notes/new')} className="text-primary-content hover:cursor-pointer">
+            <a onClick={() => navigate('/notes/new')} className="text-primary hover:cursor-pointer">
               Go to your dashboard!
             </a>
           </p>
         ) : (
           <>
-          <p className="text-center md:text-2xl text-lg text-neutral-content my-5">
+          <p className="text-center md:text-2xl text-lg text-primary my-5">
             Want to get started?{" "}
-            <a onClick={() => navigate('/register')} className="text-primary-content hover:cursor-pointer">
+            <a onClick={() => navigate('/register')} className="text-primary font-bold hover:cursor-pointer">
               Register
             </a>{" "}
             or{" "}
-            <a onClick={() => navigate('/login')} className="text-primary hover:cursor-pointer">
+            <a onClick={() => navigate('/login')} className="text-primary font-bold hover:cursor-pointer">
               Login
             </a>{" "}
             now!
           </p>
-          <p className="text-center md:text-lg text-sm text-neutral-content">
+          <p className="text-center md:text-lg text-sm text-primary">
             Don't want to sign up quite yet?{" "}
-            <a onClick={() => navigate('/notes/new')} className="text-accent-content hover:cursor-pointer">
+            <a onClick={() => navigate('/notes/new')} className="text-accent hover:cursor-pointer">
               Try the demo!
             </a>
           </p>

@@ -7,13 +7,13 @@
 }
 
 .container-note {
-  @apply card flex flex-col items-center justify-start bg-base-200 rounded-xl shadow-lg p-4 m-5 bg-secondary text-secondary-content hover:bg-accent hover:text-accent-content relative;
+  @apply card flex flex-col items-center justify-start rounded-xl shadow-lg p-4 m-5 bg-secondary text-secondary-content hover:bg-accent hover:text-accent-content relative;
   width: 100%;
   height: 300px;
 }
 
 .container-notes-content {
-  @apply flex grow items-center justify-center flex-wrap max-h-[90vh] relative z-0 gap-10 p-5 m-2 mb-5 overflow-y-auto overflow-x-hidden bg-neutral;
+  @apply flex grow items-center justify-center flex-wrap max-h-[90vh] relative z-0 gap-10 p-5 m-2 mb-5 overflow-y-auto overflow-x-hidden;
   
   @screen md {
     flex-direction: row;
@@ -25,7 +25,7 @@
 }
 
 .active-note {
-  @apply card flex flex-col items-center justify-start bg-base-200 rounded-xl shadow-xl p-4 m-5 w-full h-[60vh] transition-all bg-secondary text-secondary-content;
+  @apply card flex flex-col items-center justify-start rounded-xl shadow-xl p-4 m-5 w-full h-[60vh] transition-all bg-secondary text-secondary-content;
   
   @screen md {
     width: 70%;

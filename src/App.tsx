@@ -26,7 +26,7 @@ function App() {
 
   return (
     <div
-      className="flex flex-col items-center h-screen main-font bg-neutral text-neutral-content overflow-x-hidden transform-all"
+      className="flex flex-col items-center h-screen main-font bg-primary-content text-primary overflow-x-hidden transform-all"
       data-theme={theme}
     >
       <Header
