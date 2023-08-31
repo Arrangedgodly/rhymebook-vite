@@ -21,13 +21,13 @@ const HeaderTheme = ({ theme, setTheme }: HeaderThemeProps) => {
   ];
 
   return (
-    <div className="dropdown dropdown-hover">
+    <div className="dropdown">
       <div tabIndex={0} className="m-1">
         <MdOutlineColorLens className="text-2xl" />
       </div>
       <ul
         tabIndex={0}
-        className="dropdown-content p-2 shadow menu menu-vertical bg-accent text-accent-content rounded-box w-52 z-50"
+        className="dropdown-content p-2 shadow menu menu-vertical bg-accent text-accent-content rounded-box w-52 z-50 mt-3"
       >
         <h3 className="text-lg font-bold text-center m-1">Theme Selector</h3>
         <div className="divider m-0"></div>

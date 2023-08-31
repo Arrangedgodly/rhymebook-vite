@@ -29,7 +29,7 @@ const Header = ({
       <div className="navbar-center gap-5">
         <HeaderTheme theme={theme} setTheme={setTheme} />
         <HeaderLogo />
-        <div className="dropdown dropdown-end dropdown-hover">
+        <div className="dropdown dropdown-end">
           <div tabIndex={0} className="avatar placeholder">
             <div className="rounded-full w-10 h-10 m-1 bg-neutral-focus">
               {photoURL ? (
@@ -49,7 +49,7 @@ const Header = ({
           </div>
           <ul
             tabIndex={0}
-            className="p-2 shadow menu dropdown-content bg-accent text-accent-content items-center rounded-box w-52 z-50  "
+            className="p-2 shadow menu dropdown-content bg-accent text-accent-content items-center rounded-box w-52 z-50 mt-3"
           >
             {currentUser ? (
               <>
