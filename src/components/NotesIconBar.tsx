@@ -10,7 +10,7 @@ interface NotesIconBarProps {
 
 const NotesIconBar = ({ addBlankNote }: NotesIconBarProps) => {
   return (
-    <div className="flex flex-col w-[1/12] items-center bg-accent h-full relative z-10">
+    <div className="flex flex-col w-[1/12] items-center bg-accent h-full fixed z-10 top-0 left-0">
         <label
           htmlFor='notebook-drawer'
           className='button-note'

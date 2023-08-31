@@ -13,8 +13,7 @@
 }
 
 .container-notes-content {
-  @apply flex grow items-center justify-center flex-wrap max-h-[90vh] relative z-0 gap-10 p-5 m-2 mb-5 overflow-y-auto overflow-x-hidden;
-  
+  @apply flex grow items-center justify-center flex-wrap max-h-[90vh] relative z-0 gap-10 p-5 m-2 ml-20 mb-5 overflow-y-auto overflow-x-hidden;
   @screen md {
     flex-direction: row;
   }
