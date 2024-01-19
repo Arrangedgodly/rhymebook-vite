@@ -60,8 +60,9 @@ const InactiveNote = ({
             className="text-icon"
             onClick={() => navigate(`/notes/${note.id}`)}
           />
-          <TrashIcon className="text-icon" 
-          onClick={()=>openDeleteDialog(note.id)}
+          <TrashIcon
+            className="text-icon"
+            onClick={() => openDeleteDialog(note.id)}
           />
         </div>
       )}

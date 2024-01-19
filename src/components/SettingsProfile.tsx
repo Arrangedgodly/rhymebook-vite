@@ -7,7 +7,7 @@ interface SettingsProfileProps {
 const SettingsProfile = ({
   activeTab,
   handleProfileTabClick,
-  currentUser
+  currentUser,
 }: SettingsProfileProps) => {
   return (
     <div className="collapse md:w-1/2 w-4/5 bg-secondary text-secondary-content">

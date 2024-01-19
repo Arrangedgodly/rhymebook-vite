@@ -28,22 +28,22 @@ const NotesSideBar = ({
       <div className="drawer-side">
         <label htmlFor="notebook-drawer" className="drawer-overlay"></label>
         <ul className="menu p-4 h-full bg-base-200 items-center justify-center text-base-content">
-        {notes &&
+          {notes &&
             notes
-            .filter((note: any) => note.title !== "")
-            .map((note: any) => (
-              <li
-                key={`tab-${note.id}`}
-                className={
-                  activeNote?.id === note.id
-                    ? "button-badge_active"
-                    : "button-badge"
-                }
-                onClick={() => handleBadgeClick(note)}
-              >
-                {note.title}
-              </li>
-            ))}
+              .filter((note: any) => note.title !== "")
+              .map((note: any) => (
+                <li
+                  key={`tab-${note.id}`}
+                  className={
+                    activeNote?.id === note.id
+                      ? "button-badge_active"
+                      : "button-badge"
+                  }
+                  onClick={() => handleBadgeClick(note)}
+                >
+                  {note.title}
+                </li>
+              ))}
         </ul>
       </div>
     </div>

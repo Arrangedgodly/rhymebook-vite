@@ -24,19 +24,19 @@ const NotesContent = ({
   deleteNote,
 }: NotesContentProps) => {
   const [hoveredNote, setHoveredNote] = useState(null);
-  const [pendingNote, setPendingNote] = useState<string>('');
+  const [pendingNote, setPendingNote] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
   const deleteDialogRef = useRef<HTMLDialogElement>(null);
 
   const openDeleteDialog = (note: string) => {
     setPendingNote?.(note);
     deleteDialogRef.current?.showModal();
-  }
+  };
 
   const confirmDelete = () => {
     deleteNote?.(pendingNote);
     deleteDialogRef.current?.close();
-  }
+  };
 
   /* This `useEffect` hook is used to scroll the notes container to the top when a new active note is
   selected. It checks if there is an active note and if the container reference exists, and then
@@ -100,11 +100,20 @@ const NotesContent = ({
       </div>
       <dialog id="delete" className="modal" ref={deleteDialogRef}>
         <form method="dialog" className="modal-box">
-          <h3 className="text-lg font-bold text-center">Are you sure you'd like to delete this note?</h3>
+          <h3 className="text-lg font-bold text-center">
+            Are you sure you'd like to delete this note?
+          </h3>
           <p className="py-4 text-center">This action cannot be undone!</p>
           <div className="flex items-center justify-center modal-action">
-            <button className="btn btn-primary" onClick={()=>deleteDialogRef.current?.close()}>Cancel</button>
-            <button className="btn btn-error" onClick={confirmDelete}>Delete</button>
+            <button
+              className="btn btn-primary"
+              onClick={() => deleteDialogRef.current?.close()}
+            >
+              Cancel
+            </button>
+            <button className="btn btn-error" onClick={confirmDelete}>
+              Delete
+            </button>
           </div>
         </form>
         <form method="dialog" className="modal-backdrop">

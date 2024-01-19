@@ -40,7 +40,7 @@ const Settings = ({ currentUser }: SettingsProps) => {
     } else {
       setActiveTab("profile");
     }
-  }
+  };
 
   useEffect(() => {
     if (currentUser.settings) {

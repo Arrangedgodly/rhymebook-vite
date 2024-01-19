@@ -19,15 +19,13 @@ const Notes = ({ currentUser }: NotesProps) => {
     handleNoteSave,
     deleteNote,
     handleSelectedNotes,
-    selectedNotes
+    selectedNotes,
   } = useNotesLogic({
     currentUser,
   });
   return (
     <div className="container-notes">
-      <NotesIconBar
-        addBlankNote={addBlankNote}
-      />
+      <NotesIconBar addBlankNote={addBlankNote} />
       <NotesSideBar
         notes={notes}
         activeNote={activeNote}

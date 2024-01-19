@@ -8,8 +8,14 @@ interface LoginProps {
 }
 
 const Login = ({ setCurrentUser, loggedIn }: LoginProps) => {
-  const { setEmail, setPassword, googleLoading, loading, handleLogin, handleGoogleLogin } =
-    useLoginLogic({ setCurrentUser, loggedIn });
+  const {
+    setEmail,
+    setPassword,
+    googleLoading,
+    loading,
+    handleLogin,
+    handleGoogleLogin,
+  } = useLoginLogic({ setCurrentUser, loggedIn });
 
   return (
     <div className="container-main">

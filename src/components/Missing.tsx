@@ -57,7 +57,9 @@ const Missing = ({ loggedIn }: MissingProps) => {
   return (
     <main className="w-full px-6 pt-10 pb-16 mx-auto max-w-7xl sm:pb-24 lg:px-8">
       <div className="max-w-2xl mx-auto text-center">
-        <p className="text-base text-3xl font-semibold leading-8 sm:text-5xl text-secondary">404</p>
+        <p className="text-base text-3xl font-semibold leading-8 sm:text-5xl text-secondary">
+          404
+        </p>
         <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-5xl">
           This page does not exist
         </h1>

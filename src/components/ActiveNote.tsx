@@ -13,13 +13,17 @@ interface ActiveNoteProps {
   handleNoteSave: any;
 }
 
-const ActiveNote = ({ activeNote, setActiveNote, handleNoteSave }: ActiveNoteProps) => {
+const ActiveNote = ({
+  activeNote,
+  setActiveNote,
+  handleNoteSave,
+}: ActiveNoteProps) => {
   const [editing, setEditing] = useState({ title: false, lyrics: false });
   const [updatedNote, setUpdatedNote] = useState(activeNote);
 
   const updateNote = () => {
-    handleNoteSave(updatedNote, activeNote.id)
-  }
+    handleNoteSave(updatedNote, activeNote.id);
+  };
 
   const handleDoubleClick = (section: string) => {
     setEditing({ ...editing, [section]: true });
@@ -39,7 +43,7 @@ const ActiveNote = ({ activeNote, setActiveNote, handleNoteSave }: ActiveNotePro
   useEffect(() => {
     setUpdatedNote(activeNote);
   }, [activeNote]);
-  
+
   return (
     <div className="active-note" key={`note-${activeNote.id}`}>
       {editing.title ? (
@@ -51,7 +55,10 @@ const ActiveNote = ({ activeNote, setActiveNote, handleNoteSave }: ActiveNotePro
           autoFocus
         />
       ) : (
-        <h3 className="text-note-title" onDoubleClick={() => handleDoubleClick("title")}>
+        <h3
+          className="text-note-title"
+          onDoubleClick={() => handleDoubleClick("title")}
+        >
           {updatedNote.title}
         </h3>
       )}
@@ -64,7 +71,12 @@ const ActiveNote = ({ activeNote, setActiveNote, handleNoteSave }: ActiveNotePro
           className="text-note-body"
         />
       ) : (
-        <textarea className="text-note-body" readOnly onDoubleClick={() => handleDoubleClick("lyrics")} value={updatedNote.lyrics} />
+        <textarea
+          className="text-note-body"
+          readOnly
+          onDoubleClick={() => handleDoubleClick("lyrics")}
+          value={updatedNote.lyrics}
+        />
       )}
       <div className="container-notebuttons">
         <UserPlusIcon className="text-icon" />

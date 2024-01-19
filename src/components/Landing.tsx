@@ -8,7 +8,7 @@ interface LandingProps {
 
 const Landing = ({ loggedIn }: LandingProps) => {
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     new TxtAnime(".typing", {
       effect: "txt-an-7",
@@ -149,34 +149,46 @@ const Landing = ({ loggedIn }: LandingProps) => {
         </div>
       </div>
       <div className="h-1/5 w-full"></div>
-        {loggedIn ? (
-          <p className="text-center md:text-2xl text-lg text-primary my-5">
-            Ready to get started?{" "}
-            <a onClick={() => navigate('/notes/new')} className="text-primary hover:cursor-pointer">
-              Go to your dashboard!
-            </a>
-          </p>
-        ) : (
-          <>
+      {loggedIn ? (
+        <p className="text-center md:text-2xl text-lg text-primary my-5">
+          Ready to get started?{" "}
+          <a
+            onClick={() => navigate("/notes/new")}
+            className="text-primary hover:cursor-pointer"
+          >
+            Go to your dashboard!
+          </a>
+        </p>
+      ) : (
+        <>
           <p className="text-center md:text-2xl text-lg text-primary my-5">
             Want to get started?{" "}
-            <a onClick={() => navigate('/register')} className="text-primary font-bold hover:cursor-pointer">
+            <a
+              onClick={() => navigate("/register")}
+              className="text-primary font-bold hover:cursor-pointer"
+            >
               Register
             </a>{" "}
             or{" "}
-            <a onClick={() => navigate('/login')} className="text-primary font-bold hover:cursor-pointer">
+            <a
+              onClick={() => navigate("/login")}
+              className="text-primary font-bold hover:cursor-pointer"
+            >
               Login
             </a>{" "}
             now!
           </p>
           <p className="text-center md:text-lg text-sm text-primary">
             Don't want to sign up quite yet?{" "}
-            <a onClick={() => navigate('/notes/new')} className="text-accent hover:cursor-pointer">
+            <a
+              onClick={() => navigate("/notes/new")}
+              className="text-accent hover:cursor-pointer"
+            >
               Try the demo!
             </a>
           </p>
-          </>
-        )}
+        </>
+      )}
     </div>
   );
 };
