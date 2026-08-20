@@ -1,5 +1,5 @@
 import useAppLogic from "./hooks/useAppLogic";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
 import Footer from "./components/Footer";
@@ -24,9 +24,13 @@ function App() {
     setCurrentUser,
   } = useAppLogic();
 
+  // The dashboard is a fixed frame: every pixel goes to writing or suggestions.
+  const { pathname } = useLocation();
+  const isWriting = pathname.startsWith("/notes/");
+
   return (
     <div
-      className="flex flex-col items-center h-screen main-font bg-primary-content text-primary overflow-x-hidden transform-all"
+      className="flex h-dvh flex-col overflow-hidden main-font bg-base-100 text-base-content"
       data-theme={theme}
     >
       <Header
@@ -36,6 +40,7 @@ function App() {
         handleLogout={handleLogout}
       />
       {isLoading && <Loading />}
+      <main className="flex min-h-0 w-full flex-1 flex-col overflow-y-auto">
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={<Landing loggedIn={loggedIn} />} />
@@ -68,10 +73,15 @@ function App() {
             path="/profile"
             element={<Profile currentUser={currentUser} />}
           />
+          <Route
+            path="/profile/:uid"
+            element={<Profile currentUser={currentUser} />}
+          />
           <Route path="*" element={<Missing loggedIn={loggedIn} />} />
         </Routes>
       </Suspense>
-      <Footer />
+      </main>
+      {!isWriting && <Footer />}
     </div>
   );
 }

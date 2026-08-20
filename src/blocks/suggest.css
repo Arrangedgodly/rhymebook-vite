@@ -1,0 +1,68 @@
+/*
+ * Suggestion panel.
+ *
+ * One component, two shapes. On a phone it is a bottom sheet that drags between
+ * a single-row rail, a half board and a full board. From `md` up the same markup
+ * becomes a column docked to the right of the editor and the sheet states stop
+ * applying.
+ */
+
+/*
+ * Height is set directly per state rather than through a custom property:
+ * `height: var(--x)` does not reliably re-resolve when only the variable
+ * changes, which left the sheet stuck at its previous height.
+ */
+.suggest {
+  transition: height 0.26s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.suggest[data-state="peek"] { height: 5.5rem; }
+.suggest[data-state="half"] { height: 16rem; }
+.suggest[data-state="full"] { height: 60svh; }
+
+/* Half and full wrap into a scrollable board... */
+.suggest .suggest-chips {
+  flex-wrap: wrap;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* ...while peek is Option B's rail: one row, scrolled sideways. */
+.suggest[data-state="peek"] .suggest-chips {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+@media (min-width: 768px) {
+  /* Matches the [data-state] specificity above so the dock isn't stuck at a
+     sheet height. */
+  .suggest[data-state] {
+    height: 100%;
+    transition: none;
+  }
+  .suggest[data-state="peek"] .suggest-chips {
+    flex-wrap: wrap;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .suggest { transition: none; }
+}
+
+/* Horizontal strips shouldn't show a scrollbar on desktop trackpads. */
+.no-bar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-bar::-webkit-scrollbar { display: none; }
+
+/*
+ * Long-press is the touch equivalent of right-click here, so suppress the
+ * behaviours that would otherwise hijack it: text selection and the iOS
+ * callout menu.
+ */
+.word-chip {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
