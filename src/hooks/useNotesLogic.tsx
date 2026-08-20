@@ -1,163 +1,257 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  getFirestore,
-  collection,
-  doc,
-  getDocs,
   addDoc,
-  updateDoc,
-  query,
-  where,
-  orderBy,
-  serverTimestamp,
+  collection,
   deleteDoc,
+  doc,
+  getFirestore,
+  serverTimestamp,
+  updateDoc,
   writeBatch,
 } from "firebase/firestore";
+import {
+  collectTags,
+  fetchOwnNotes,
+  fetchSharedNotes,
+  normalizeTag,
+  setNoteTags,
+  shareNote,
+  unshareNote,
+} from "../utils/notesApi";
+import { findUidByEmail, getProfile } from "../utils/profiles";
+import type { Note } from "../types/note";
+import type { AppUser } from "../types/user";
+import type { PublicProfile } from "../types/profile";
+
+export type NotesTab = "mine" | "shared";
+
+export type ShareResult =
+  | { ok: true; message: string }
+  | { ok: false; message: string };
 
 interface NotesProps {
-  currentUser: any;
-}
-
-interface Note {
-  id: string;
-  title: string;
-  lyrics: string;
-  isPinned?: boolean;
-  userId: string;
+  currentUser: AppUser | null;
 }
 
 const useNotesLogic = ({ currentUser }: NotesProps) => {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [ownNotes, setOwnNotes] = useState<Note[]>([]);
+  const [sharedNotes, setSharedNotes] = useState<Note[]>([]);
+  /** Whose notebook is currently in state; anything else means we are still loading. */
+  const [loadedFor, setLoadedFor] = useState<string | null>(null);
+  /** Who shared each of the shared notes, so they can be visited and followed. */
+  const [owners, setOwners] = useState<Record<string, PublicProfile>>({});
+  const [tab, setTab] = useState<NotesTab>("mine");
+  const [tagFilter, setTagFilter] = useState<string | null>(null);
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState<string>("");
-  const [activeNote, setActiveNote] = useState<any>(null);
   const navigate = useNavigate();
   const db = getFirestore();
 
-  const getNotes = async () => {
-    const notesCollection = collection(db, "notes");
-    const notesQuery = query(notesCollection, where("userId", "==", currentUser.uid), orderBy("lastEditedAt", "desc"));
-    const notesSnapshot = await getDocs(notesQuery);
-    const notesData = notesSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      title: doc.data().title,
-      lyrics: doc.data().lyrics,
-      userId: doc.data().userId,
-      ...doc.data(),
-    }));
-
-    setNotes(notesData);
-  };
-
-  const addBlankNote = async () => {
-    const notesCollection = collection(db, "notes");
-    const untitledQuery = query(
-      notesCollection,
-      where("title", "==", "Untitled"),
-      where("lyrics", "==", ""),
-      where("userId", "==", currentUser.uid)
-    );
-    const querySnapshot = await getDocs(untitledQuery);
-    if (!querySnapshot.empty) return;
-
-    const newNote = {
-      title: "Untitled",
-      lyrics: "",
-      createdAt: serverTimestamp(),
-      lastEditedAt: serverTimestamp(),
-      userId: currentUser.uid,
-    };
-    const docRef = await addDoc(notesCollection, newNote);
-    const newNoteWithId = {
-      id: docRef.id,
-      ...newNote,
-    };
-    setNotes([newNoteWithId, ...notes]);
-  };
-
-  const handlePinClick = async (noteId: string, isPinned: boolean) => {
-    const noteRef = doc(db, "notes", noteId);
-    await updateDoc(noteRef, { isPinned: !isPinned });
-    setNotes(
-      notes.map((note: Note) =>
-        note.id === noteId ? { ...note, isPinned: !isPinned } : note
-      )
-    );
-  };
-
-  const handleNoteSave = async (updatedNote: Note, noteId: string) => {
-    const defaults = {
-      isPinned: false,
-    };
-
-    const note = {
-      ...updatedNote,
-      ...defaults,
-      lastEditedAt: serverTimestamp(),
-    };
-
-    const notesCollection = collection(db, "notes");
-
-    if (noteId) {
-      const noteRef = doc(notesCollection, noteId);
-      await updateDoc(noteRef, note);
-      setNotes(
-        notes.map((note: Note) =>
-          note.id === noteId ? { ...note, ...updatedNote } : note
-        )
-      );
-    } else {
-      const noteRef = await addDoc(notesCollection, note);
-      return noteRef.id;
-    }
-  };
-
-  const handleSelectedNotes = (noteId: string) => {
-    if (selectedNotes.includes(noteId)) {
-      setSelectedNotes(selectedNotes.filter((id) => id !== noteId));
-    } else {
-      setSelectedNotes([...selectedNotes, noteId]);
-    }
-  };
-
-  const deleteNote = async (noteId: string) => {
-    const noteRef = doc(db, "notes", noteId);
-    await deleteDoc(noteRef);
-    setNotes(notes.filter((note: Note) => note.id !== noteId));
-  };
-
-  const deleteNotes = async (notes: string[]) => {
-    const batch = writeBatch(db);
-    notes.forEach((noteId) => {
-      const noteRef = doc(db, "notes", noteId);
-      batch.delete(noteRef);
-    });
-    await batch.commit();
-    setSelectedNotes([]);
-  };
+  const load = useCallback(async (uid: string) => {
+    const [mine, shared] = await Promise.all([
+      fetchOwnNotes(uid),
+      fetchSharedNotes(uid),
+    ]);
+    return { mine, shared };
+  }, []);
 
   useEffect(() => {
     if (!currentUser) {
       navigate("/");
-    } else {
-      getNotes();
+      return;
     }
-  }, [currentUser]);
+    let cancelled = false;
+    (async () => {
+      try {
+        const { mine, shared } = await load(currentUser.uid);
+        if (cancelled) return;
+        setOwnNotes(mine);
+        setSharedNotes(shared);
+
+        const ownerIds = [...new Set(shared.map((n) => n.userId))];
+        const profiles = await Promise.all(ownerIds.map((id) => getProfile(id)));
+        if (cancelled) return;
+        setOwners(
+          Object.fromEntries(
+            profiles
+              .filter((p): p is PublicProfile => p !== null)
+              .map((p) => [p.uid, p])
+          )
+        );
+      } catch {
+        // An unreadable notebook shows as empty rather than a broken page.
+      } finally {
+        if (!cancelled) setLoadedFor(currentUser.uid);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [currentUser, navigate, load]);
+
+  const refresh = useCallback(async () => {
+    if (!currentUser) return;
+    const { mine, shared } = await load(currentUser.uid);
+    setOwnNotes(mine);
+    setSharedNotes(shared);
+  }, [currentUser, load]);
+
+  const loading = Boolean(currentUser) && loadedFor !== currentUser?.uid;
+
+  const notes = tab === "mine" ? ownNotes : sharedNotes;
+  const allTags = useMemo(() => collectTags(notes), [notes]);
+
+  /** Pinned first, then whatever the tag filter allows. */
+  const visibleNotes = useMemo(() => {
+    const filtered = tagFilter
+      ? notes.filter((n) => (n.tags ?? []).includes(tagFilter))
+      : notes;
+    return [...filtered].sort(
+      (a, b) => Number(b.isPinned ?? false) - Number(a.isPinned ?? false)
+    );
+  }, [notes, tagFilter]);
+
+  const createNote = useCallback(async () => {
+    if (!currentUser) return;
+    const ref = await addDoc(collection(db, "notes"), {
+      title: "",
+      lyrics: "",
+      themes: "",
+      tags: [],
+      sharedWith: [],
+      isPinned: false,
+      userId: currentUser.uid,
+      createdAt: serverTimestamp(),
+      lastEditedAt: serverTimestamp(),
+    });
+    navigate(`/notes/${ref.id}`);
+  }, [currentUser, db, navigate]);
+
+  const togglePin = useCallback(
+    async (noteId: string, isPinned: boolean) => {
+      setOwnNotes((prev) =>
+        prev.map((n) => (n.id === noteId ? { ...n, isPinned: !isPinned } : n))
+      );
+      await updateDoc(doc(db, "notes", noteId), { isPinned: !isPinned });
+    },
+    [db]
+  );
+
+  const deleteNote = useCallback(
+    async (noteId: string) => {
+      setOwnNotes((prev) => prev.filter((n) => n.id !== noteId));
+      setSelectedNotes((prev) => prev.filter((id) => id !== noteId));
+      await deleteDoc(doc(db, "notes", noteId));
+    },
+    [db]
+  );
+
+  const deleteNotes = useCallback(
+    async (ids: string[]) => {
+      if (ids.length === 0) return;
+      setOwnNotes((prev) => prev.filter((n) => !ids.includes(n.id)));
+      setSelectedNotes([]);
+      const batch = writeBatch(db);
+      ids.forEach((id) => batch.delete(doc(db, "notes", id)));
+      await batch.commit();
+    },
+    [db]
+  );
+
+  const toggleSelected = useCallback((noteId: string) => {
+    setSelectedNotes((prev) =>
+      prev.includes(noteId)
+        ? prev.filter((id) => id !== noteId)
+        : [...prev, noteId]
+    );
+  }, []);
+
+  const updateTags = useCallback(
+    async (noteId: string, tags: string[]) => {
+      const cleaned = [...new Set(tags.map(normalizeTag).filter(Boolean))];
+      setOwnNotes((prev) =>
+        prev.map((n) => (n.id === noteId ? { ...n, tags: cleaned } : n))
+      );
+      await setNoteTags(noteId, cleaned);
+    },
+    []
+  );
+
+  /** Resolve an email to an account, then add them to the note. */
+  const shareWithEmail = useCallback(
+    async (noteId: string, email: string): Promise<ShareResult> => {
+      if (!currentUser) return { ok: false, message: "You are not signed in." };
+      const address = email.trim();
+      if (!address) return { ok: false, message: "Enter an email address." };
+
+      try {
+        const uid = await findUidByEmail(address);
+        if (!uid) {
+          return {
+            ok: false,
+            message: `No RhymePage account uses ${address}.`,
+          };
+        }
+        if (uid === currentUser.uid) {
+          return { ok: false, message: "That note is already yours." };
+        }
+
+        const note = ownNotes.find((n) => n.id === noteId);
+        if (note?.sharedWith?.includes(uid)) {
+          return { ok: false, message: "They already have this note." };
+        }
+
+        await shareNote(noteId, uid);
+        setOwnNotes((prev) =>
+          prev.map((n) =>
+            n.id === noteId
+              ? { ...n, sharedWith: [...(n.sharedWith ?? []), uid] }
+              : n
+          )
+        );
+        return { ok: true, message: `Shared with ${address}.` };
+      } catch {
+        return { ok: false, message: "Could not share it. Try again." };
+      }
+    },
+    [currentUser, ownNotes]
+  );
+
+  const removeCollaborator = useCallback(
+    async (noteId: string, uid: string) => {
+      setOwnNotes((prev) =>
+        prev.map((n) =>
+          n.id === noteId
+            ? { ...n, sharedWith: (n.sharedWith ?? []).filter((u) => u !== uid) }
+            : n
+        )
+      );
+      await unshareNote(noteId, uid);
+    },
+    []
+  );
 
   return {
-    notes,
-    activeTab,
-    setActiveTab,
-    addBlankNote,
-    activeNote,
-    setActiveNote,
-    handlePinClick,
-    handleNoteSave,
+    ownNotes,
+    sharedNotes,
+    owners,
+    visibleNotes,
+    allTags,
+    loading,
+    tab,
+    setTab,
+    tagFilter,
+    setTagFilter,
+    selectedNotes,
+    toggleSelected,
+    createNote,
+    togglePin,
     deleteNote,
     deleteNotes,
-    handleSelectedNotes,
-    selectedNotes,
+    updateTags,
+    shareWithEmail,
+    removeCollaborator,
+    refresh,
   };
 };
 

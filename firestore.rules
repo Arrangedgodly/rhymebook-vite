@@ -1,22 +1,94 @@
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // The note as it is stored today.
+    function ownsExisting() {
+      return isSignedIn() && request.auth.uid == resource.data.userId;
+    }
+
+    // The note as this request wants to leave it.
+    function ownsIncoming() {
+      return isSignedIn() && request.auth.uid == request.resource.data.userId;
+    }
+
+    function isCollaborator() {
+      return isSignedIn()
+        && request.auth.uid in resource.data.get('sharedWith', []);
+    }
+
+    // A collaborator may rewrite the words but never who owns the note or who
+    // else can see it. Those two fields must survive the edit untouched.
+    function keepsNoteOwnership() {
+      return request.resource.data.userId == resource.data.userId
+        && request.resource.data.get('sharedWith', [])
+             == resource.data.get('sharedWith', []);
+    }
+
+    // Private. Suggestion preferences and anything else personal live here and
+    // are readable only by their owner.
     match /users/{userId} {
-      allow read: if request.auth.uid != null;
-      allow write: if request.auth.uid == userId;
-      
-      match /notes/{noteId} {
-        allow read: if request.auth.uid != null;
-      	allow write: if request.auth.uid == userId;
+      allow read, write: if isOwner(userId);
+
+      match /{subdocument=**} {
+        allow read, write: if isOwner(userId);
       }
     }
 
+    // The public face of an account: just enough to render someone in a share
+    // dialog or a follower list. Deliberately holds no email address, so this
+    // collection cannot be scraped for contact details.
+    match /publicProfiles/{userId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner(userId);
+
+      // The follower owns their own edge, so they are the one allowed to
+      // create and remove it.
+      match /followers/{followerId} {
+        allow read: if isSignedIn();
+        allow create, delete: if isSignedIn() && request.auth.uid == followerId;
+      }
+
+      // ...and only you may edit the list of people you follow.
+      match /following/{targetId} {
+        allow read: if isSignedIn();
+        allow create, delete: if isOwner(userId);
+      }
+    }
+
+    // Email -> uid, so a note can be shared with someone by address.
+    //
+    // `get` is allowed but `list` is not: you can look up an address you
+    // already know, but you cannot enumerate the collection to harvest the
+    // addresses of every user.
+    match /emailIndex/{emailLower} {
+      allow get: if isSignedIn();
+      allow list: if false;
+      allow write: if isSignedIn()
+        && request.auth.uid == request.resource.data.uid;
+      allow delete: if isSignedIn() && request.auth.uid == resource.data.uid;
+    }
+
     match /notes/{noteId} {
-      allow read: if request.auth.uid != null;
-      allow create: if request.auth.uid == resource.data.userId
-                    && request.time == resource.data.createdAt;
-      
-      allow update: if request.auth.uid == resource.data.uid
+      allow read: if ownsExisting() || isCollaborator();
+      allow delete: if ownsExisting();
+
+      // On create there is no `resource` yet, so the incoming document is the
+      // only thing to check.
+      allow create: if ownsIncoming();
+
+      // The owner can change anything; a collaborator can only change content.
+      allow update: if ownsExisting()
+        || (isCollaborator() && keepsNoteOwnership());
     }
   }
 }
