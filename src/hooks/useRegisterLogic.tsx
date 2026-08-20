@@ -65,7 +65,14 @@ const useRegisterLogic = ({ setCurrentUser, loggedIn }: RegisterProps) => {
     }
   };
 
-  const finishSignUp = async (user: User) => {
+  /*
+   * Reads auth.currentUser fresh rather than trusting a `User` object handed
+   * in by the caller, so this always publishes whatever updateProfile most
+   * recently wrote rather than a snapshot taken before it.
+   */
+  const finishSignUp = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
     const appUser = toAppUser(user);
     setCurrentUser(appUser);
     await createUserDoc(user);
@@ -85,7 +92,7 @@ const useRegisterLogic = ({ setCurrentUser, loggedIn }: RegisterProps) => {
       // Set the name before publishing, so the public card isn't born blank.
       const chosen = displayName.trim();
       if (chosen) await updateProfile(user, { displayName: chosen });
-      await finishSignUp(user);
+      await finishSignUp();
     } catch (err) {
       setError(readableError(err));
     } finally {
@@ -97,8 +104,8 @@ const useRegisterLogic = ({ setCurrentUser, loggedIn }: RegisterProps) => {
     setError("");
     setGoogleLoading(true);
     try {
-      const { user } = await signInWithPopup(auth, provider);
-      await finishSignUp(user);
+      await signInWithPopup(auth, provider);
+      await finishSignUp();
     } catch (err) {
       setError(readableError(err));
     } finally {

@@ -7,11 +7,12 @@ import type { AppUser } from "../types/user";
 
 interface SettingsProfileProps {
   currentUser: AppUser;
+  setCurrentUser: (user: AppUser | null) => void;
 }
 
 const CONFIRM_PHRASE = "delete my account";
 
-const SettingsProfile = ({ currentUser }: SettingsProfileProps) => {
+const SettingsProfile = ({ currentUser, setCurrentUser }: SettingsProfileProps) => {
   const navigate = useNavigate();
   const {
     nameState,
@@ -22,7 +23,7 @@ const SettingsProfile = ({ currentUser }: SettingsProfileProps) => {
     changeEmail,
     changePassword,
     deleteAccount,
-  } = useAccountLogic();
+  } = useAccountLogic({ setCurrentUser });
 
   const [displayName, setDisplayName] = useState(currentUser.displayName ?? "");
   const [newEmail, setNewEmail] = useState("");

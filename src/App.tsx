@@ -58,7 +58,7 @@ function App() {
           />
           <Route
             path="/settings"
-            element={<Settings currentUser={currentUser} />}
+            element={<Settings currentUser={currentUser} setCurrentUser={setCurrentUser} />}
           />
           <Route path="/notes" element={<Notes currentUser={currentUser} />} />
           <Route

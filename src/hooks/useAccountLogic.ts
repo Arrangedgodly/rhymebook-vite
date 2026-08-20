@@ -12,7 +12,7 @@ import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { auth, provider } from "../firebase";
 import { publishProfile, removeProfile } from "../utils/profiles";
 import { deleteNotesOwnedBy } from "../utils/notesApi";
-import { toAppUser } from "../types/user";
+import { toAppUser, type AppUser } from "../types/user";
 
 export type ActionState =
   | { status: "idle" }
@@ -59,7 +59,18 @@ export function usesPassword(): boolean {
   );
 }
 
-const useAccountLogic = () => {
+interface UseAccountLogicArgs {
+  /**
+   * Pushes a change back into the app's single source of truth for the signed
+   * in user. Without this, a successful updateProfile call left Firebase
+   * correct but the app's own state (and its localStorage boot cache) stale
+   * until the next full auth event -- observed directly: the display name
+   * changed on the account, but the cached copy kept the old one.
+   */
+  setCurrentUser: (user: AppUser | null) => void;
+}
+
+const useAccountLogic = ({ setCurrentUser }: UseAccountLogicArgs) => {
   const [nameState, setNameState] = useState<ActionState>(IDLE);
   const [emailState, setEmailState] = useState<ActionState>(IDLE);
   const [passwordState, setPasswordState] = useState<ActionState>(IDLE);
@@ -96,18 +107,20 @@ const useAccountLogic = () => {
     setNameState({ status: "working" });
     try {
       await updateProfile(user, { displayName: trimmed });
-      // Keep the private doc and the public card in step.
+      const appUser = { ...toAppUser(user), displayName: trimmed };
+      // Keep the private doc, the public card, and the app's own state in step.
       await setDoc(
         doc(getFirestore(), "users", user.uid),
         { displayName: trimmed },
         { merge: true }
       );
-      await publishProfile({ ...toAppUser(user), displayName: trimmed });
+      await publishProfile(appUser);
+      setCurrentUser(appUser);
       setNameState({ status: "done", message: "Name updated." });
     } catch (error) {
       setNameState({ status: "error", message: readableError(error) });
     }
-  }, []);
+  }, [setCurrentUser]);
 
   const changePassword = useCallback(
     async (currentPassword: string, newPassword: string) => {

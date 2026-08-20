@@ -17,9 +17,10 @@ type Tab = "suggestions" | "account";
 
 interface SettingsProps {
   currentUser: AppUser | null;
+  setCurrentUser: (user: AppUser | null) => void;
 }
 
-const Settings = ({ currentUser }: SettingsProps) => {
+const Settings = ({ currentUser, setCurrentUser }: SettingsProps) => {
   const [tab, setTab] = useState<Tab>("suggestions");
   const [settings, setSettings] = useState<RhymeSettings>(DEFAULT_RHYME_SETTINGS);
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">(
@@ -125,7 +126,7 @@ const Settings = ({ currentUser }: SettingsProps) => {
               status={status}
             />
           ) : (
-            <SettingsProfile currentUser={currentUser} />
+            <SettingsProfile currentUser={currentUser} setCurrentUser={setCurrentUser} />
           )}
         </Suspense>
       </div>
