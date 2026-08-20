@@ -1,122 +1,138 @@
+import { RELATIONS, RELATION_KEYS, type RelationKey } from "../utils/rhymeApi";
+import type { ThemeEngine } from "../utils/rhymeApi";
+import type { RhymeSettings } from "../types/settings";
+import { SettingsSection } from "./SettingsSection";
+
 interface SettingsDashboardProps {
-  activeTab: string;
-  setActiveTab: (activeTab: string) => void;
-  preferenceBooleans: {
-    name: string;
-    value: boolean;
-    function: () => void;
-  }[];
-  engine: string;
-  setEngine: (engine: string) => void;
-  max: number;
-  setMax: (max: number) => void;
+  settings: RhymeSettings;
+  onToggle: (key: RelationKey) => void;
+  onEngineChange: (engine: ThemeEngine) => void;
+  onMaxChange: (max: number) => void;
+  onSave: () => void;
+  status: "idle" | "saving" | "saved" | "error";
 }
 
+const STATUS_TEXT = {
+  idle: "Save preferences",
+  saving: "Saving...",
+  saved: "Saved",
+  error: "Could not save - try again",
+} as const;
+
 const SettingsDashboard = ({
-  activeTab,
-  setActiveTab,
-  preferenceBooleans,
-  engine,
-  setEngine,
-  max,
-  setMax,
+  settings,
+  onToggle,
+  onEngineChange,
+  onMaxChange,
+  onSave,
+  status,
 }: SettingsDashboardProps) => {
-  const handleTabClick = () => {
-    if (activeTab === "dashboard") {
-      setActiveTab("");
-    } else {
-      setActiveTab("dashboard");
-    }
-  };
+  const enabledCount = RELATION_KEYS.filter((k) => settings.enabled[k]).length;
 
   return (
-    <div className="collapse md:w-1/2 w-4/5 bg-secondary text-secondary-content m-5">
-      <input
-        type="radio"
-        name="settings"
-        checked={activeTab === "dashboard" ? true : false}
-        onClick={handleTabClick}
-      />
-      <h2 className="collapse-title text-3xl font-bold text-center">
-        Dashboard / API Engine
-      </h2>
-      <div
-        className={
-          activeTab === "dashboard"
-            ? "collapse-content transition-all"
-            : "hidden transition-all"
-        }
+    <div className="flex flex-col gap-4">
+      <SettingsSection
+        title="Categories"
+        description={`Which suggestion tabs appear while you write. ${enabledCount} of ${RELATION_KEYS.length} on.`}
       >
-        {preferenceBooleans.map((prefBoolean) => (
-          <div className="form-control" key={`${prefBoolean.name}-selector`}>
-            <label className="label cursor-pointer">
-              <span className="label-text text-xl text-primary-content mr-5">
-                {prefBoolean.name}
-              </span>
+        <ul className="flex flex-col divide-y divide-base-300">
+          {RELATION_KEYS.map((key) => (
+            <li key={key} className="flex items-start gap-3 py-2.5">
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium">{RELATIONS[key].label}</p>
+                <p className="text-xs opacity-55">{RELATIONS[key].hint}</p>
+              </div>
               <input
                 type="checkbox"
-                checked={prefBoolean.value}
-                onChange={prefBoolean.function}
-                className="checkbox checkbox-primary"
+                aria-label={RELATIONS[key].label}
+                checked={settings.enabled[key]}
+                onChange={() => onToggle(key)}
+                className="toggle toggle-primary toggle-sm mt-0.5 shrink-0"
               />
-            </label>
-          </div>
-        ))}
-        <div className="flex flex-col items-center">
-          <h3 className="text-2xl font-bold text-center m-5">Engine Type</h3>
-          <div className="flex flex-row items-center justify-center w-full">
-            <div className="form-control">
-              <label className="label cursor-pointer">
-                <span className="label-text text-xl text-primary-content mr-5">
-                  Broad
-                </span>
-                <input
-                  type="radio"
-                  name="engine"
-                  value="topic"
-                  checked={engine === "topic"}
-                  onChange={() => setEngine("topic")}
-                  className="radio radio-primary"
-                />
-              </label>
-            </div>
-            <div className="form-control">
-              <label className="label cursor-pointer">
-                <span className="label text text-xl text-primary-content mr-5">
-                  Specific
-                </span>
-                <input
-                  type="radio"
-                  name="engine"
-                  value="ml"
-                  checked={engine === "ml"}
-                  onChange={() => setEngine("ml")}
-                  className="radio radio-primary"
-                />
-              </label>
-            </div>
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-xl text-primary-content mr-5">
-                Max Results
-              </span>
-            </label>
+            </li>
+          ))}
+        </ul>
+      </SettingsSection>
+
+      <SettingsSection
+        title="Theme matching"
+        description="How hard the Themes field on the dashboard pulls results toward your subject."
+      >
+        <div className="flex flex-col gap-2">
+          <label className="flex cursor-pointer items-start gap-3">
             <input
-              type="range"
-              min="5"
-              max="50"
-              value={max}
-              step={5}
-              onChange={(e) => setMax(parseInt(e.target.value))}
-              className="range range-primary"
+              type="radio"
+              name="engine"
+              className="radio radio-primary radio-sm mt-0.5"
+              checked={settings.engine === "topics"}
+              onChange={() => onEngineChange("topics")}
             />
-            <span className="text-xl text-primary-content text-center">
-              {max}
+            <span className="min-w-0">
+              <span className="block text-sm font-medium">Broad</span>
+              <span className="block text-xs opacity-55">
+                Nudges results toward your themes but keeps the list full.
+              </span>
             </span>
-          </div>
-          <button className="btn btn-primary btn-lg m-2 w-full">Save</button>
+          </label>
+          <label className="flex cursor-pointer items-start gap-3">
+            <input
+              type="radio"
+              name="engine"
+              className="radio radio-primary radio-sm mt-0.5"
+              checked={settings.engine === "ml"}
+              onChange={() => onEngineChange("ml")}
+            />
+            <span className="min-w-0">
+              <span className="block text-sm font-medium">Specific</span>
+              <span className="block text-xs opacity-55">
+                Demands results actually mean something like your themes. Far
+                fewer words, sometimes none.
+              </span>
+            </span>
+          </label>
         </div>
+      </SettingsSection>
+
+      <SettingsSection
+        title="Results per category"
+        description="More words means more scrolling in the suggestion panel."
+      >
+        <div className="flex items-center gap-4">
+          <input
+            type="range"
+            aria-label="Results per category"
+            min="5"
+            max="50"
+            step={5}
+            value={settings.max}
+            onChange={(e) => onMaxChange(parseInt(e.target.value, 10))}
+            className="range range-primary range-sm flex-1"
+          />
+          <span className="w-8 text-right text-sm tabular-nums">
+            {settings.max}
+          </span>
+        </div>
+      </SettingsSection>
+
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          className="btn btn-primary btn-sm"
+          onClick={onSave}
+          disabled={status === "saving"}
+        >
+          {STATUS_TEXT[status]}
+        </button>
+        {status === "saved" && (
+          <span role="status" className="text-sm text-success">
+            Applied to your dashboard.
+          </span>
+        )}
+        {status === "error" && (
+          <span role="status" className="text-sm text-error">
+            Check your connection and try again.
+          </span>
+        )}
       </div>
     </div>
   );

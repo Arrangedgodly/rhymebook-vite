@@ -1,81 +1,134 @@
-import { useState, useEffect, lazy } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
+import { useNavigate } from "react-router-dom";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  DEFAULT_RHYME_SETTINGS,
+  coerceSettings,
+  type RhymeSettings,
+} from "../types/settings";
+import type { RelationKey, ThemeEngine } from "../utils/rhymeApi";
+import type { AppUser } from "../types/user";
+import Loading from "./Loading";
+
 const SettingsDashboard = lazy(() => import("./SettingsDashboard"));
 const SettingsProfile = lazy(() => import("./SettingsProfile"));
 
+type Tab = "suggestions" | "account";
+
 interface SettingsProps {
-  currentUser: any;
+  currentUser: AppUser | null;
 }
 
 const Settings = ({ currentUser }: SettingsProps) => {
-  const [activeTab, setActiveTab] = useState<string>("");
-  const [rhy, setRhy] = useState<boolean>(true);
-  const [sdl, setSdl] = useState<boolean>(true);
-  const [adj, setAdj] = useState<boolean>(true);
-  const [noun, setNoun] = useState<boolean>(true);
-  const [rlwd, setRlwd] = useState<boolean>(true);
-  const [syn, setSyn] = useState<boolean>(true);
-  const [ant, setAnt] = useState<boolean>(true);
-  const [fqfl, setFqfl] = useState<boolean>(true);
-  const [engine, setEngine] = useState<string>("topic");
-  const [max, setMax] = useState<number>(25);
+  const [tab, setTab] = useState<Tab>("suggestions");
+  const [settings, setSettings] = useState<RhymeSettings>(DEFAULT_RHYME_SETTINGS);
+  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">(
+    "idle"
+  );
+  const navigate = useNavigate();
+  const db = getFirestore();
 
-  const preferenceBooleans = [
-    { name: "Rhymes", value: rhy, function: () => setRhy(!rhy) },
-    { name: "Sound Alikes", value: sdl, function: () => setSdl(!sdl) },
-    { name: "Adjectives", value: adj, function: () => setAdj(!adj) },
-    { name: "Related Nouns", value: noun, function: () => setNoun(!noun) },
-    { name: "Related Words", value: rlwd, function: () => setRlwd(!rlwd) },
-    { name: "Synonyms", value: syn, function: () => setSyn(!syn) },
-    { name: "Antonyms", value: ant, function: () => setAnt(!ant) },
-    {
-      name: "Frequent Following Words",
-      value: fqfl,
-      function: () => setFqfl(!fqfl),
-    },
-  ];
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/");
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const snap = await getDoc(doc(db, "users", currentUser.uid));
+        if (cancelled || !snap.exists()) return;
+        setSettings(coerceSettings(snap.data().settings));
+      } catch {
+        // Keep the defaults on screen if the document can't be read.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [currentUser, db, navigate]);
 
-  const handleProfileTabClick = () => {
-    if (activeTab === "profile") {
-      setActiveTab("");
-    } else {
-      setActiveTab("profile");
+  const toggle = (key: RelationKey) => {
+    setStatus("idle");
+    setSettings((prev) => ({
+      ...prev,
+      enabled: { ...prev.enabled, [key]: !prev.enabled[key] },
+    }));
+  };
+
+  const setEngine = (engine: ThemeEngine) => {
+    setStatus("idle");
+    setSettings((prev) => ({ ...prev, engine }));
+  };
+
+  const setMax = (max: number) => {
+    setStatus("idle");
+    setSettings((prev) => ({ ...prev, max }));
+  };
+
+  const handleSave = async () => {
+    if (!currentUser) return;
+    setStatus("saving");
+    try {
+      await setDoc(
+        doc(db, "users", currentUser.uid),
+        { settings },
+        { merge: true }
+      );
+      setStatus("saved");
+    } catch {
+      setStatus("error");
     }
   };
 
-  useEffect(() => {
-    if (currentUser.settings) {
-      setRhy(currentUser.settings.rhy);
-      setSdl(currentUser.settings.sdl);
-      setAdj(currentUser.settings.adj);
-      setNoun(currentUser.settings.noun);
-      setRlwd(currentUser.settings.rlwd);
-      setSyn(currentUser.settings.syn);
-      setAnt(currentUser.settings.ant);
-      setFqfl(currentUser.settings.fqfl);
-      setEngine(currentUser.settings.engine);
-      setMax(currentUser.settings.max);
-    }
-  }, [currentUser]);
+  if (!currentUser) return null;
+
+  const tabs: { id: Tab; label: string }[] = [
+    { id: "suggestions", label: "Suggestions" },
+    { id: "account", label: "Account" },
+  ];
 
   return (
-    <div className="container-main">
-      <h1 className="text-5xl text-primary font-bold text-center m-5">
-        User Settings
-      </h1>
-      <SettingsDashboard
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        preferenceBooleans={preferenceBooleans}
-        engine={engine}
-        setEngine={setEngine}
-        max={max}
-        setMax={setMax}
-      />
-      <SettingsProfile
-        activeTab={activeTab}
-        handleProfileTabClick={handleProfileTabClick}
-        currentUser={currentUser}
-      />
+    <div className="mx-auto w-full max-w-2xl px-4 py-6 md:py-10">
+      <h1 className="text-2xl font-bold md:text-3xl">Settings</h1>
+
+      <div role="tablist" className="mt-5 flex gap-1 border-b border-base-300">
+        {tabs.map(({ id, label }) => (
+          <button
+            key={id}
+            role="tab"
+            type="button"
+            aria-selected={tab === id}
+            onClick={() => setTab(id)}
+            className={[
+              "-mb-px border-b-2 px-3 py-2 text-sm font-medium transition",
+              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+              tab === id
+                ? "border-primary text-primary"
+                : "border-transparent opacity-60 hover:opacity-100",
+            ].join(" ")}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-5">
+        <Suspense fallback={<Loading />}>
+          {tab === "suggestions" ? (
+            <SettingsDashboard
+              settings={settings}
+              onToggle={toggle}
+              onEngineChange={setEngine}
+              onMaxChange={setMax}
+              onSave={handleSave}
+              status={status}
+            />
+          ) : (
+            <SettingsProfile currentUser={currentUser} />
+          )}
+        </Suspense>
+      </div>
     </div>
   );
 };

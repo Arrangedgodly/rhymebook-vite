@@ -1,85 +1,127 @@
-import { auth, provider } from "../firebase";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { useState, useEffect, MouseEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
+import type { User } from "firebase/auth";
+import { auth, provider } from "../firebase";
+import { publishProfile } from "../utils/profiles";
+import { toAppUser, type AppUser } from "../types/user";
 
 interface RegisterProps {
-  setCurrentUser: any;
+  setCurrentUser: (user: AppUser | null) => void;
   loggedIn: boolean;
 }
 
+function readableError(error: unknown): string {
+  const code =
+    typeof error === "object" && error !== null && "code" in error
+      ? String((error as { code: unknown }).code)
+      : "";
+  switch (code) {
+    case "auth/email-already-in-use":
+      return "An account already uses that address. Try logging in.";
+    case "auth/invalid-email":
+      return "That doesn't look like an email address.";
+    case "auth/weak-password":
+      return "Pick a password of at least six characters.";
+    case "auth/popup-closed-by-user":
+      return "The Google window closed before finishing.";
+    default:
+      return "Could not create the account. Try again.";
+  }
+}
+
 const useRegisterLogic = ({ setCurrentUser, loggedIn }: RegisterProps) => {
+  const [displayName, setDisplayName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [googleLoading, setGoogleLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const navigate = useNavigate();
   const db = getFirestore();
 
-  const handleRegister = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        setCurrentUser(user);
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        createUserDoc(user);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
+  const createUserDoc = async (user: User) => {
+    const userRef = doc(db, "users", user.uid);
+    const snap = await getDoc(userRef);
+    if (!snap.exists()) {
+      await setDoc(userRef, {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        createdAt: serverTimestamp(),
       });
+    }
   };
 
-  const createUserDoc = async (user: any) => {
-    if (user) {
-      const userRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(userRef);
+  const finishSignUp = async (user: User) => {
+    const appUser = toAppUser(user);
+    setCurrentUser(appUser);
+    await createUserDoc(user);
+    await publishProfile(appUser);
+  };
 
-      if (!docSnap.exists()) {
-        setDoc(userRef, {
-          email: user.email,
-          uid: user.uid,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          createdAt: serverTimestamp(),
-        });
-      }
+  const handleRegister = async (e: FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      // Set the name before publishing, so the public card isn't born blank.
+      const chosen = displayName.trim();
+      if (chosen) await updateProfile(user, { displayName: chosen });
+      await finishSignUp(user);
+    } catch (err) {
+      setError(readableError(err));
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
-  const handleGoogleRegister = () => {
+  const handleGoogleRegister = async () => {
+    setError("");
     setGoogleLoading(true);
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        const user = result.user;
-        setCurrentUser(user);
-        createUserDoc(user);
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        setGoogleLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setGoogleLoading(false);
-      });
+    try {
+      const { user } = await signInWithPopup(auth, provider);
+      await finishSignUp(user);
+    } catch (err) {
+      setError(readableError(err));
+    } finally {
+      setGoogleLoading(false);
+    }
   };
 
   useEffect(() => {
-    if (loggedIn) {
-      navigate("/");
-    }
-  }, [loggedIn]);
+    if (loggedIn) navigate("/");
+  }, [loggedIn, navigate]);
 
   return {
+    displayName,
+    setDisplayName,
+    email,
     setEmail,
+    password,
     setPassword,
     loading,
+    googleLoading,
+    error,
     handleRegister,
     handleGoogleRegister,
-    googleLoading,
   };
 };
 

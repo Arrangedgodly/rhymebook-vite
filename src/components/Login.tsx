@@ -1,106 +1,112 @@
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import useLoginLogic from "../hooks/useLoginLogic";
+import { Field, FormMessage, fieldInput } from "./FormControls";
+import type { AppUser } from "../types/user";
 
 interface LoginProps {
-  setCurrentUser: any;
+  setCurrentUser: (user: AppUser | null) => void;
   loggedIn: boolean;
 }
 
 const Login = ({ setCurrentUser, loggedIn }: LoginProps) => {
   const {
+    email,
     setEmail,
+    password,
     setPassword,
+    rememberMe,
+    setRememberMe,
     googleLoading,
     loading,
+    error,
+    resetNotice,
     handleLogin,
     handleGoogleLogin,
+    handlePasswordReset,
   } = useLoginLogic({ setCurrentUser, loggedIn });
 
   return (
-    <div className="container-main">
-      <div className="card card-bordered items-center text-center shadow-lg compact w-96 bg-primary-focus text-secondary-content my-5">
-        <h1 className="card-title text-2xl mt-4 mb-2 text-primary-content">
-          Login
-        </h1>
-        <div className="card-body w-full">
-          <form className="w-4/5 m-auto mb-4">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text text-xl text-primary-content">
-                  Email
-                </span>
-              </label>
-              <input
-                type="text"
-                placeholder="email"
-                className="input input-bordered text-primary-content bg-primary text-center placeholder-primary-content"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text text-xl text-primary-content">
-                  Password
-                </span>
-              </label>
-              <input
-                type="password"
-                placeholder="password"
-                className="input input-bordered text-primary-content bg-primary text-center placeholder-primary-content"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="form-control mt-2">
-              <label className="cursor-pointer label">
-                <span className="label-text text-md text-primary-content">
-                  Remember me
-                </span>
-                <input
-                  type="checkbox"
-                  className="checkbox checkbox-lg checkbox-primary"
-                />
-              </label>
-            </div>
-            <div className="form-control mt-6">
-              <button className="btn btn-secondary" onClick={handleLogin}>
-                {loading && (
-                  <span className="loading loading-spinner loading-md" />
-                )}
-                {loading ? (
-                  <span className="text-md">Loading...</span>
-                ) : (
-                  <span className="text-md">Login</span>
-                )}
-              </button>
-            </div>
-          </form>
-          <div className="divider">Or</div>
-          <div className="form-control w-4/5 m-auto mb-4">
-            <button
-              className="btn btn-outline text-primary-content flex flex-col items-center p-2"
-              onClick={handleGoogleLogin}
-            >
-              {googleLoading ? (
-                <span className="loading loading-spinner loading-md" />
-              ) : (
-                <FcGoogle size="2rem" />
-              )}
-              {googleLoading ? (
-                <span className="text-md">Loading...</span>
-              ) : (
-                <span className="text-md">Login with Google</span>
-              )}
-            </button>
-          </div>
-          <div className="text-primary-content flex flex-col items-center">
-            <span className="text-md">Don't have an account?</span>
-            <Link to="/register" className="btn btn-accent btn-sm m-2">
-              Register here!
-            </Link>
-          </div>
+    <div className="mx-auto w-full max-w-sm px-4 py-8 md:py-12">
+      <h1 className="text-2xl font-bold">Welcome back</h1>
+      <p className="mt-1 text-sm opacity-65">
+        Sign in to reach your notebook.
+      </p>
+
+      <form className="mt-6 flex flex-col gap-3" onSubmit={handleLogin}>
+        <Field label="Email" htmlFor="login-email">
+          <input
+            id="login-email"
+            type="email"
+            autoComplete="email"
+            className={fieldInput}
+            value={email}
+            placeholder="you@example.com"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Field>
+
+        <Field label="Password" htmlFor="login-password">
+          <input
+            id="login-password"
+            type="password"
+            autoComplete="current-password"
+            className={fieldInput}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Field>
+
+        <div className="flex items-center justify-between gap-3">
+          <label className="flex cursor-pointer items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              className="checkbox checkbox-primary checkbox-sm"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <span>Keep me signed in</span>
+          </label>
+          <button
+            type="button"
+            className="text-sm underline underline-offset-2 opacity-70 hover:opacity-100"
+            onClick={handlePasswordReset}
+          >
+            Forgot password?
+          </button>
         </div>
-      </div>
+
+        {error && <FormMessage tone="error">{error}</FormMessage>}
+        {resetNotice && <FormMessage tone="success">{resetNotice}</FormMessage>}
+
+        <button type="submit" className="btn btn-primary mt-1" disabled={loading}>
+          {loading && <span className="loading loading-spinner loading-sm" />}
+          {loading ? "Signing in..." : "Sign in"}
+        </button>
+      </form>
+
+      <div className="divider text-xs opacity-60">or</div>
+
+      <button
+        type="button"
+        className="btn btn-outline w-full gap-2"
+        onClick={handleGoogleLogin}
+        disabled={googleLoading}
+      >
+        {googleLoading ? (
+          <span className="loading loading-spinner loading-sm" />
+        ) : (
+          <FcGoogle size="1.25rem" />
+        )}
+        {googleLoading ? "Signing in..." : "Continue with Google"}
+      </button>
+
+      <p className="mt-6 text-center text-sm opacity-70">
+        No account yet?{" "}
+        <Link to="/register" className="underline underline-offset-2">
+          Create one
+        </Link>
+      </p>
     </div>
   );
 };
