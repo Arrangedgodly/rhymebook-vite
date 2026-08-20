@@ -1,76 +1,17 @@
+/* Landing page only; the rest of the app styles inline with Tailwind. */
+
 .container-main {
-  @apply flex flex-col flex-grow items-center w-screen;
-}
-
-.container-notes {
-  @apply flex flex-grow items-center w-screen;
-}
-
-.container-note {
-  @apply card flex flex-col items-center justify-start rounded-xl shadow-lg p-4 m-5 bg-secondary text-secondary-content hover:bg-accent hover:text-accent-content relative;
-  width: 100%;
-  height: 300px;
-}
-
-.container-notes-content {
-  @apply flex grow items-center justify-center flex-wrap max-h-[90vh] relative z-0 gap-10 p-5 m-2 ml-20 mb-5 overflow-y-auto overflow-x-hidden;
-  @screen md {
-    flex-direction: row;
-  }
-}
-
-.container-note:hover .container-note-textarea {
-  @apply bg-accent text-accent-content;
-}
-
-.active-note {
-  @apply card flex flex-col items-center justify-start rounded-xl shadow-xl p-4 m-5 w-full h-[60vh] transition-all bg-secondary text-secondary-content;
-  
-  @screen md {
-    width: 70%;
-  }
-}
-
-.container-note_selected {
-  border: 5px solid;
+  @apply flex w-full flex-col items-center;
 }
 
 .container-landing {
-  @apply flex flex-col items-center m-4 gap-4;
+  @apply flex flex-col items-center gap-3;
 }
 
+/*
+ * Four of the six categories only appear once the grid has six columns.
+ * Below that the row would be too narrow to keep every heading on one line.
+ */
 .container-landing-alt {
-  @apply md:flex hidden;
+  @apply hidden lg:flex;
 }
-
-.container-notecard {
-  @apply card bg-primary text-primary-content shadow-xl m-10 relative z-30 w-1/2 h-3/4;
-}
-
-.container-notebody {
-  @apply card-body mx-auto p-5 w-full;
-}
-
-.container-notebuttons {
-  @apply absolute bottom-0 left-0 right-0 flex justify-evenly p-2 bg-base-200;
-  border-radius: 0 0 0.5rem 0.5rem;
-}
-
-.container-noteselect {
-  @apply absolute top-0 left-0 p-2;
-}
-
-.container-notepin {
-  @apply absolute top-0 right-0 p-2;
-}
-
-.notes-grid {
-  @apply grid;
-  width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-auto-rows: repeat(auto-fit, minmax(auto, 250px));
-  gap: 1rem;
-  justify-items: center;
-  align-items: start;
-}
-

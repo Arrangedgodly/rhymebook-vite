@@ -55,32 +55,22 @@ interface MissingProps {
 
 const Missing = ({ loggedIn }: MissingProps) => {
   return (
-    <main className="w-full px-6 pt-10 pb-16 mx-auto max-w-7xl sm:pb-24 lg:px-8">
-      <div className="max-w-2xl mx-auto text-center">
-        <p className="text-base text-3xl font-semibold leading-8 sm:text-5xl text-secondary">
-          404
-        </p>
-        <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-5xl">
-          This page does not exist
-        </h1>
-        <p className="mt-4 text-base leading-7 sm:mt-6 sm:text-lg sm:leading-8">
-          Sorry, we couldn’t find the page you’re looking for.
-        </p>
-      </div>
-      <div className="flow-root max-w-lg mx-auto mt-16 sm:mt-20">
+    <div className="mx-auto w-full max-w-lg px-4 py-10 md:py-16">
+      <p className="text-sm font-semibold uppercase tracking-wider text-secondary">
+        404
+      </p>
+      <h1 className="mt-2 text-2xl font-bold tracking-tight md:text-3xl">
+        This page does not exist
+      </h1>
+      <p className="mt-2 text-sm opacity-65">
+        The link may be out of date. Here is where else you can go.
+      </p>
+
+      <div className="mt-8">
         <h2 className="sr-only">Popular pages</h2>
-        <ul
-          role="list"
-          className="-mt-6 border-b divide-y divide-gray-900/5 border-gray-900/5"
-        >
-          {loggedIn ? (
-            <MissingLinks links={loggedLinks} />
-          ) : (
-            <MissingLinks links={unloggedLinks} />
-          )}
-        </ul>
+        <MissingLinks links={loggedIn ? loggedLinks : unloggedLinks} />
       </div>
-    </main>
+    </div>
   );
 };
 

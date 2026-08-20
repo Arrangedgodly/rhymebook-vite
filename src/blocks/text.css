@@ -1,27 +1,31 @@
+/* Landing page only; the rest of the app styles inline with Tailwind. */
+
 .text-landing-title {
-  @apply md:text-lg font-bold text-center whitespace-break-spaces w-[95%] m-2;
+  /*
+   * One line, always. A row where "Sound-Alikes" and "Related Words" wrap but
+   * the other four do not reads as broken rather than responsive.
+   */
+  @apply text-center text-sm font-bold whitespace-nowrap lg:text-base;
 }
 
 .text-landing {
-  @apply text-center text-accent self-center pr-20 alt-font text-sm;
+  /* was text-accent, a pale mint on a pale ground -- effectively invisible */
+  @apply alt-font w-full self-center text-center text-sm text-base-content/75;
 }
 
-.text-icon {
-  @apply h-6 w-6 text-accent hover:text-accent-focus cursor-pointer transition-all;
+/* One word per line: these are word lists, not sentences. */
+.landing-sample > span {
+  display: block;
+  line-height: 1.55;
 }
 
-.text-icon_alt {
-  @apply h-6 w-6 text-neutral hover:text-neutral-focus cursor-pointer transition-all;
-}
-
-.text-note-title {
-  @apply font-bold text-xl truncate overflow-hidden w-[80%] text-center m-2;
-}
-
-.text-note-title_input {
-  @apply font-bold text-xl truncate overflow-hidden w-[80%] text-center bg-transparent;
-}
-
-.text-note-body {
-  @apply text-base text-ellipsis overflow-hidden w-full h-full m-auto text-center bg-secondary text-secondary-content overflow-y-auto;
+/*
+ * Resting state: hidden. JS drives the real value from here -- opacity is set
+ * directly to how much of the hero's phrase is still visible while it erases,
+ * so the words fade in the same motion as the text above rather than on a
+ * timer of their own, then ease back in once the next phrase lands. Opacity
+ * rather than display, so the row never changes height.
+ */
+.text-landing {
+  opacity: 0;
 }

@@ -1,44 +1,38 @@
+import type { ComponentType, SVGProps } from "react";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 
-interface Link {
+export interface MissingLink {
   name: string;
   href: string;
   description: string;
-  icon: any;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
 }
 
-interface MissingLinksProps {
-  links: Link[];
-}
-
-const MissingLinks = ({ links }: MissingLinksProps) => {
+const MissingLinks = ({ links }: { links: MissingLink[] }) => {
   const navigate = useNavigate();
+
   return (
-    <ul
-      role="list"
-      className="-mt-6 divide-y divide-gray-900/5 border-b border-gray-900/5"
-    >
-      {links.map((link, linkIdx) => (
-        <li key={linkIdx} className="relative flex gap-x-6 py-6">
-          <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg shadow-sm ring-1 ring-gray-900/10">
-            <link.icon className="h-6 w-6 text-primary" aria-hidden="true" />
+    <ul className="divide-y divide-base-300 border-y border-base-300">
+      {links.map((link) => (
+        <li key={link.href} className="relative flex items-center gap-4 py-4">
+          <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg border border-base-300">
+            <link.icon className="h-5 w-5 text-primary" aria-hidden="true" />
           </div>
-          <div className="flex-auto">
-            <h3 className="text-sm font-semibold leading-6 text-secondary">
-              <a onClick={() => navigate(link.href)} className="cursor-pointer">
+          <div className="min-w-0 flex-auto">
+            <h3 className="text-sm font-semibold">
+              <button
+                type="button"
+                onClick={() => navigate(link.href)}
+                className="text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
                 <span className="absolute inset-0" aria-hidden="true" />
                 {link.name}
-              </a>
+              </button>
             </h3>
-            <p className="mt-2 text-sm leading-6">{link.description}</p>
+            <p className="mt-0.5 text-sm opacity-65">{link.description}</p>
           </div>
-          <div className="flex-none self-center">
-            <ChevronRightIcon
-              className="h-5 w-5 text-secondary"
-              aria-hidden="true"
-            />
-          </div>
+          <ChevronRightIcon className="h-5 w-5 flex-none opacity-40" aria-hidden="true" />
         </li>
       ))}
     </ul>
