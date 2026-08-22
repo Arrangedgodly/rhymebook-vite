@@ -7,6 +7,7 @@ import {
   connectAuthEmulator,
 } from "firebase/auth";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+import { getStorage, connectStorageEmulator } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyArkjuqZMCEWfZ4iDXh32ims44svzP7yJU",
@@ -22,6 +23,7 @@ const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export const storage = getStorage(app);
 export const provider = new GoogleAuthProvider();
 
 if (import.meta.env.DEV) {
@@ -44,6 +46,7 @@ if (import.meta.env.DEV && import.meta.env.VITE_USE_FIREBASE_EMULATOR === "true"
   try {
     connectAuthEmulator(auth, "http://127.0.0.1:9099", { disableWarnings: true });
     connectFirestoreEmulator(db, "127.0.0.1", 8080);
+    connectStorageEmulator(storage, "127.0.0.1", 9199);
     console.info("[firebase] connected to local emulators");
   } catch {
     // Already connected -- expected on hot reload.

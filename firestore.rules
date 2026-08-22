@@ -89,6 +89,23 @@ service cloud.firestore {
       // The owner can change anything; a collaborator can only change content.
       allow update: if ownsExisting()
         || (isCollaborator() && keepsNoteOwnership());
+
+      // Line-timing sync data for this note. It carries no userId/sharedWith
+      // of its own -- access is entirely derived from the parent note, and a
+      // collaborator gets the same full read/write here as they already have
+      // over the lyrics themselves.
+      match /sync/{syncId} {
+        function parentNote() {
+          return get(/databases/$(database)/documents/notes/$(noteId)).data;
+        }
+        function canAccessParentNote() {
+          return isSignedIn()
+            && (request.auth.uid == parentNote().userId
+                || request.auth.uid in parentNote().get('sharedWith', []));
+        }
+
+        allow read, write: if canAccessParentNote();
+      }
     }
   }
 }

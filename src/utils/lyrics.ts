@@ -43,3 +43,22 @@ export function normalizeThemes(themes: string): string {
     .slice(0, 5)
     .join(",");
 }
+
+/**
+ * The lyric lines that actually need sync timing.
+ *
+ * Blank lines are presentation-only (verse/chorus spacing) -- they never
+ * become sync objects and never require a timestamp, so they're dropped here
+ * rather than carried through to the diff or the fast-sync capture UI.
+ */
+export function splitLyricLines(lyrics: string): string[] {
+  return lyrics.split("\n").filter((line) => line.trim().length > 0);
+}
+
+/**
+ * The words in a single line, for word-level sync. Keeps the original text
+ * (punctuation included) since this is displayed, not looked up against an API.
+ */
+export function splitWords(text: string): string[] {
+  return text.split(WHITESPACE).filter(Boolean);
+}

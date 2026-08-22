@@ -1,0 +1,27 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function noteDoc(noteId) {
+      return firestore.get(/databases/(default)/documents/notes/$(noteId)).data;
+    }
+
+    function canAccessNote(noteId) {
+      return request.auth != null
+        && (request.auth.uid == noteDoc(noteId).userId
+            || request.auth.uid in noteDoc(noteId).get('sharedWith', []));
+    }
+
+    // Sync audio for a note. Same owner-or-collaborator access as the note's
+    // sync data in Firestore. The size/type checks live in the same allow
+    // block as the access check -- separate allow blocks are OR'd, so
+    // splitting them out would let anyone signed in bypass ownership.
+    match /notes/{noteId}/sync/{syncId}/audio/{fileName} {
+      allow read: if canAccessNote(noteId);
+      allow write: if canAccessNote(noteId)
+        && request.resource.size < 50 * 1024 * 1024
+        && request.resource.contentType.matches('audio/.*');
+    }
+  }
+}

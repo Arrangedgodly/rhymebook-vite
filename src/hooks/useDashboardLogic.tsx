@@ -279,6 +279,7 @@ const useDashboardLogic = ({ currentUser, existingNoteId }: DashboardProps) => {
   }, [noteId, currentUser, buildNote, db]);
 
   return {
+    noteId,
     title,
     setTitle,
     lyrics,
