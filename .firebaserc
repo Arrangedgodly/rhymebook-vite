@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "rhymepage-6b98b"
-  }
+  },
+  "targets": {
+    "rhymepage-6b98b": {
+      "hosting": {
+        "old-snapshot": [
+          "rhymepage-6b98b-old"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
