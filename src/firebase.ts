@@ -13,7 +13,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyArkjuqZMCEWfZ4iDXh32ims44svzP7yJU",
   authDomain: "rhymepage-6b98b.firebaseapp.com",
   projectId: "rhymepage-6b98b",
-  storageBucket: "rhymepage-6b98b.appspot.com",
+  storageBucket: "rhymepage-6b98b.firebasestorage.app",
   messagingSenderId: "826172871931",
   appId: "1:826172871931:web:67460576ba5ae36885cc5e",
   measurementId: "G-K9094K0YSW"
