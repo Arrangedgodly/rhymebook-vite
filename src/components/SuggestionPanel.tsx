@@ -100,7 +100,7 @@ const SuggestionPanel = ({
                 selected
                   ? "border-primary bg-primary text-primary-content"
                   : "border-base-300 text-base-content/70 hover:border-base-content/40 hover:text-base-content",
-                count === 0 ? "cursor-not-allowed opacity-40 line-through" : "",
+                count === 0 ? "cursor-not-allowed opacity-40" : "",
               ].join(" ")}
             >
               <span>{RELATIONS[key].label}</span>

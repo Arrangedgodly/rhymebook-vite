@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
 import Footer from "./components/Footer";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 const Notes = lazy(() => import("./components/Notes"));
 const Landing = lazy(() => import("./components/Landing"));
 const Login = lazy(() => import("./components/Login"));
@@ -28,11 +28,18 @@ function App() {
   const { pathname } = useLocation();
   const isWriting = pathname.startsWith("/notes/");
 
+  /*
+   * data-theme has to live on <html>, not this div: daisyUI's :root fallback
+   * (pure white base-100) otherwise paints through any gap that opens below
+   * this div -- e.g. the trailing strip Chrome-for-Android's dvh recalculation
+   * can leave beneath the footer -- regardless of which theme is selected.
+   */
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
   return (
-    <div
-      className="flex h-dvh flex-col overflow-hidden main-font bg-base-100 text-base-content"
-      data-theme={theme}
-    >
+    <div className="flex h-dvh flex-col overflow-hidden main-font bg-base-100 text-base-content">
       <Header
         currentUser={currentUser}
         theme={theme}
