@@ -203,6 +203,29 @@ function probeAudioDuration(file: File): Promise<number | null> {
 }
 
 /**
+ * Extensions the browser is prone to mis-sniffing (WAV especially -- some
+ * browsers report "", others a generic octet-stream type for it). Storage's
+ * security rule requires an `audio/*` contentType, so an unreliable browser
+ * guess would otherwise make a legitimate upload look unauthorized.
+ */
+const AUDIO_CONTENT_TYPES_BY_EXTENSION: Record<string, string> = {
+  wav: "audio/wav",
+  mp3: "audio/mpeg",
+  m4a: "audio/mp4",
+  aac: "audio/aac",
+  ogg: "audio/ogg",
+  oga: "audio/ogg",
+  flac: "audio/flac",
+  webm: "audio/webm",
+};
+
+function resolveAudioContentType(file: File): string {
+  if (file.type.startsWith("audio/")) return file.type;
+  const extension = file.name.split(".").pop()?.toLowerCase();
+  return (extension && AUDIO_CONTENT_TYPES_BY_EXTENSION[extension]) || file.type;
+}
+
+/**
  * Uploads audio and points the sync doc at it in one call, so the Storage
  * object and the Firestore reference can never drift out of sync with each
  * other. Replacing existing audio removes the old Storage object and flags
@@ -216,17 +239,18 @@ export async function attachAudio(
   const existing = await getSyncDoc(noteId);
   const storage = getStorage();
   const previousAudio = existing?.audio;
+  const contentType = resolveAudioContentType(file);
 
   const path = `notes/${noteId}/sync/main/audio/${Date.now()}-${file.name}`;
   const objectRef = storageRef(storage, path);
-  await uploadBytes(objectRef, file, { contentType: file.type });
+  await uploadBytes(objectRef, file, { contentType });
   const downloadUrl = await getDownloadURL(objectRef);
   const durationSeconds = await probeAudioDuration(file);
 
   const audio: SyncAudio = {
     storagePath: path,
     downloadUrl,
-    contentType: file.type,
+    contentType,
     durationSeconds,
     sizeBytes: file.size,
     uploadedAt: serverTimestamp(),
