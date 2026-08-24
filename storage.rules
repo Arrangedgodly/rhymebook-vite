@@ -3,6 +3,11 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
+    // Cross-service read: requires the "Firebase Rules Firestore Service
+    // Agent" IAM role granted to Storage's service agent, which `firebase
+    // deploy --only storage` should prompt for the first time this function
+    // appears in newly-uploaded rule content (not on a no-op redeploy of
+    // unchanged content).
     function noteDoc(noteId) {
       return firestore.get(/databases/(default)/documents/notes/$(noteId)).data;
     }
