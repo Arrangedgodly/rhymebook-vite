@@ -241,7 +241,9 @@ export async function attachAudio(
   const previousAudio = existing?.audio;
   const contentType = resolveAudioContentType(file);
 
-  const path = `notes/${noteId}/sync/main/audio/${Date.now()}-${file.name}`;
+  // The uploader's uid is embedded in the path -- storage.rules checks it
+  // directly there rather than cross-referencing Firestore for write access.
+  const path = `notes/${noteId}/sync/main/audio/${uid}/${Date.now()}-${file.name}`;
   const objectRef = storageRef(storage, path);
   await uploadBytes(objectRef, file, { contentType });
   const downloadUrl = await getDownloadURL(objectRef);
