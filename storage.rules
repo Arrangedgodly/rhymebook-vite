@@ -29,9 +29,13 @@ service firebase.storage {
     // that's not a currently-confirmed problem, only write was.
     match /notes/{noteId}/sync/{syncId}/audio/{uid}/{fileName} {
       allow read: if canAccessNote(noteId);
-      allow write: if request.auth != null && request.auth.uid == uid
+      allow create, update: if request.auth != null && request.auth.uid == uid
         && request.resource.size < 50 * 1024 * 1024
         && request.resource.contentType.matches('audio/.*');
+      // `request.resource` is null on delete (nothing is being written), so
+      // it can't be checked here the way create/update do -- this rule is
+      // deliberately just an auth/path match.
+      allow delete: if request.auth != null && request.auth.uid == uid;
     }
   }
 }
